@@ -1,6 +1,12 @@
+/*eslint no-use-before-define: ["error", { "functions": false }]*/
 'use strict';
 
-var productPricing = function(obj) {
+/**
+ * the product merchandizing model
+ * @param {Object} obj -product Object.
+ * @returns {Object} the product merchandizing model
+ */
+function productPricing(obj) {
     var priceModel = obj.getPriceModel();
 
     this.isPriceRange = priceModel.isPriceRange();
@@ -9,7 +15,7 @@ var productPricing = function(obj) {
     this.formattedPrice = getFormattedPrice(priceModel);
     this.salePrice = {};
     this.tierPricing = {};
-};
+}
 
 /**
  * Retrieves a number representing the price of a product
