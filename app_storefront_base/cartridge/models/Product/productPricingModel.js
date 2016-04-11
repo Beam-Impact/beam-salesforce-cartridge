@@ -23,13 +23,13 @@ function productPricing(product, promotions, currency, currentOptionModel) {
             promo: promotionalPrice
         };
     }
-    if (rangePrice && rangePrice.min.value !== rangePrice.max.value) {
-        rangePrice.type = 'range';
-        return rangePrice;
-    }
     if (tieredPrice) {
         tieredPrice.type = 'tiered';
         return tieredPrice;
+    }
+    if (rangePrice && rangePrice.min.value !== rangePrice.max.value) {
+        rangePrice.type = 'range';
+        return rangePrice;
     }
 
     standardPrice.type = 'standard';
@@ -108,9 +108,9 @@ function productPricing(product, promotions, currency, currentOptionModel) {
         priceTable.getQuantities().toArray().forEach(function(quantity) {
             if (quantity.compareTo(basePriceQuantity) !== 0) {
                 if (!tieredPricing) {
-                    tieredPrice = {};
+                    tieredPricing = {};
                 }
-                tieredPricing[quantity.getValue] = toPriceModel(priceTable.getPrice(quantity));
+                tieredPricing[quantity.getValue()] = toPriceModel(priceTable.getPrice(quantity));
             }
         });
 
