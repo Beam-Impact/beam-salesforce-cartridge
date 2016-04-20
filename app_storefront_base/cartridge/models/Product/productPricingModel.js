@@ -9,7 +9,9 @@
  * @param {Object} currentOptionModel - No idea what this is
  */
 function productPricing(product, promotions, currency, currentOptionModel) {
-    var priceModel = product.getPriceModel();
+    var variant = product.selectedVariant || product.master;
+
+    var priceModel = variant.getPriceModel();
 
     var standardPrice = getStandardPrice();
     var promotionalPrice = getPromotionalPrice(); // TODO: promotions don't seem to work
@@ -67,10 +69,10 @@ function productPricing(product, promotions, currency, currentOptionModel) {
             var promotionalPrice = null;
             promotions.toArray().forEach(function(promo) {
                 if (promo.getPromotionClass() && promo.getPromotionClass().equals(dw.compaign.Promotion.PROMOTION_CLASS_PRODUCT)) {
-                    if (product.optionProduct) {
-                        promotionalPrice = promo.getPromotionalPrice(product, currentOptionModel ? currentOptionModel : product.getOptionModel); // TODO: remove usage of currentOptionModel
+                    if (variant.optionProduct) {
+                        promotionalPrice = promo.getPromotionalPrice(variant, currentOptionModel ? currentOptionModel : variant.getOptionModel); // TODO: remove usage of currentOptionModel
                     } else {
-                        promotionalPrice = promo.getPromotionalPrice(product);
+                        promotionalPrice = promo.getPromotionalPrice(variant);
                     }
                 }
             });
@@ -88,7 +90,7 @@ function productPricing(product, promotions, currency, currentOptionModel) {
      * @private
      */
     function getRangePrice() {
-        if (product.master || product.variationGroup && priceModel.isPriceRange()) {
+        if (variant.master || variant.variationGroup && priceModel.isPriceRange()) {
             return {
                 min: toPriceModel(priceModel.minPrice),
                 max: toPriceModel(priceModel.maxPrice)
