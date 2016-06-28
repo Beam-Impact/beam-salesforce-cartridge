@@ -1,0 +1,72 @@
+<div class="row header-banner">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12">
+				<isslot id="header-banner" description="Slot above the site header" context="global" />
+			</div>
+		</div>
+	</div>
+</div>
+<header>
+	<div class="row top-menu">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-1 visible-sm-block visible-xs-block">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sg-navbar-collapse" aria-expanded="false">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+				</div>
+				<div class="col-xs-10 col-sm-6 col-md-2 text-right-sm text-center-xs">
+					<a href="${URLUtils.url('Home-Show')}" title="${Resource.msgf('global.homepage.tooltip', 'locale', null, Resource.msg('global.storename', 'locale', null), Resource.msg('global.home', 'locale', null) )}">
+						<img src="${URLUtils.staticURL('/images/logo.png')}" alt="${Resource.msg('global.storename', 'locale', null)}">
+					</a>
+				</div>
+				<div class="col-md-5 hidden-sm hidden-xs">
+					<ul class="header-menu">
+						<li class="account">
+							<isinclude url="${URLUtils.url('Home-IncludeHeaderCustomerInfo')}"/>
+						</li>
+						<li class="stores">
+							<a href="${URLUtils.http('Stores-Find')}" title="${Resource.msg('global.header.storelocator.label', 'locale', null)}">
+								<i class="fa fa-map-marker"></i>
+								<span>${Resource.msg('global.header.storelocator', 'locale', null)}</span>
+							</a>
+						</li>
+						<li class="country-selector">
+							<isinclude template="components/header/countryselector"/>
+						</li>
+					</ul>
+				</div>
+				<div class="header-search col-sm-3 hidden-xs">
+					<isinclude template="components/header/search"/>
+				</div>
+				<div class="col-xs-1 col-sm-1 text-right">
+					<div id="mini-cart">
+						<isinclude url="${URLUtils.url('Cart-MiniCart')}"/>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row visible-xs-block">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12">
+					<isinclude template="components/header/search"/>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row main-menu">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<isinclude template="components/header/menu"/>
+				</div>
+			</div>
+		</div>
+	</div>
+</header>

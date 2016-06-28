@@ -1,0 +1,42 @@
+{
+  "name": "mfsg",
+  "version": "0.0.1",
+  "description": "Mobile first SiteGenesis",
+  "main": "index.js",
+  "scripts": {
+    "test": "istanbul test ./node_modules/.bin/_mocha -- -R spec test/**/*.js",
+    "compile:scss": "node-sass --include-path node_modules/bootstrap-sass/assets/stylesheets --include-path node_modules/font-awesome/scss --include-path node_modules/flag-icon-css/sass app_storefront_base/cartridge/scss/default/global.scss app_storefront_base/cartridge/static/default/css/global.css",
+    "compile:js": "browserify app_storefront_base/cartridge/js/main.js > app_storefront_base/cartridge/static/default/js/main.js",
+    "compile:fonts": "mkdir -p app_storefront_base/cartridge/static/default/fonts && cp -r node_modules/font-awesome/fonts/ $_ && cp -r node_modules/flag-icon-css/flags/ $_/flags",
+    "lint": "eslint . && stylelint --syntax scss \"app_storefront_base/cartridge/scss/**/*.scss\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/demandware/storefront-base.git"
+  },
+  "author": "Ilya Volodin <ivolodin@demandware.com>",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/demandware/storefront-base#readme",
+  "devDependencies": {
+    "browserify": "^13.0.1",
+    "chai": "^3.5.0",
+    "eslint": "^2.13.1",
+    "eslint-config-airbnb-base": "^3.0.1",
+    "eslint-plugin-import": "^1.9.2",
+    "istanbul": "^0.4.4",
+    "mocha": "^2.5.3",
+    "node-sass": "^3.8.0",
+    "proxyquire": "1.7.4",
+    "sinon": "^1.17.4",
+    "stylelint": "^6.7.1",
+    "stylelint-config-standard": "^9.0.0",
+    "stylelint-scss": "^1.2.0",
+    "watchify": "^3.7.0"
+  },
+  "dependencies": {
+    "bootstrap-sass": "^3.3.6",
+    "flag-icon-css": "^2.3.0",
+    "font-awesome": "^4.6.3",
+    "jquery": "^3.0.0"
+  }
+}

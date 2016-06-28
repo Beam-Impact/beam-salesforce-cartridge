@@ -1,0 +1,33 @@
+<nav class="navbar navbar-inverse">
+	<div class="close-menu clearfix">
+		<div class="back pull-left" role="button">
+			<a href="#">
+				<span class="caret-left"></span>
+				Back
+			</a>
+		</div>
+		<div class="close-button pull-right" role="button">
+			<a href="#">
+				Close
+				<span aria-hidden="true">&times;</span>
+			</a>
+		</div>
+	</div>
+	<div class="collapse navbar-collapse" id="sg-navbar-collapse" aria-label="Main menu" role="navigation">
+        <ul class="nav navbar-nav">
+            <isloop items="${pdict.categories}" var="category">
+                <isif condition="${category.subCategories}">
+                    <li class="dropdown" role="button">
+                        <a href="${category.url}" class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false">${category.name}<span class="caret"></span></a>
+                        <isset name="menuItem" value="${category}" scope="page" />
+                        <isinclude template="components/header/menuitem" />
+                    </li>
+                <iselse/>
+                    <li role="button">
+                        <a href="${category.url}" role="button">${category.name}</a>
+                    </li>
+                </isif>
+            </isloop>
+        </ul>
+    </div>
+</nav>

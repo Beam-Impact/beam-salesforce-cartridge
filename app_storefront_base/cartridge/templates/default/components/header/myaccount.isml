@@ -1,0 +1,4 @@
+<a class="user-account" href="${URLUtils.https('Account-Show')}" title="${Resource.msg('global.user', 'locale', null) + ': ' + Resource.msg('global.login', 'locale', null)}">
+    <i class="fa fa-user"></i>
+    <span>${Resource.msg('global.login', 'locale', null)}</span>
+</a>

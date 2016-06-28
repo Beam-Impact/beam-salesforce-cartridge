@@ -1,0 +1,18 @@
+<iscontent type="text/html" charset="UTF-8" compact="true"/>
+
+<isinclude template="util/modules"/>
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <isinclude template="/common/htmlhead" />
+    </head>
+    <body>
+        <div class="page">
+            <isinclude template="/components/header/pageheader" />
+            <isreplace/>
+            <isinclude template="/components/footer/pagefooter" />
+        </div>
+        <isinclude template="/common/scripts" />
+    </body>
+</html>

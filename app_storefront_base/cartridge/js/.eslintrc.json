@@ -1,0 +1,8 @@
+{
+    "env": {
+        "jquery": true
+    },
+    "rules": {
+        "global-require": "off"
+    }
+}
