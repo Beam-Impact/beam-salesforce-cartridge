@@ -1,6 +1,6 @@
 'use strict';
 
-var EventEmitter = require('./EventEmitter');
+const EventEmitter = require('./EventEmitter');
 
 /**
  * @constructor
@@ -24,9 +24,9 @@ Route.prototype = EventEmitter.prototype;
  * @returns {Function} Function to be executed when URL is hit
  */
 Route.prototype.getRoute = function () {
-    var me = this;
+    const me = this;
     return (function () {
-        var i = 0;
+        let i = 0;
 
         /**
          * Go to the next step in the chain or complete the chain after the last step

@@ -6,7 +6,7 @@ const Cart = require('~/cartridge/models/cart');
 
 server.get('MiniCart', function (req, res, next) {
     const currentBasket = BasketMgr.getCurrentBasket();
-    var basket = new Cart(currentBasket);
+    const basket = new Cart(currentBasket);
     res.render('/components/header/minicart', basket);
     next();
 });

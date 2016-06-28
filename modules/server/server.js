@@ -2,11 +2,11 @@
 
 'use strict';
 
-var middleware = require('./middleware');
-var Request = require('./request');
-var Response = require('./response');
-var Route = require('./route');
-var render = require('./render');
+const middleware = require('./middleware');
+const Request = require('./request');
+const Response = require('./response');
+const Route = require('./route');
+const render = require('./render');
 
 //--------------------------------------------------
 // Private helpers
@@ -18,8 +18,8 @@ var render = require('./render');
  * @returns {void}
  */
 function checkParams(args) {
-    var middlewareChain = args.slice(1);
-    var name = args[0];
+    const middlewareChain = args.slice(1);
+    const name = args[0];
 
     if (typeof name !== 'string') {
         throw new Error('First argument should be a string');
@@ -50,11 +50,11 @@ Server.prototype = {
      * @returns {void}
      */
     use: function use(name) {
-        var args = Array.isArray(arguments) ? arguments : Array.prototype.slice.call(arguments);
-        var middlewareChain = args.slice(1);
+        const args = Array.isArray(arguments) ? arguments : Array.prototype.slice.call(arguments);
+        const middlewareChain = args.slice(1);
         // freeze request object to prevent mutations
-        var rq = Object.freeze(new Request(typeof request !== 'undefined' ? request : {}));
-        var rs = new Response(typeof response !== 'undefined' ? response : {});
+        const rq = Object.freeze(new Request(typeof request !== 'undefined' ? request : {}));
+        const rs = new Response(typeof response !== 'undefined' ? response : {});
 
         checkParams(args);
 
@@ -62,7 +62,7 @@ Server.prototype = {
             throw new Error('Route with this name already exists');
         }
 
-        var route = new Route(name, middlewareChain, rq, rs);
+        const route = new Route(name, middlewareChain, rq, rs);
         // Add event handler for rendering out view on completion of the request chain
         route.on('route:Complete', function (req, res) {
             if (res.view && res.viewData) {
@@ -85,7 +85,7 @@ Server.prototype = {
      * @returns {void}
      */
     get: function get() {
-        var args = Array.prototype.slice.call(arguments);
+        const args = Array.prototype.slice.call(arguments);
         args.splice(1, 0, middleware.get);
         return this.use.apply(this, args);
     },
@@ -96,7 +96,7 @@ Server.prototype = {
      * @returns {void}
      */
     post: function post() {
-        var args = Array.prototype.slice.call(arguments);
+        const args = Array.prototype.slice.call(arguments);
         args.splice(1, 0, middleware.post);
         return this.use.apply(this, args);
     },
@@ -105,7 +105,7 @@ Server.prototype = {
      * @returns {Object} Object with properties that match registered routes
      */
     exports: function exports() {
-        var exportStatement = {};
+        const exportStatement = {};
         Object.keys(this.routes).forEach(function (key) {
             exportStatement[key] = this.routes[key].getRoute();
             exportStatement[key].public = true;
@@ -121,7 +121,7 @@ Server.prototype = {
      * @returns {void}
      */
     extend: function (server) {
-        var newRoutes = {};
+        const newRoutes = {};
         if (!server.__routes) {
             throw new Error('Cannot extend non-valid server object');
         }
@@ -142,8 +142,8 @@ Server.prototype = {
      * @returns {void}
      */
     append: function append(name) {
-        var args = Array.prototype.slice.call(arguments);
-        var middlewareChain = Array.prototype.slice.call(arguments, 1);
+        const args = Array.prototype.slice.call(arguments);
+        const middlewareChain = Array.prototype.slice.call(arguments, 1);
 
         checkParams(args);
 

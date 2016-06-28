@@ -2,17 +2,17 @@
 
 'use strict';
 
-var Route = require('../../../../modules/server/route');
-var assert = require('chai').assert;
-var middleware = require('../../../../modules/server/middleware');
-var proxyquire = require('proxyquire').noCallThru().noPreserveCache();
-var sinon = require('sinon');
+const Route = require('../../../../modules/server/route');
+const assert = require('chai').assert;
+const middleware = require('../../../../modules/server/middleware');
+const proxyquire = require('proxyquire').noCallThru().noPreserveCache();
+const sinon = require('sinon');
 
-var render = {
+const render = {
     template: sinon.spy(),
     json: sinon.spy()
 };
-var server = null;
+let server = null;
 
 function request() {
     return {
@@ -33,18 +33,18 @@ describe('server', function () {
     });
     it('should create a server with one route', function () {
         server.use('test', function () {});
-        var exports = server.exports();
+        const exports = server.exports();
         assert.equal(typeof exports.test, 'function');
     });
     it('should create a server with a route of two steps', function () {
         server.get('test', function () {});
-        var exports = server.exports();
+        const exports = server.exports();
         assert.equal(exports.__routes.test.chain.length, 2);
     });
     it('should create a server with two routes', function () {
         server.get('test', function () {}, function () {});
         server.post('test2', function () {});
-        var exports = server.exports();
+        const exports = server.exports();
         assert.equal(typeof exports.test, 'function');
         assert.equal(typeof exports.test2, 'function');
         assert.equal(exports.__routes.test.chain.length, 3);
@@ -52,7 +52,7 @@ describe('server', function () {
     });
     it('should extend existing chain with 2 more steps', function () {
         server.get('test', function () {});
-        var exports = server.exports();
+        const exports = server.exports();
         assert.equal(exports.__routes.test.chain.length, 2);
         server.extend(exports);
         server.append('test', function () {}, function () {});
@@ -94,7 +94,7 @@ describe('server', function () {
             res.render('test', { name: 'value' });
             next();
         });
-        var exports = server.exports();
+        const exports = server.exports();
         exports.test();
         assert(render.template.calledWith('test', { name: 'value' }));
     });
@@ -103,10 +103,10 @@ describe('server', function () {
             res.json({ name: 'value' });
             next();
         });
-        var exports = server.exports();
-        var route = exports.__routes.test;
-        var routeStartHit = false;
-        var routeStepHits = 0;
+        const exports = server.exports();
+        const route = exports.__routes.test;
+        let routeStartHit = false;
+        let routeStepHits = 0;
 
         route.once('route:Start', function () {
             routeStartHit = true;
@@ -133,11 +133,11 @@ describe('server', function () {
             res.json({ name: 'value' });
             next();
         });
-        var testRoute = server.getRoute('test');
+        const testRoute = server.getRoute('test');
         assert.isNotNull(testRoute);
     });
     it('should return a route on get call', function () {
-        var route = server.get('test', function () {});
+        const route = server.get('test', function () {});
         assert.isTrue(route instanceof Route);
     });
 });

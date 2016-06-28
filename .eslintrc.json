@@ -12,6 +12,8 @@
         "indent": ["error", 4, { "SwitchCase": 1, "VariableDeclarator": 1 }],
         "func-names": "off",
         "require-jsdoc": "error",
-        "vars-on-top": "off"
+        "vars-on-top": "off",
+        "prefer-const": "error",
+        "no-var": "error"
     }
 }
