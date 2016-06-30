@@ -1,25 +1,25 @@
 'use strict';
 
 module.exports = {
-    toArrayList: function(array) {
+    toArrayList: function (array) {
         return {
-            iterator: function() {
-                var i = -1;
+            iterator: function () {
+                let i = -1;
 
                 return {
-                    hasNext: function() {
+                    hasNext: function () {
                         return i < array.length - 1;
                     },
-                    next: function() {
+                    next: function () {
                         i += 1;
                         return array[i];
                     }
-                }
+                };
             },
-            toArray: function() {
+            toArray: function () {
                 return array;
             },
             length: array.length
-        }
+        };
     }
 };

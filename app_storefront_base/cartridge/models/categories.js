@@ -1,7 +1,7 @@
 'use strict';
 
-var helper = require('~/cartridge/scripts/dwHelpers');
-var URLUtils = require('dw/web/URLUtils');
+const helper = require('~/cartridge/scripts/dwHelpers');
+const URLUtils = require('dw/web/URLUtils');
 
 /**
  * Get category url
@@ -20,20 +20,18 @@ function getCategoryUrl(category) {
  * @returns {Object} plain object that represents a category
  */
 function categoryToObject(category) {
-    var result;
-    var subCategories;
     if (!category.custom || !category.custom.showInMenu) {
         return null;
     }
-    result = {
+    const result = {
         name: category.getDisplayName(),
         url: getCategoryUrl(category)
     };
-    subCategories = category.getOnlineSubCategories();
+    const subCategories = category.getOnlineSubCategories();
 
     if (subCategories.length > 0) {
         helper.forEach(subCategories, function (subcategory) {
-            var converted = categoryToObject(subcategory);
+            const converted = categoryToObject(subcategory);
             if (converted) {
                 if (!result.subCategories) {
                     result.subCategories = [];

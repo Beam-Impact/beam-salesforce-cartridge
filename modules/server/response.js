@@ -1,6 +1,6 @@
 'use strict';
 
-var assign = require('./assign');
+const assign = require('./assign');
 
 /**
  * @constructor
@@ -64,9 +64,9 @@ Response.prototype = {
      * @returns {void}
      */
     log: function log() {
-        var args = Array.prototype.slice.call(arguments);
+        const args = Array.prototype.slice.call(arguments);
 
-        var output = args.map(function (item) {
+        const output = args.map(function (item) {
             if (typeof item === 'object' || Array.isArray(item)) {
                 return JSON.stringify(item);
             }

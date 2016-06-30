@@ -3,6 +3,8 @@
         "jquery": true
     },
     "rules": {
-        "global-require": "off"
+        "global-require": "off",
+        "no-var": "off",
+        "prefer-const": "off"
     }
 }
