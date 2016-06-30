@@ -42,6 +42,7 @@ function Request(request) {
     this.httpMethod = request.httpMethod;
     this.host = request.httpHost;
     this.path = request.httpPath;
+    this.httpHeaders = request.httpHeaders;
     this.querystring = parseQueryString(request.httpQueryString);
     this.https = request.isHttpSecure();
     this.locale = request.locale;
