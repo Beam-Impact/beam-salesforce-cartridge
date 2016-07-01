@@ -8,7 +8,8 @@
     "compile:scss": "node-sass --include-path node_modules/bootstrap-sass/assets/stylesheets --include-path node_modules/font-awesome/scss --include-path node_modules/flag-icon-css/sass app_storefront_base/cartridge/scss/default/global.scss app_storefront_base/cartridge/static/default/css/global.css",
     "compile:js": "mkdir -p app_storefront_base/cartridge/static/default/js && browserify app_storefront_base/cartridge/js/main.js > app_storefront_base/cartridge/static/default/js/main.js",
     "compile:fonts": "mkdir -p app_storefront_base/cartridge/static/default/fonts && cp -r node_modules/font-awesome/fonts/ $_ && cp -r node_modules/flag-icon-css/flags/ $_/flags",
-    "lint": "eslint . && stylelint --syntax scss \"app_storefront_base/cartridge/scss/**/*.scss\""
+    "lint": "eslint . && stylelint --syntax scss \"app_storefront_base/cartridge/scss/**/*.scss\"",
+    "copyResource": "node bin/Makefile.js copyResource -- "
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,7 @@
     "mocha": "^2.5.3",
     "node-sass": "^3.8.0",
     "proxyquire": "1.7.4",
+    "shelljs": "^0.7.0",
     "sinon": "^1.17.4",
     "stylelint": "^6.7.1",
     "stylelint-config-standard": "^9.0.0",
@@ -38,5 +40,8 @@
     "flag-icon-css": "^2.3.0",
     "font-awesome": "^4.6.3",
     "jquery": "^2.2.4"
+  },
+  "paths": {
+    "resources": "../sitegenesis/app_storefront_core/cartridge/templates/resources/"
   }
 }

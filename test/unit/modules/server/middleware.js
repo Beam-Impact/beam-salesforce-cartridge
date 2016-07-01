@@ -67,17 +67,13 @@ describe('middleware', function () {
     });
 
     it('should call next for include', function () {
-        req.httpHeaders = {
-            'x-is-requestid': '0-0-01'
-        };
+        req.includeRequest = true;
         middleware.include(req, null, next);
         assert.isTrue(next.calledOnce);
     });
 
     it('should call next with error for include', function () {
-        req.httpHeaders = {
-            'x-is-requestid': '0-0-00'
-        };
+        req.includeRequest = false;
         middleware.include(req, null, next);
         assert.instanceOf(next.firstCall.args[0], Error);
     });

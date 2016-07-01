@@ -46,6 +46,7 @@ function Request(request) {
     this.querystring = parseQueryString(request.httpQueryString);
     this.https = request.isHttpSecure();
     this.locale = request.locale;
+    this.includeRequest = request.includeRequest;
 }
 
 module.exports = Request;

@@ -68,7 +68,7 @@ function http(req, res, next) {
  * @returns {void}
  */
 function include(req, res, next) {
-    if (req.httpHeaders['x-is-requestid'].indexOf('-0-00') === -1) {
+    if (req.includeRequest) {
         next();
     } else {
         next(new Error('Params do not match route'));

@@ -70,4 +70,15 @@ describe('response', function () {
         });
         response.setContentType('text/html');
     });
+    it('should set cache expiration for the page', function (done) {
+        const currentDate = new Date(Date.now());
+        currentDate.setHours(currentDate.getHours() + 6);
+        const response = new Response({
+            setExpires: function (date) {
+                assert.equal(date, (currentDate.getTime() / 1000).toFixed(0));
+                done();
+            }
+        });
+        response.cacheExpiration(6);
+    });
 });

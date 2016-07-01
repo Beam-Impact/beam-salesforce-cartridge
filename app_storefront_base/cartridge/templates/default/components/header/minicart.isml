@@ -1,6 +1,6 @@
 <div class="mini-cart">
     <div class="mini-cart-total">
-        <a class="mini-cart-link" href="${URLUtils.https('Cart-Show')}" title="${Resource.msg('minicart.viewcart','checkout',null)}">
+        <a class="mini-cart-link" href="${URLUtils.https('Cart-Show')}" title="${Resource.msg('minicart.viewcart','common',null)}">
             <i class="minicart-icon fa fa-shopping-bag"></i>
             <span class="minicart-quantity">
                 <isprint value="${pdict.numItems}" formatter="##" />

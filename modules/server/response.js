@@ -91,7 +91,20 @@ Response.prototype = {
      */
     print: function print(message) {
         this.base.writer.print(message);
+    },
+
+    /**
+     * Sets current page cache expiration period in hours
+     * @param  {int} period Number of hours from current time
+     * @return {void}
+     */
+    cacheExpiration: function cacheExpiration(period) {
+        const currentTime = new Date(Date.now());
+        currentTime.setHours(currentTime.getHours() + period);
+
+        this.base.setExpires((currentTime.getTime() / 1000).toFixed(0));
     }
+
 };
 
 module.exports = Response;

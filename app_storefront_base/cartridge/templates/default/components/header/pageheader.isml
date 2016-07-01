@@ -20,8 +20,8 @@
 					</button>
 				</div>
 				<div class="col-xs-10 col-sm-6 col-md-2 text-right-sm text-center-xs">
-					<a href="${URLUtils.url('Home-Show')}" title="${Resource.msgf('global.homepage.tooltip', 'locale', null, Resource.msg('global.storename', 'locale', null), Resource.msg('global.home', 'locale', null) )}">
-						<img src="${URLUtils.staticURL('/images/logo.png')}" alt="${Resource.msg('global.storename', 'locale', null)}">
+					<a href="${URLUtils.url('Home-Show')}" title="${Resource.msgf('global.homepage.tooltip', 'common', null, Resource.msg('global.storename', 'common', null), Resource.msg('global.home', 'common', null) )}">
+						<img src="${URLUtils.staticURL('/images/logo.png')}" alt="${Resource.msg('global.storename', 'common', null)}">
 					</a>
 				</div>
 				<div class="col-md-5 hidden-sm hidden-xs">
@@ -30,9 +30,9 @@
 							<isinclude url="${URLUtils.url('Home-IncludeHeaderCustomerInfo')}"/>
 						</li>
 						<li class="stores">
-							<a href="${URLUtils.http('Stores-Find')}" title="${Resource.msg('global.header.storelocator.label', 'locale', null)}">
+							<a href="${URLUtils.http('Stores-Find')}" title="${Resource.msg('global.header.storelocator.label', 'common', null)}">
 								<i class="fa fa-map-marker"></i>
-								<span>${Resource.msg('global.header.storelocator', 'locale', null)}</span>
+								<span>${Resource.msg('global.header.storelocator', 'common', null)}</span>
 							</a>
 						</li>
 						<li class="country-selector">
