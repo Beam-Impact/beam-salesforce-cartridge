@@ -9,6 +9,8 @@
         "scss/at-import-partial-extension-blacklist": ["scss"],
         "scss/dollar-variable-no-missing-interpolation": true,
         "scss/media-feature-value-dollar-variable": "always",
-        "scss/selector-no-redundant-nesting-selector": true
+        "scss/selector-no-redundant-nesting-selector": true,
+        "at-rule-empty-line-before": [ "always", { "ignoreAtRules": ["else"] } ],
+        "block-closing-brace-newline-after": [ "always", { "ignoreAtRules": ["if", "else"] } ]
     }
 }

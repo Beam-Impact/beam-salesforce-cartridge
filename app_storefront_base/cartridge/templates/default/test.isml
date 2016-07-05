@@ -1,6 +1,5 @@
 <isdecorate template="common/layout/page">
-    <div>Hello world!</div>
-    <script>
-        var categories = <isprint value="${JSON.stringify(pdict.categories)}" encoding="off" />;
-    </script>
+    <div class="container">
+        <div>Hello world!</div>
+    </div>
 </isdecorate>

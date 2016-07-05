@@ -65,4 +65,16 @@ describe('middleware', function () {
         middleware.get(req, null, next);
         assert.instanceOf(next.firstCall.args[0], Error);
     });
+
+    it('should call next for include', function () {
+        req.includeRequest = true;
+        middleware.include(req, null, next);
+        assert.isTrue(next.calledOnce);
+    });
+
+    it('should call next with error for include', function () {
+        req.includeRequest = false;
+        middleware.include(req, null, next);
+        assert.instanceOf(next.firstCall.args[0], Error);
+    });
 });

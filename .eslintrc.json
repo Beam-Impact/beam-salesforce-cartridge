@@ -1,9 +1,6 @@
 {
     "root": true,
     "extends": "airbnb-base/legacy",
-    "globals": {
-        "dw": false
-    },
     "parserOptions": {
         "ecmaVersion": 6
     },

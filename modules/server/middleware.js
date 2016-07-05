@@ -60,9 +60,25 @@ function http(req, res, next) {
     }
 }
 
+/**
+ * Middleware to filter for remote includes
+ * @param {Object} req - Request object
+ * @param {Object} res - Response object
+ * @param {Function} next - Next call in the middleware chain
+ * @returns {void}
+ */
+function include(req, res, next) {
+    if (req.includeRequest) {
+        next();
+    } else {
+        next(new Error('Params do not match route'));
+    }
+}
+
 module.exports = {
     get: get,
     post: post,
     https: https,
-    http: http
+    http: http,
+    include: include
 };
