@@ -1,7 +1,7 @@
 'use strict';
 
 /* globals cat, cd, cp, echo, exec, exit, find, ls, mkdir, rm, target, test */
-/* eslint no-console: off */
+/* eslint no-console: off, max-len: off */
 
 require('shelljs/make');
 
@@ -13,10 +13,10 @@ const paths = require('../package.json').paths;
 const locales = ['', '_fr_FR', '_it_IT', '_ja_JP', '_zh_CN'];
 
 target.copyResource = function (args) {
-    const source = args[0].split('=')[1];
-    const property = args[1].split('=')[1];
-    const target = args[2].split('=')[1];
     if (args.length === 3) {
+        const source = args[0].split('=')[1];
+        const property = args[1].split('=')[1];
+        const target = args[2].split('=')[1];
         locales.forEach(function (locale) {
             const sourceFile = path.resolve(paths.resources + source + locale + '.properties');
             fs.readFile(sourceFile, 'UTF8', function (err, data) {
