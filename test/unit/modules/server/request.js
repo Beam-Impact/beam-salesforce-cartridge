@@ -12,6 +12,11 @@ function createFakeRequest(overrides) {
         httpQueryString: '',
         isHttpSecure: function () {
             return false;
+        },
+        geolocation: {
+            countryCode: 'US',
+            latitude: 42.4019,
+            longitude: -71.1193
         }
     };
     Object.keys(overrides).forEach(function (key) {

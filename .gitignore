@@ -3,3 +3,4 @@ app_storefront_base/cartridge/static/
 coverage/
 npm-debug.log
 cartridges.zip
+.idea/
