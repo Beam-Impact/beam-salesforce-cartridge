@@ -5,25 +5,25 @@
 
 require('shelljs/make');
 
-const fs = require('fs');
-const path = require('path');
+var fs = require('fs');
+var path = require('path');
 
-const paths = require('../package.json').paths;
+var paths = require('../package.json').paths;
 
-const locales = ['', '_fr_FR', '_it_IT', '_ja_JP', '_zh_CN'];
+var locales = ['', '_fr_FR', '_it_IT', '_ja_JP', '_zh_CN'];
 
 target.copyResource = function (args) {
     if (args.length === 3) {
-        const source = args[0].split('=')[1];
-        const property = args[1].split('=')[1];
-        const target = args[2].split('=')[1];
+        var source = args[0].split('=')[1];
+        var property = args[1].split('=')[1];
+        var target = args[2].split('=')[1];
         locales.forEach(function (locale) {
-            const sourceFile = path.resolve(paths.resources + source + locale + '.properties');
+            var sourceFile = path.resolve(paths.resources + source + locale + '.properties');
             fs.readFile(sourceFile, 'UTF8', function (err, data) {
                 if (data && !err) {
-                    const resources = {};
+                    var resources = {};
                     data.split(/\n/).forEach(function (line) {
-                        const tokens = line.split('=');
+                        var tokens = line.split('=');
                         resources[tokens[0]] = tokens[1];
                     });
                     if (resources[property]) {

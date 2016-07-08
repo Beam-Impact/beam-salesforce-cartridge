@@ -1,16 +1,16 @@
 'use strict';
 
-const assert = require('chai').assert;
-const proxyquire = require('proxyquire').noCallThru().noPreserveCache();
+var assert = require('chai').assert;
+var proxyquire = require('proxyquire').noCallThru().noPreserveCache();
 
-const urlUtilsMock = {
+var urlUtilsMock = {
     staticURL: function (a) {
         return 'test' + a;
     }
 };
 
 describe('assets', function () {
-    let assets = null;
+    var assets = null;
 
     beforeEach(function () {
         assets = proxyquire('../../../../app_storefront_base/cartridge/scripts/assets', {

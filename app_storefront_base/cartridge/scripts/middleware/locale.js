@@ -1,6 +1,6 @@
 'use strict';
 
-const Locale = require('~/cartridge/models/locale');
+var Locale = require('~/cartridge/models/locale');
 
 /**
  * Sets current locale in viewData

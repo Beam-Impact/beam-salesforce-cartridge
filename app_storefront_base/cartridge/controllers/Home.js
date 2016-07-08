@@ -1,6 +1,6 @@
 'use strict';
 
-const server = require('server');
+var server = require('server');
 
 server.get('IncludeHeaderCustomerInfo', function (req, res, next) {
     res.render('/components/header/myaccount', {});

@@ -1,7 +1,7 @@
 'use strict';
 
-const helper = require('~/cartridge/scripts/dwHelpers');
-const URLUtils = require('dw/web/URLUtils');
+var helper = require('~/cartridge/scripts/dwHelpers');
+var URLUtils = require('dw/web/URLUtils');
 
 /**
  * Cart class that represents collection of line items
@@ -11,10 +11,10 @@ const URLUtils = require('dw/web/URLUtils');
 function cart(basket) {
     if (basket !== null) {
         this.numItems = basket.productLineItems.length + basket.giftCertificateLineItems.length;
-        const allItems = helper.concat(basket.productLineItems, basket.giftCertificate);
+        var allItems = helper.concat(basket.productLineItems, basket.giftCertificate);
         this.totalPrice = 0;
         this.items = helper.map(allItems, function (item) {
-            let result = {};
+            var result = {};
             if (item.product) {
                 result = {
                     type: 'Product',

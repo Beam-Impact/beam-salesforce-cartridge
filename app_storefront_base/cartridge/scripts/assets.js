@@ -1,9 +1,9 @@
 'use strict';
 
-const URLUtils = require('dw/web/URLUtils');
+var URLUtils = require('dw/web/URLUtils');
 
-const styles = [];
-const scripts = [];
+var styles = [];
+var scripts = [];
 
 module.exports = {
     addCss: function (src) {

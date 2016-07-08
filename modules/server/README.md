@@ -8,7 +8,7 @@ Server allows users to register routes that would create a mapping between provi
 
 ```js
 
-const server = require('server');
+var server = require('server');
 
 server.get('Show', function(req, res, next) {
     res.json({ value: 'Hello World'});
@@ -44,7 +44,7 @@ The power of this approach is that it doesn't only allows you to chain multiple 
 For example, you might have a controller `Page` with the following route:
 
 ```js
-const server = require('server');
+var server = require('server');
 
 server.get('Show', function(req, res, next) {
     res.render('someTemplate', { value: 'Hello World' });
@@ -57,8 +57,8 @@ module.exports = server.exports();
 Let's say that you are a client who is fine with the look and feel of Page-Show template, but would like to change the wording. Instead of creating your own controller and route, or modifying SG code, you can extend this route with the following code:
 
 ```js
-const page = require('app_storefront_base/cartridge/controller/Page');
-const server = require('server');
+var page = require('app_storefront_base/cartridge/controller/Page');
+var server = require('server');
 
 server.extend(page);
 
@@ -73,8 +73,8 @@ module.exports = server.exports();
 Once the user loads this page, the text on the page is going to now say "Hello Demandware", since the data that was passed to the template has been overwritten. This would also work if you are fine with the data, but don't like look and feel of the template. Instead of setting ViewData, you can just call `render` function and pass it a new template like this:
 
 ```js
-const page = require('app_storefront_base/cartridge/controller/Page');
-const server = require('server');
+var page = require('app_storefront_base/cartridge/controller/Page');
+var server = require('server');
 
 server.extend(page);
 

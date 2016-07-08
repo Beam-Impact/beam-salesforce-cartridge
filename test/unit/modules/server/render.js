@@ -1,12 +1,12 @@
 'use strict';
 
-const assert = require('chai').assert;
-const proxyquire = require('proxyquire').noCallThru().noPreserveCache();
-const sinon = require('sinon');
+var assert = require('chai').assert;
+var proxyquire = require('proxyquire').noCallThru().noPreserveCache();
+var sinon = require('sinon');
 
 describe('render', function () {
-    let render = null;
-    const ismlRender = sinon.spy();
+    var render = null;
+    var ismlRender = sinon.spy();
 
     beforeEach(function () {
         render = proxyquire('../../../../modules/server/render', {
@@ -33,7 +33,7 @@ describe('render', function () {
     });
 
     it('should render a json output', function () {
-        const response = {
+        var response = {
             print: sinon.spy(),
             setContentType: sinon.spy()
         };
@@ -45,7 +45,7 @@ describe('render', function () {
     });
 
     it('should render error page when template failed', function () {
-        const renderMock = proxyquire('../../../../modules/server/render', {
+        var renderMock = proxyquire('../../../../modules/server/render', {
             'dw/template/ISML': {
                 renderTemplate: function () {
                     throw new Error('hello');
@@ -53,7 +53,7 @@ describe('render', function () {
             }
         });
 
-        const response = {
+        var response = {
             print: sinon.spy()
         };
 

@@ -1,12 +1,12 @@
 'use strict';
 
-const server = require('server');
-const BasketMgr = require('dw/order/BasketMgr');
-const Cart = require('~/cartridge/models/cart');
+var server = require('server');
+var BasketMgr = require('dw/order/BasketMgr');
+var Cart = require('~/cartridge/models/cart');
 
 server.get('MiniCart', function (req, res, next) {
-    const currentBasket = BasketMgr.getCurrentBasket();
-    const basket = new Cart(currentBasket);
+    var currentBasket = BasketMgr.getCurrentBasket();
+    var basket = new Cart(currentBasket);
     res.render('/components/header/minicart', basket);
     next();
 });

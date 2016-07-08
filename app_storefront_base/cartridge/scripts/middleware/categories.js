@@ -1,9 +1,9 @@
 'use strict';
 
-const catalogMgr = require('dw/catalog/CatalogMgr');
-const Categories = require('~/cartridge/models/categories');
-const ProductSearch = require('dw/catalog/ProductSearchModel');
-const helper = require('~/cartridge/scripts/dwHelpers');
+var catalogMgr = require('dw/catalog/CatalogMgr');
+var Categories = require('~/cartridge/models/categories');
+var ProductSearch = require('dw/catalog/ProductSearchModel');
+var helper = require('~/cartridge/scripts/dwHelpers');
 
 /**
  * Retrieves the list of categories and sets it in viewData
@@ -13,10 +13,10 @@ const helper = require('~/cartridge/scripts/dwHelpers');
  * @return {void}
  */
 function setCategories(req, res, next) {
-    const siteRootCategory = catalogMgr.getSiteCatalog().getRoot();
-    const ps = new ProductSearch();
-    let topLevelCategories = null;
-    let categories = null;
+    var siteRootCategory = catalogMgr.getSiteCatalog().getRoot();
+    var ps = new ProductSearch();
+    var topLevelCategories = null;
+    var categories = null;
     ps.setCategoryID(siteRootCategory.getID());
     ps.search();
     topLevelCategories = ps.getRefinements().getNextLevelCategoryRefinementValues(siteRootCategory);

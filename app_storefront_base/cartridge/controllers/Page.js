@@ -1,15 +1,15 @@
 'use strict';
 
-const logger = require('dw/system/Logger');
-const server = require('server');
-const ContentMgr = require('dw/content/ContentMgr');
-const Content = require('~/cartridge/models/content');
+var logger = require('dw/system/Logger');
+var server = require('server');
+var ContentMgr = require('dw/content/ContentMgr');
+var Content = require('~/cartridge/models/content');
 
 server.get('Include', server.middleware.include, function (req, res, next) {
-    const contentMgr = ContentMgr.getContent(req.querystring.cid);
+    var contentMgr = ContentMgr.getContent(req.querystring.cid);
 
     if (contentMgr) {
-        const content = new Content(contentMgr);
+        var content = new Content(contentMgr);
         res.cacheExpiration(24);
         res.render(content.template, { content: content });
     } else {

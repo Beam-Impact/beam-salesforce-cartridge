@@ -4,7 +4,7 @@ module.exports = {
     toArrayList: function (array) {
         return {
             iterator: function () {
-                let i = -1;
+                var i = -1;
 
                 return {
                     hasNext: function () {

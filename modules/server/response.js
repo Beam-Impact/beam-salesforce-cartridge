@@ -1,6 +1,6 @@
 'use strict';
 
-const assign = require('./assign');
+var assign = require('./assign');
 
 /**
  * @constructor
@@ -64,9 +64,9 @@ Response.prototype = {
      * @returns {void}
      */
     log: function log() {
-        const args = Array.prototype.slice.call(arguments);
+        var args = Array.prototype.slice.call(arguments);
 
-        const output = args.map(function (item) {
+        var output = args.map(function (item) {
             if (typeof item === 'object' || Array.isArray(item)) {
                 return JSON.stringify(item);
             }
@@ -99,7 +99,7 @@ Response.prototype = {
      * @return {void}
      */
     cacheExpiration: function cacheExpiration(period) {
-        const currentTime = new Date(Date.now());
+        var currentTime = new Date(Date.now());
         currentTime.setHours(currentTime.getHours() + period);
 
         this.base.setExpires((currentTime.getTime() / 1000).toFixed(0));
