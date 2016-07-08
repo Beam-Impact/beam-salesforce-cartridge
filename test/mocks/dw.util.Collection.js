@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = function (array) {
-    let items = [];
+    var items = [];
     if (array) {
         items = array;
     }
@@ -11,7 +11,7 @@ module.exports = function (array) {
     };
 
     this.iterator = function () {
-        let i = 0;
+        var i = 0;
         return {
             hasNext: function () {
                 return i < items.length;

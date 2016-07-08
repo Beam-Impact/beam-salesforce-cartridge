@@ -1,13 +1,13 @@
 'use strict';
 
-const Response = require('../../../../modules/server/response');
-const Route = require('../../../../modules/server/route');
-const assert = require('chai').assert;
+var Response = require('../../../../modules/server/response');
+var Route = require('../../../../modules/server/route');
+var assert = require('chai').assert;
 
 describe('server', function () {
     it('should create a new route with a given number of steps', function () {
         function tempFunc(req, res, next) { next(); }
-        const route = new Route('test', [tempFunc, tempFunc], {}, {});
+        var route = new Route('test', [tempFunc, tempFunc], {}, {});
         assert.equal(route.name, 'test');
         assert.equal(route.chain.length, 2);
     });
@@ -16,7 +16,7 @@ describe('server', function () {
             res.test = 'Hello'; // eslint-disable-line no-param-reassign
             next();
         }
-        const route = new Route('test', [tempFunc], {}, {});
+        var route = new Route('test', [tempFunc], {}, {});
         route.on('route:Complete', function (req, res) {
             assert.equal(res.test, 'Hello');
             done();
@@ -24,12 +24,12 @@ describe('server', function () {
         route.getRoute()();
     });
     it('should execute two middleware steps', function (done) {
-        let i = 0;
+        var i = 0;
         function tempFunc(req, res, next) {
             i += 1;
             next();
         }
-        const route = new Route('test', [tempFunc, tempFunc], {}, {});
+        var route = new Route('test', [tempFunc, tempFunc], {}, {});
         route.on('route:Complete', function () {
             assert.equal(i, 2);
             done();
@@ -41,8 +41,8 @@ describe('server', function () {
             res.redirect('test');
             next();
         }
-        const response = new Response({ redirect: function () {} });
-        const route = new Route('test', [tempFunc], {}, response);
+        var response = new Response({ redirect: function () {} });
+        var route = new Route('test', [tempFunc], {}, response);
         route.on('route:Redirect', function (req, res) {
             assert.equal(res.redirectUrl, 'test');
             done();
@@ -53,8 +53,8 @@ describe('server', function () {
         function tempFunc(req, res, next) {
             next(new Error());
         }
-        const res = { log: function () {} };
-        const route = new Route('test', [tempFunc], {}, res);
+        var res = { log: function () {} };
+        var route = new Route('test', [tempFunc], {}, res);
         assert.throws(function () { route.getRoute()(); });
     });
 });

@@ -1,6 +1,6 @@
 'use strict';
 
-const Collection = require('dw/util/Collection');
+var Collection = require('dw/util/Collection');
 
 /**
  * Map method for dw.util.Collection
@@ -9,10 +9,10 @@ const Collection = require('dw/util/Collection');
  * @returns {Array} Array of results of map
  */
 function map(collection, callback) {
-    const iterator = collection.iterator();
-    let index = 0;
-    let item = null;
-    const result = [];
+    var iterator = collection.iterator();
+    var index = 0;
+    var item = null;
+    var result = [];
     while (iterator.hasNext()) {
         item = iterator.next();
         result.push(callback(item, index, collection));
@@ -28,9 +28,9 @@ function map(collection, callback) {
  * @returns {void}
  */
 function forEach(collection, callback) {
-    const iterator = collection.iterator();
-    let index = 0;
-    let item = null;
+    var iterator = collection.iterator();
+    var index = 0;
+    var item = null;
     while (iterator.hasNext()) {
         item = iterator.next();
         callback(item, index, collection);
@@ -44,8 +44,8 @@ function forEach(collection, callback) {
  * @return {dw.util.Collection} Collection containing all passed collections
  */
 function concat() {
-    const result = new Collection();
-    for (let i = 0, l = arguments.length; i < l; i++) {
+    var result = new Collection();
+    for (var i = 0, l = arguments.length; i < l; i++) {
         result.addAll(arguments[i]);
     }
     return result;

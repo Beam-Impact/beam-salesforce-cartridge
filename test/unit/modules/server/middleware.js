@@ -1,12 +1,12 @@
 'use strict';
 
-const assert = require('chai').assert;
-const sinon = require('sinon');
-const middleware = require('../../../../modules/server/middleware');
+var assert = require('chai').assert;
+var sinon = require('sinon');
+var middleware = require('../../../../modules/server/middleware');
 
 describe('middleware', function () {
-    let next = null;
-    let req = {};
+    var next = null;
+    var req = {};
 
     beforeEach(function () {
         next = sinon.spy();

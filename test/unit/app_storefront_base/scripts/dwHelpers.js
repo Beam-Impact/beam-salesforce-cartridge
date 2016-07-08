@@ -1,11 +1,11 @@
 'use strict';
 
-const assert = require('chai').assert;
-const Collection = require('../../../mocks/dw.util.Collection');
-const proxyquire = require('proxyquire').noCallThru().noPreserveCache();
+var assert = require('chai').assert;
+var Collection = require('../../../mocks/dw.util.Collection');
+var proxyquire = require('proxyquire').noCallThru().noPreserveCache();
 
 describe('dwHelpers', function () {
-    let helpers = null;
+    var helpers = null;
 
     beforeEach(function () {
         helpers = proxyquire('../../../../app_storefront_base/cartridge/scripts/dwHelpers', {
@@ -14,8 +14,8 @@ describe('dwHelpers', function () {
     });
 
     it('should map collection to an array', function () {
-        const collection = new Collection([1, 2, 3]);
-        const result = helpers.map(collection, function (item) {
+        var collection = new Collection([1, 2, 3]);
+        var result = helpers.map(collection, function (item) {
             return item + 10;
         });
 
@@ -23,8 +23,8 @@ describe('dwHelpers', function () {
     });
 
     it('should map empty collection to an empty array', function () {
-        const collection = new Collection();
-        const result = helpers.map(collection, function (item) {
+        var collection = new Collection();
+        var result = helpers.map(collection, function (item) {
             return item + 10;
         });
 
@@ -32,8 +32,8 @@ describe('dwHelpers', function () {
     });
 
     it('should correctly iterate over collection', function () {
-        const collection = new Collection([1, 2, 3]);
-        const result = [];
+        var collection = new Collection([1, 2, 3]);
+        var result = [];
 
         helpers.forEach(collection, function (item) {
             result.push(item);
@@ -43,8 +43,8 @@ describe('dwHelpers', function () {
     });
 
     it('should never call iterator function for empty collection', function () {
-        const collection = new Collection();
-        let called = false;
+        var collection = new Collection();
+        var called = false;
 
         helpers.forEach(collection, function () {
             called = true;
@@ -54,21 +54,21 @@ describe('dwHelpers', function () {
     });
 
     it('should concatinate multiple collection into one', function () {
-        const collection1 = new Collection([1, 2, 3]);
-        const collection2 = new Collection([4, 5, 6]);
-        const collection3 = new Collection([7, 8, 9]);
+        var collection1 = new Collection([1, 2, 3]);
+        var collection2 = new Collection([4, 5, 6]);
+        var collection3 = new Collection([7, 8, 9]);
 
-        const result = helpers.concat(collection1, collection2, collection3);
+        var result = helpers.concat(collection1, collection2, collection3);
 
         assert.isFalse(Array.isArray(result));
         assert.deepEqual(result.toArray(), [1, 2, 3, 4, 5, 6, 7, 8, 9]);
     });
 
     it('should not concatinate empty collections', function () {
-        const collection1 = new Collection([1, 2, 3]);
-        const collection2 = new Collection();
+        var collection1 = new Collection([1, 2, 3]);
+        var collection2 = new Collection();
 
-        const result = helpers.concat(collection1, collection2);
+        var result = helpers.concat(collection1, collection2);
 
         assert.deepEqual(result.toArray(), [1, 2, 3]);
     });

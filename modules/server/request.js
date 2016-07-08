@@ -6,16 +6,16 @@
  * @returns {Object} parsed querystring object
  */
 function parseQueryString(querystring) {
-    const result = {};
-    let pair;
-    let left;
+    var result = {};
+    var pair;
+    var left;
     if (querystring && querystring.length > 0) {
-        const qs = querystring.substring(querystring.indexOf('?') + 1).split('&');
-        for (let i = qs.length - 1; i >= 0; i--) {
+        var qs = querystring.substring(querystring.indexOf('?') + 1).split('&');
+        for (var i = qs.length - 1; i >= 0; i--) {
             pair = qs[i].split('=');
             left = decodeURIComponent(pair[0]);
             if (left.indexOf('dwvar_') === 0) {
-                const variableParts = left.split('_');
+                var variableParts = left.split('_');
                 if (variableParts.length === 3) {
                     if (!result.variables) {
                         result.variables = {};

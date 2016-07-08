@@ -1,6 +1,6 @@
 'use strict';
 
-const isml = require('dw/template/ISML');
+var isml = require('dw/template/ISML');
 
 module.exports = {
     /**
@@ -12,7 +12,7 @@ module.exports = {
      */
     template: function (view, viewData, response) {
         // create a shallow copy of the data
-        const data = {};
+        var data = {};
         Object.keys(viewData).forEach(function (key) {
             data[key] = viewData[key];
         });
