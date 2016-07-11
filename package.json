@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "istanbul test ./node_modules/mocha/bin/_mocha -- -R spec test/unit/**/*.js",
-    "compile:scss": "node-sass --include-path node_modules/bootstrap-sass/assets/stylesheets --include-path node_modules/font-awesome/scss --include-path node_modules/flag-icon-css/sass app_storefront_base/cartridge/scss/default/global.scss app_storefront_base/cartridge/static/default/css/global.css",
-    "compile:js": "mkdir -p app_storefront_base/cartridge/static/default/js && browserify app_storefront_base/cartridge/js/main.js > app_storefront_base/cartridge/static/default/js/main.js",
+    "compile:scss": "node-sass --include-path node_modules/bootstrap-sass/assets/stylesheets --include-path node_modules/font-awesome/scss --include-path node_modules/flag-icon-css/sass app_storefront_base/cartridge/scss/default/ -o app_storefront_base/cartridge/static/default/css/",
+    "compile:js": "mkdir -p app_storefront_base/cartridge/static/default/js && node bin/Makefile.js browserify",
     "compile:fonts": "mkdir -p app_storefront_base/cartridge/static/default/fonts && cp -r node_modules/font-awesome/fonts/ $_ && cp -r node_modules/flag-icon-css/flags/ $_/flags",
     "lint": "eslint . && stylelint --syntax scss \"app_storefront_base/cartridge/scss/**/*.scss\"",
     "copyResource": "node bin/Makefile.js copyResource -- "
