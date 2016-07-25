@@ -1,0 +1,53 @@
+.btn-storelocator-search {
+    background-color: $light-gray;
+    border-color: $brand-color;
+    border-radius: 0;
+    color: $brand-color;
+    &:hover {
+        background-color: $brand-color;
+        color: $light-gray;
+    }
+}
+
+.btn-detect-location {
+    background-color: $brand-color;
+    border-color: $brand-color;
+    border-radius: 0;
+    color: $light-gray;
+    &:hover {
+        background-color: $light-gray;
+        color: $brand-color;
+    }
+}
+
+.map-marker {
+    display: block;
+    font-size: 48px;
+    color: $brand-color;
+}
+
+.map-canvas {
+    height: 225px;
+
+    @media (min-width: $screen-sm-min) {
+        height: 450px;
+    }
+}
+
+.store-locator-no-results {
+    display: none;
+}
+
+.storelocator-phone {
+    color: $brand-color;
+}
+
+.store-separator {
+    @media (min-width: $screen-sm-min) {
+        width: 60%;
+    }
+}
+
+.spacer {
+    margin-bottom: 30px;
+}

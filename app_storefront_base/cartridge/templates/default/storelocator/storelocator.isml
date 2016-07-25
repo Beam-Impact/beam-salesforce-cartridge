@@ -1,0 +1,13 @@
+<isdecorate template="common/layout/page">
+    <isscript>
+        require('~/cartridge/scripts/assets.js').addJs(pdict.googleMapsApi);
+    </isscript>
+
+    <div class="container">
+        <isinclude template="storelocator/storelocatorforms" />
+    </div>
+
+    <div class="jumbotron map-canvas" data-locations="${JSON.stringify(pdict.locations)}"></div>
+
+    <isinclude template="storelocator/storelocatorresults" />
+</isdecorate>

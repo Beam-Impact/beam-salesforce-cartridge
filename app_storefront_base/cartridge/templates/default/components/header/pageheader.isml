@@ -30,7 +30,7 @@
 							<isinclude url="${URLUtils.url('Home-IncludeHeaderCustomerInfo')}"/>
 						</li>
 						<li class="stores">
-							<a href="${URLUtils.http('Stores-Find')}" title="${Resource.msg('global.header.storelocator.label', 'common', null)}">
+							<a href="${URLUtils.https('Stores-Find')}" title="${Resource.msg('global.header.storelocator.label', 'common', null)}">
 								<i class="fa fa-map-marker"></i>
 								<span>${Resource.msg('global.header.storelocator', 'common', null)}</span>
 							</a>
