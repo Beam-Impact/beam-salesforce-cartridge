@@ -9,7 +9,8 @@
     "compile:js": "mkdir -p app_storefront_base/cartridge/static/default/js && node bin/Makefile.js browserify",
     "compile:fonts": "mkdir -p app_storefront_base/cartridge/static/default/fonts && cp -r node_modules/font-awesome/fonts/ $_ && cp -r node_modules/flag-icon-css/flags/ $_/flags",
     "lint": "eslint . && stylelint --syntax scss \"app_storefront_base/cartridge/scss/**/*.scss\"",
-    "copyResource": "node bin/Makefile.js copyResource -- "
+    "copyResource": "node bin/Makefile.js copyResource -- ",
+    "doc": "bin/doc.sh"
   },
   "repository": {
     "type": "git",
@@ -19,14 +20,21 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/demandware/storefront-base#readme",
   "devDependencies": {
+    "ampersand-model": "^8.0.0",
+    "ampersand-view": "^10.0.1",
+    "autoprefixer": "^6.3.7",
     "browserify": "^13.0.1",
     "chai": "^3.5.0",
     "eslint": "^2.13.1",
     "eslint-config-airbnb-base": "^3.0.1",
     "eslint-plugin-import": "^1.9.2",
+    "handlebars": "^4.0.5",
+    "hbsfy": "^2.7.0",
+    "http-server": "^0.9.0",
     "istanbul": "^0.4.4",
     "mocha": "^2.5.3",
     "node-sass": "^3.8.0",
+    "postcss-cli": "^2.5.1",
     "proxyquire": "1.7.4",
     "shelljs": "^0.7.0",
     "sinon": "^1.17.4",
@@ -42,6 +50,6 @@
     "jquery": "^2.2.4"
   },
   "paths": {
-    "resources": "../sitegenesis/app_storefront_core/cartridge/templates/resources/"
+    "resources": "../sitegenesis/app_storefront_base/cartridge/templates/resources/"
   }
 }
