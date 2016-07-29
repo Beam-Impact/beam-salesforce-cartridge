@@ -50,6 +50,26 @@ server.get('Show', locale, function (req, res, next) {
     var currentBasket = BasketMgr.getCurrentOrNewBasket();
 
     Transaction.wrap(function () {
+        var productLineItem = currentBasket.createProductLineItem(
+            productID,
+            currentBasket.defaultShipment
+        );
+
+        productLineItem.setQuantityValue(2);
+
+        productLineItem = currentBasket.createProductLineItem(
+            '029407331227',
+            currentBasket.defaultShipment
+        );
+
+        productLineItem.setQuantityValue(4);
+
+        productLineItem = currentBasket.createProductLineItem(
+            'P0150',
+            currentBasket.defaultShipment
+        );
+
+        productLineItem.setQuantityValue(1);
         calculateCart(currentBasket);
     });
 

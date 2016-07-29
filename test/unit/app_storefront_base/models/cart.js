@@ -114,22 +114,16 @@ var createApiProductLineItem = function (product) {
                 }
             },
             getImage: function () {
-                var result;
-                if (product.hasImage) {
-                    result = {
-                        URL: {
-                            toString: function () {
-                                return '/on/demandware.static/-/Sites-apparel-catalog/default/' +
-                                    'dw824c6de7/images/small/PG.10217069.JJ908XX.PZ.jpg';
-                            }
-                        },
-                        alt: 'Long Sleeve Embellished Boat Neck Top, Grey Heather, small',
-                        title: 'Long Sleeve Embellished Boat Neck Top, Grey Heather'
-                    };
-                } else {
-                    result = null;
-                }
-                return result;
+                return {
+                    URL: {
+                        toString: function () {
+                            return '/on/demandware.static/-/Sites-apparel-catalog/default/' +
+                                'dw824c6de7/images/small/PG.10217069.JJ908XX.PZ.jpg';
+                        }
+                    },
+                    alt: 'Long Sleeve Embellished Boat Neck Top, Grey Heather, small',
+                    title: 'Long Sleeve Embellished Boat Neck Top, Grey Heather'
+                };
             }
         },
         quantity: {
