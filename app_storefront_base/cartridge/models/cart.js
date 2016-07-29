@@ -1,63 +1,174 @@
 'use strict';
 
 var helper = require('~/cartridge/scripts/dwHelpers');
+var PricingModel = require('./product/productPricingModel');
+
 var URLUtils = require('dw/web/URLUtils');
+var formatMoney = require('dw/util/StringUtils').formatMoney;
+var money = require('dw/value/Money');
+
+/**
+ * Creates an array of objects containing a product line item's selected variants
+ * @param {dw.catalog.Product} product - the product that the line item represents
+ * @returns {Array} an array of objects containing a product line item's selected variants
+ */
+function getSelectedVariationAttributes(product) {
+    var variationAttributes = product.variationModel.productVariationAttributes;
+    var selectedAttributes = helper.map(variationAttributes, function (attribute) {
+        var variationAttribute = product.variationModel.getSelectedValue(attribute);
+        var attributeName = attribute.displayName;
+        return {
+            displayName: attributeName,
+            displayValue: variationAttribute.displayValue
+        };
+    });
+
+    return selectedAttributes;
+}
+
+/**
+ * Sets the max number to display in the quantity drop down.
+ * @param {dw.order.ProductLineItem} productLineItem - a line item of the basket.
+ * @returns {Number} The max number to display in the quantity drop down.
+ */
+function getQuantityOptions(productLineItem) {
+    var quantity = productLineItem.quantity.value;
+    var availableToSell = productLineItem.product.availabilityModel.inventoryRecord.ATS.value;
+
+    var min = Math.min(availableToSell, 10);
+    var max = Math.max(min, quantity);
+    return max;
+}
+
+/**
+ * Creates an array of objects containing Product line item information
+ * @param {dw.util.Collection <dw.order.ProductLineItem>} allLineItems - All product
+ * line items of the basket
+ * @returns {Array} an array of objects that contain information about each product line item.
+ */
+function createProductLineItemsObject(allLineItems) {
+    var lineItems = helper.map(allLineItems, function (item) {
+        var result = {
+            type: 'Product',
+            url: !item.categoryID
+                ? URLUtils.http('Product-Show', 'pid', item.productID).toString()
+                : URLUtils.http(
+                'Product-Show',
+                'pid',
+                item.productID,
+                'cgid',
+                item.categoryID
+            ).toString(),
+            variationAttributes: getSelectedVariationAttributes(item.product),
+            quantity: item.quantity.value,
+            quantityOptions: getQuantityOptions(item),
+            priceModelPricing: new PricingModel(item.product, []),
+            priceTotal: formatMoney(money(
+                item.adjustedPrice.value,
+                item.adjustedPrice.currencyCode
+            )),
+            name: item.productName,
+            isBundle: item.product.bundle,
+            isMaster: item.product.master,
+            isProductSet: item.product.productSet,
+            isVariant: item.product.variant,
+            isBonusProductLineItem: item.bonusProductLineItem,
+            isGift: item.gift
+        };
+
+        if (item.product.availabilityModel.availability === 1) {
+            result.isAvailable = true;
+        } else {
+            result.isAvailable = false;
+        }
+
+        if (item.product.getImage('small', 0)) {
+            result.image = {
+                src: item.product.getImage('small', 0).URL.toString(),
+                alt: item.product.getImage('small', 0).alt,
+                title: item.product.getImage('small', 0).title
+            };
+        } else {
+            result.image = {
+                src: URLUtils.staticURL('/images/noimagesmall.png').toString(),
+                alt: item.productName,
+                title: item.productName
+            };
+        }
+        return result;
+    });
+
+    return lineItems;
+}
+
+/**
+ * Loops through all of the product line items and adds the quantities together.
+ * @param {dw.util.Collection <dw.order.ProductLineItem>} productLineItems - All product
+ * line items of the basket
+ * @returns {Number} a number representing all product line items in the lineItem container.
+ */
+function getTotalQuantity(productLineItems) {
+    // TODO add giftCertificateLineItems quantity
+    var totalQuantity = 0;
+    helper.forEach(productLineItems, function (lineItem) {
+        totalQuantity += lineItem.quantity.value;
+    });
+
+    return totalQuantity;
+}
+
+/**
+ * Creates an array of objects containing the information of applicable shipping methods
+ * @param {dw.order.ShipmentShippingModel} shipmentModel - Instance of the shipping model
+ * @returns {Array} an array of objects containing the information of applicable shipping methods
+ */
+function getApplicableShippingMethods(shipmentModel) {
+    var shippingMethods = shipmentModel.applicableShippingMethods;
+    return helper.map(shippingMethods, function (shippingMethod) {
+        var shippingCost = shipmentModel.getShippingCost(shippingMethod);
+        return {
+            description: shippingMethod.description,
+            displayName: shippingMethod.displayName,
+            ID: shippingMethod.ID,
+            shippingCost: formatMoney(money(
+                shippingCost.amount.value,
+                shippingCost.amount.currencyCode
+            )),
+            estimatedArrivalTime: shippingMethod.custom.estimatedArrivalTime
+        };
+    });
+}
 
 /**
  * Cart class that represents collection of line items
- * @param  {dw.order.Basket} basket Current uses's basket
+ * @param {dw.order.Basket} basket Current users's basket
+ * @param {dw.order.ShipmentShippingModel} shipmentShippingModel - Instance of the shipping model
  * @constructor
  */
-function cart(basket) {
+function cart(basket, shipmentShippingModel) {
     if (basket !== null) {
-        this.quantityTotal = basket.getProductQuantityTotal();
-        var allItems = helper.concat(basket.productLineItems, basket.giftCertificateLineItems);
-        this.totalPrice = 0;
-        this.items = helper.map(allItems, function (item) {
-            var result = {};
-            if (item.product) {
-                result = {
-                    type: 'Product',
-                    url: !item.categoryID
-                        ? URLUtils.http('Product-Show', 'pid', item.productID)
-                        : URLUtils.http(
-                            'Product-Show',
-                            'pid',
-                            item.productID,
-                            'cgid',
-                            item.categoryID
-                        ),
-                    variationAttributes: null,
-                    availability: null,
-                    quantity: 0,
-                    price: null
-                };
-                if (item.product.getImage('small', 0)) {
-                    result.image = {
-                        src: item.product.getImage('small', 0).getURL(),
-                        alt: item.product.getImage('small', 0).getAlt(),
-                        title: item.product.getImage('small', 0).getTitle()
-                    };
-                } else {
-                    result.image = {
-                        src: URLUtils.staticURL('/images/noimagesmall.png'),
-                        alt: item.productName,
-                        title: item.productName
-                    };
-                }
-            } else {
-                result = {
-                    type: 'GiftCertificate',
-                    name: item.lineItemText,
-                    image: {
-                        src: URLUtils.staticURL('/images/gift_cert.gif'),
-                        alt: item.lineItemText
-                    },
-                    price: item.price
-                };
-            }
-            return result;
-        });
+        this.items = createProductLineItemsObject(basket.allProductLineItems);
+        this.numItems = getTotalQuantity(basket.allProductLineItems);
+        this.numOfShipments = basket.shipments.length;
+        if (shipmentShippingModel) {
+            this.shippingMethods = getApplicableShippingMethods(shipmentShippingModel);
+        }
+        this.grandTotal = formatMoney(money(
+            basket.totalGrossPrice.value,
+            basket.totalGrossPrice.currencyCode
+        ));
+        this.subTotal = formatMoney(money(
+            basket.adjustedMerchandizeTotalPrice.value,
+            basket.adjustedMerchandizeTotalPrice.currencyCode
+        ));
+        this.totalTax = formatMoney(money(
+            basket.totalTax.value,
+            basket.totalTax.currencyCode
+        ));
+        this.totalShippingCost = formatMoney(money(
+            basket.shippingTotalPrice.value,
+            basket.shippingTotalPrice.currencyCode
+        ));
     } else {
         this.items = [];
         this.numItems = 0;
