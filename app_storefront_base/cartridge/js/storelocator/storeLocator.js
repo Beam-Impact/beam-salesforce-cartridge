@@ -66,11 +66,13 @@ function updateStoresResults(data) {
 
     $('.maxdistance').val(parseInt($('.results').attr('data-radius'), 10));
 
-    $mapDiv.empty();
     $mapDiv.attr('data-locations', JSON.stringify(data.locations));
 
-
-    maps();
+    if (JSON.parse($mapDiv.attr('data-hasGoogleApi')) !== false) {
+        maps();
+    } else {
+        $('.store-locator-no-apiKey').show();
+    }
 
     if (data.stores) {
         for (var i = 0; i < data.stores.length; i++) {
@@ -109,7 +111,12 @@ function updateStoresResults(data) {
 }
 
 module.exports = function () {
-    maps();
+    if (JSON.parse($('.map-canvas').attr('data-hasGoogleApi')) !== false) {
+        maps();
+    } else {
+        $('.store-locator-no-apiKey').show();
+    }
+
 
     if ($('.results').attr('data-hasResults') === 0) {
         $('.store-locator-no-results').show();
