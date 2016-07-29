@@ -1,5 +1,27 @@
 <isdecorate template="common/layout/page">
 	<div class="container">
+<<<<<<< 88abe585a6e39f7cfe84253dcbadbe253ff4808c
 		
+=======
+		<isloop items="${pdict.items}" var="lineItem">
+			<div class="row">
+				<div class="col-sm-6">
+			    	<img src="${lineItem.image.src}" alt="${lineItem.image.alt}" title="${lineItem.image.title}">
+			    </div>
+			    <div class="col-sm-6">
+			    	<p>
+                        <span>unit price: ${lineItem.price}</span>
+                        <span>quantity: ${lineItem.quantity}</span>
+                        <span>available: ${lineItem.isAvailable}</span>
+			    	</p>
+			    </div>
+			    <isloop items="${lineItem.variationAttributes}" var="attribute">
+			    	${attribute.displayName}
+			    	${attribute.displayValue}
+			    	
+			    </isloop>
+			</div>
+		</isloop>
+>>>>>>> [RAP-5038: expand the cart model and cart controller to account for the cart page]
 	</div>
 </isdecorate>

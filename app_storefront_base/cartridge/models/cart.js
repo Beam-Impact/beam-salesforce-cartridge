@@ -133,6 +133,130 @@ function getApplicableShippingMethods(shipmentModel) {
 }
 
 /**
+ * Creates an array of objects containing a product line item's selected variants
+ * @param {dw.catalog.Product} product - results returned by the search
+ * @returns {Array} an array of objects containing a product line item's selected variants
+ */
+function getSelectedVariationAttributes(product) {
+    var variationAttributes = product.variationModel.productVariationAttributes;
+    var selectedAttributes = helper.map(variationAttributes, function (attribute) {
+        var variationAttribute = product.variationModel.getSelectedValue(attribute);
+        var attributeName = attribute.displayName;
+        return {
+            displayName: attributeName,
+            displayValue: variationAttribute.displayValue
+        };
+    });
+
+    return selectedAttributes;
+}
+
+/**
+ * Creates an array of objects containing Product line item information
+ * @param {dw.util.Collection <dw.order.ProductLineItem>} allLineItems - All product
+ * line items of the basket
+ * @returns {Array} an array of objects that contain information about each product line item.
+ */
+function createProductLineItemsObject(allLineItems) {
+    var lineItems = helper.map(allLineItems, function (item) {
+        var result = {};
+        if (item.product) {
+            result = {
+                type: 'Product',
+                url: !item.categoryID
+                    ? URLUtils.http('Product-Show', 'pid', item.productID).toString()
+                    : URLUtils.http(
+                    'Product-Show',
+                    'pid',
+                    item.productID,
+                    'cgid',
+                    item.categoryID
+                ).toString(),
+                variationAttributes: getSelectedVariationAttributes(item.product),
+                quantity: item.quantity.value,
+                price: item.product.priceModel.price.value,
+                priceTotal: item.adjustedPrice.value,
+                name: item.productName,
+                isBundle: item.product.bundle,
+                isMaster: item.product.master,
+                isProductSet: item.product.productSet,
+                isVariant: item.product.variant,
+                isBonusProductLineItem: item.bonusProductLineItem,
+                isGift: item.gift
+            };
+
+            if (item.product.availabilityModel.availability === 1) {
+                result.isAvailable = true;
+            } else {
+                result.isAvailable = false;
+            }
+
+            if (item.product.getImage('small', 0)) {
+                result.image = {
+                    src: item.product.getImage('small', 0).URL.toString(),
+                    alt: item.product.getImage('small', 0).alt,
+                    title: item.product.getImage('small', 0).title
+                };
+            } else {
+                result.image = {
+                    src: URLUtils.staticURL('/images/noimagesmall.png').toString(),
+                    alt: item.productName,
+                    title: item.productName
+                };
+            }
+        } else {
+            result = {
+                type: 'GiftCertificate',
+                name: item.lineItemText,
+                image: {
+                    src: URLUtils.staticURL('/images/gift_cert.gif').toString(),
+                    alt: item.lineItemText
+                },
+                price: item.price
+            };
+        }
+        return result;
+    });
+
+    return lineItems;
+}
+
+/**
+ * Loops through all of the product line items and adds the quantities together.
+ * @param {dw.util.Collection <dw.order.ProductLineItem>} productLineItems - All product
+ * line items of the basket
+ * @returns {Number} a number representing all product line items in the lineItem container.
+ */
+function getTotalQuantity(productLineItems) {
+    // TODO add giftCertificateLineItems quantity
+    var totalQuantity = 0;
+    helper.forEach(productLineItems, function (lineItem) {
+        totalQuantity += lineItem.quantity.value;
+    });
+
+    return totalQuantity;
+}
+
+/**
+ * Creates an array of objects containing the information of applicable shipping methods
+ * @param {dw.order.ShipmentShippingModel} shipmentModel - Instance of the shipping model
+ * @returns {Array} an array of objects containing the information of applicable shipping methods
+ */
+function getApplicableShippingMethods(shipmentModel) {
+    var shippingMedthods = shipmentModel.applicableShippingMethods;
+    return helper.map(shippingMedthods, function (shippingMethod) {
+        var shippingCost = shipmentModel.getShippingCost(shippingMethod);
+        return {
+            description: shippingMethod.description,
+            displayName: shippingMethod.displayName,
+            ID: shippingMethod.ID,
+            shippingCost: shippingCost.amount.valueOrNull,
+            estimatedArrivalTime: shippingMethod.custom.estimatedArrivalTime
+        };
+    });
+}
+
+/**
  * Cart class that represents collection of line items
  * @param {dw.order.Basket} basket Current users's basket
  * @param {dw.order.ShipmentShippingModel} shipmentShippingModel - Instance of the shipping model
