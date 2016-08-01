@@ -132,12 +132,6 @@ function getApplicableShippingMethods(shipmentModel) {
     });
 }
 
-/**
- * Cart class that represents collection of line items
- * @param {dw.order.Basket} basket Current users's basket
- * @param {dw.order.ShipmentShippingModel} shipmentShippingModel - Instance of the shipping model
- * @constructor
- */
 function cart(basket, shipmentShippingModel) {
     if (basket !== null) {
         this.items = createProductLineItemsObject(basket.allProductLineItems);
