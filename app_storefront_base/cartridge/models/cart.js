@@ -159,60 +159,47 @@ function getSelectedVariationAttributes(product) {
  */
 function createProductLineItemsObject(allLineItems) {
     var lineItems = helper.map(allLineItems, function (item) {
-        var result = {};
-        if (item.product) {
-            result = {
-                type: 'Product',
-                url: !item.categoryID
-                    ? URLUtils.http('Product-Show', 'pid', item.productID).toString()
-                    : URLUtils.http(
-                    'Product-Show',
-                    'pid',
-                    item.productID,
-                    'cgid',
-                    item.categoryID
-                ).toString(),
-                variationAttributes: getSelectedVariationAttributes(item.product),
-                quantity: item.quantity.value,
-                price: item.product.priceModel.price.value,
-                priceTotal: item.adjustedPrice.value,
-                name: item.productName,
-                isBundle: item.product.bundle,
-                isMaster: item.product.master,
-                isProductSet: item.product.productSet,
-                isVariant: item.product.variant,
-                isBonusProductLineItem: item.bonusProductLineItem,
-                isGift: item.gift
-            };
+        var result = {
+            type: 'Product',
+            url: !item.categoryID
+                ? URLUtils.http('Product-Show', 'pid', item.productID).toString()
+                : URLUtils.http(
+                'Product-Show',
+                'pid',
+                item.productID,
+                'cgid',
+                item.categoryID
+            ).toString(),
+            variationAttributes: getSelectedVariationAttributes(item.product),
+            quantity: item.quantity.value,
+            price: item.product.priceModel.price.value,
+            priceTotal: item.adjustedPrice.value,
+            name: item.productName,
+            isBundle: item.product.bundle,
+            isMaster: item.product.master,
+            isProductSet: item.product.productSet,
+            isVariant: item.product.variant,
+            isBonusProductLineItem: item.bonusProductLineItem,
+            isGift: item.gift
+        };
 
-            if (item.product.availabilityModel.availability === 1) {
-                result.isAvailable = true;
-            } else {
-                result.isAvailable = false;
-            }
-
-            if (item.product.getImage('small', 0)) {
-                result.image = {
-                    src: item.product.getImage('small', 0).URL.toString(),
-                    alt: item.product.getImage('small', 0).alt,
-                    title: item.product.getImage('small', 0).title
-                };
-            } else {
-                result.image = {
-                    src: URLUtils.staticURL('/images/noimagesmall.png').toString(),
-                    alt: item.productName,
-                    title: item.productName
-                };
-            }
+        if (item.product.availabilityModel.availability === 1) {
+            result.isAvailable = true;
         } else {
-            result = {
-                type: 'GiftCertificate',
-                name: item.lineItemText,
-                image: {
-                    src: URLUtils.staticURL('/images/gift_cert.gif').toString(),
-                    alt: item.lineItemText
-                },
-                price: item.price
+            result.isAvailable = false;
+        }
+
+        if (item.product.getImage('small', 0)) {
+            result.image = {
+                src: item.product.getImage('small', 0).URL.toString(),
+                alt: item.product.getImage('small', 0).alt,
+                title: item.product.getImage('small', 0).title
+            };
+        } else {
+            result.image = {
+                src: URLUtils.staticURL('/images/noimagesmall.png').toString(),
+                alt: item.productName,
+                title: item.productName
             };
         }
         return result;
