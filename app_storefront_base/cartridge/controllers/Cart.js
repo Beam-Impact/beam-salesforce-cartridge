@@ -51,21 +51,7 @@ server.get('Show', locale, function (req, res, next) {
 
     Transaction.wrap(function () {
         var productLineItem = currentBasket.createProductLineItem(
-            productID,
-            currentBasket.defaultShipment
-        );
-
-        productLineItem.setQuantityValue(2);
-
-        productLineItem = currentBasket.createProductLineItem(
-            '029407331227',
-            currentBasket.defaultShipment
-        );
-
-        productLineItem.setQuantityValue(4);
-
-        productLineItem = currentBasket.createProductLineItem(
-            'P0150',
+            '701642823940',
             currentBasket.defaultShipment
         );
 
