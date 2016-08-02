@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "istanbul test ./node_modules/mocha/bin/_mocha -- -R spec test/unit/**/*.js",
+    "test:integration": "./node_modules/.bin/mocha --reporter spec",
     "compile:scss": "node-sass --include-path node_modules/bootstrap-sass/assets/stylesheets --include-path node_modules/font-awesome/scss --include-path node_modules/flag-icon-css/sass app_storefront_base/cartridge/scss/default/ -o app_storefront_base/cartridge/static/default/css/",
     "compile:js": "mkdir -p app_storefront_base/cartridge/static/default/js && node bin/Makefile.js browserify",
     "compile:fonts": "mkdir -p app_storefront_base/cartridge/static/default/fonts && cp -r node_modules/font-awesome/fonts/ $_ && cp -r node_modules/flag-icon-css/flags/ $_/flags",
@@ -44,10 +45,13 @@
     "watchify": "^3.7.0"
   },
   "dependencies": {
+    "@tridnguyen/config": "^2.3.1",
     "bootstrap-sass": "^3.3.6",
     "flag-icon-css": "^2.3.0",
     "font-awesome": "^4.6.3",
-    "jquery": "^2.2.4"
+    "jquery": "^2.2.4",
+    "minimist": "^1.2.0",
+    "request": "^2.74.0"
   },
   "paths": {
     "resources": "../sitegenesis/app_storefront_base/cartridge/templates/resources/"
