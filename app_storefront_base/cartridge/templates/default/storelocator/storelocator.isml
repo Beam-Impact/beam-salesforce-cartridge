@@ -5,6 +5,7 @@
             assets.addJs(pdict.googleMapsApi);
         }
         assets.addJs('/js/storeLocator.js');
+        assets.addCss('/css/storeLocator.css');
     </isscript>
 
     <div class="container">
