@@ -100,4 +100,45 @@ describe('stores', function () {
 
         });
     });
+
+    it('should return Stores Model without google maps api', function () {
+        var storesResults = [{
+            name: 'Downtown TV Shop',
+            address1: '333 Washington St',
+            address2: '',
+            city: 'Boston',
+            postalCode: '02108',
+            phone: '333-333-3333',
+            stateCode: 'MA',
+            latitude: 42.5273334,
+            longitude: -71.13758250000001
+        }];
+        var noApiKey = null;
+        var stores = new StoresModel(storesResults, searchKey, radius, actionUrl, noApiKey);
+
+        assert.deepEqual(stores, {
+            stores: [
+                {
+                    name: 'Downtown TV Shop',
+                    address1: '333 Washington St',
+                    address2: '',
+                    city: 'Boston',
+                    postalCode: '02108',
+                    phone: '333-333-3333',
+                    stateCode: 'MA'
+                }
+            ],
+            locations: [{
+                name: 'Downtown TV Shop',
+                latitude: 42.5273334,
+                longitude: -71.13758250000001
+            }],
+            searchKey: searchKey,
+            radius: radius,
+            actionUrl: actionUrl,
+            googleMapsApi: null,
+            radiusOptions: radiusOptions
+
+        });
+    });
 });

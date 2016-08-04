@@ -45,6 +45,22 @@ function createGeoLocationObject(storesObject) {
 }
 
 /**
+ * If there is an api key creates the url to include the google maps api else returns null
+ * @param {string} apiKey - the api key or null
+ * @returns {String|Null} return the api
+ */
+function getGoogleMapsApi(apiKey) {
+    var googleMapsApi;
+    if (apiKey) {
+        googleMapsApi = 'https://maps.googleapis.com/maps/api/js?key=' + apiKey;
+    } else {
+        googleMapsApi = null;
+    }
+
+    return googleMapsApi;
+}
+
+/**
  * The stores model
  * @param {dw.util.Set <dw.catalog.Store>} storesResultsObject - results returned by the search
  * @param {Object} searchKey - what the user searched by (location or postal code)
@@ -59,7 +75,7 @@ function stores(storesResultsObject, searchKey, searchRadius, actionUrl, apiKey)
     this.searchKey = searchKey;
     this.radius = searchRadius;
     this.actionUrl = actionUrl;
-    this.googleMapsApi = 'https://maps.googleapis.com/maps/api/js?key=' + apiKey;
+    this.googleMapsApi = getGoogleMapsApi(apiKey);
     this.radiusOptions = [15, 30, 50, 100, 300];
 }
 

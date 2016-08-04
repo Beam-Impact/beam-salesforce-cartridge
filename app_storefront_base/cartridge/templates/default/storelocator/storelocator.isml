@@ -1,13 +1,26 @@
 <isdecorate template="common/layout/page">
     <isscript>
-        require('~/cartridge/scripts/assets.js').addJs(pdict.googleMapsApi);
+        var assets = require('~/cartridge/scripts/assets.js');
+        if (pdict.googleMapsApi) {
+            assets.addJs(pdict.googleMapsApi);
+        }
+        assets.addJs('/js/storeLocator.js');
+        assets.addCss('/css/storeLocator.css');
     </isscript>
 
     <div class="container">
         <isinclude template="storelocator/storelocatorforms" />
     </div>
 
-    <div class="jumbotron map-canvas" data-locations="${JSON.stringify(pdict.locations)}"></div>
+    <div class="jumbotron map-canvas" data-hasGoogleApi="${pdict.googleMapsApi ? true : false}" data-locations="${JSON.stringify(pdict.locations)}">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <p class="store-locator-no-apiKey alert alert-danger">${Resource.msg('storelocator.noapikey','storelocator',null)}</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <isinclude template="storelocator/storelocatorresults" />
 </isdecorate>

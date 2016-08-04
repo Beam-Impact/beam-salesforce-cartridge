@@ -1,3 +1,7 @@
+@charset "UTF-8";
+@import "variables";
+@import "bootstrap/variables";
+
 .btn-storelocator-search {
     background-color: $light-gray;
     border-color: $brand-color;
@@ -32,6 +36,10 @@
     @media (min-width: $screen-sm-min) {
         height: 450px;
     }
+}
+
+.store-locator-no-apiKey {
+    display: none;
 }
 
 .store-locator-no-results {
