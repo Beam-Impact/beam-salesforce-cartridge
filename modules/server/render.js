@@ -10,7 +10,7 @@ module.exports = {
      * @param {Object} response - Response object
      * @returns {void}
      */
-    template: function (view, viewData, response) {
+    template: function template(view, viewData, response) {
         // create a shallow copy of the data
         var data = {};
         Object.keys(viewData).forEach(function (key) {
@@ -32,7 +32,7 @@ module.exports = {
      * @param {Object} response - Response object
      * @returns {void}
      */
-    json: function (data, response) {
+    json: function json(data, response) {
         response.setContentType('application/json');
         response.print(JSON.stringify(data, null, 2));
     }

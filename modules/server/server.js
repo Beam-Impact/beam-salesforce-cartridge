@@ -64,7 +64,7 @@ Server.prototype = {
 
         var route = new Route(name, middlewareChain, rq, rs);
         // Add event handler for rendering out view on completion of the request chain
-        route.on('route:Complete', function (req, res) {
+        route.on('route:Complete', function onRouteCompleteHandler(req, res) {
             if (res.view && res.viewData) {
                 render.template(res.view, res.viewData, res);
             } else if (res.isJson) {
