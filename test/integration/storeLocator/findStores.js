@@ -11,6 +11,7 @@ describe("Store Locator", function() {
                             baseUrlSplit[baseUrlSplit.length - 3] + "/" +
                             baseUrlSplit[baseUrlSplit.length - 2] + "/" +
                             baseUrlSplit[baseUrlSplit.length - 1] + "/Stores-FindStores";
+    var expectGoogleMapsApiUrl = "https://maps.googleapis.com/maps/api/js?key=null";
 
     describe("FindStores using Postal Code and radius", function() {
 
@@ -100,7 +101,7 @@ describe("Store Locator", function() {
                 },
                 "radius": 15,
                 "actionUrl": expectedActionUrl,
-                "googleMapsApi": "https://maps.googleapis.com/maps/api/js?key=null",
+                "googleMapsApi": expectGoogleMapsApiUrl,
                 "radiusOptions": [
                     15,
                     30,
@@ -151,7 +152,7 @@ describe("Store Locator", function() {
                 },
                 "radius": 100,
                 "actionUrl": expectedActionUrl,
-                "googleMapsApi": "https://maps.googleapis.com/maps/api/js?key=null",
+                "googleMapsApi": expectGoogleMapsApiUrl,
                 "radiusOptions": [
                     15,
                     30,
@@ -186,7 +187,7 @@ describe("Store Locator", function() {
                   },
               "radius": 5,
               "actionUrl": expectedActionUrl,
-              "googleMapsApi": "https://maps.googleapis.com/maps/api/js?key=null",
+              "googleMapsApi": expectGoogleMapsApiUrl,
               "radiusOptions": [
                   15,
                   30,
@@ -221,7 +222,7 @@ describe("Store Locator", function() {
                   },
               "radius": -15,
               "actionUrl": expectedActionUrl,
-              "googleMapsApi": "https://maps.googleapis.com/maps/api/js?key=null",
+              "googleMapsApi": expectGoogleMapsApiUrl,
               "radiusOptions": [
                   15,
                   30,
@@ -304,7 +305,7 @@ describe("Store Locator", function() {
                 },
                 "radius": 23,
                 "actionUrl": expectedActionUrl,
-                "googleMapsApi": "https://maps.googleapis.com/maps/api/js?key=null",
+                "googleMapsApi": expectGoogleMapsApiUrl,
                 "radiusOptions": [
                     15,
                     30,
@@ -340,7 +341,7 @@ describe("Store Locator", function() {
                 },
                 "radius": 100,
                 "actionUrl": expectedActionUrl,
-                "googleMapsApi": "https://maps.googleapis.com/maps/api/js?key=null",
+                "googleMapsApi": expectGoogleMapsApiUrl,
                 "radiusOptions": [
                     15,
                     30,
@@ -355,6 +356,73 @@ describe("Store Locator", function() {
 
                 var bodyAsJson = JSON.parse(response.body);
                 assert.deepEqual(bodyAsJson, ExpectedResBody, "Actual response body not as expected.");
+
+                done();
+            });
+        });
+
+        it("should returns 0 location for invalid longitude and latitude", function(done) {
+            var url = config.baseUrl + "/Stores-FindStores?long=190&lat=100&radius=15";
+            var myRequest = {
+                url: url,
+                method: 'GET',
+                rejectUnauthorized: false
+            };
+            var ExpectedResBody = {
+                "stores": [],
+                "locations": [],
+                "searchKey": {
+                    "lat": 100,
+                    "long": 190
+                },
+                "radius": 15,
+                "actionUrl": expectedActionUrl,
+                "googleMapsApi": expectGoogleMapsApiUrl,
+                "radiusOptions": [
+                    15,
+                    30,
+                    50,
+                    100,
+                    300
+                ]
+            };
+
+            request(myRequest, function(error, response, body) {
+                assert.equal(response.statusCode, 200, 'Expected statusCode to be 200.');
+
+                var bodyAsJson = JSON.parse(response.body);
+                assert.deepEqual(bodyAsJson, ExpectedResBody, "Actual response body not as expected.");
+
+                done();
+            });
+        });
+
+        it("should returns succesful response with no parameter", function(done) {
+            // when no parameter specified, it uses geolocation.latitude and geolocation.longitude
+            // for the latitude and longitude; therefore the search result could be vary depending on
+            // the current location
+
+            var url = config.baseUrl + "/Stores-FindStores";
+            var myRequest = {
+                url: url,
+                method: 'GET',
+                rejectUnauthorized: false
+            };
+
+            request(myRequest, function(error, response, body) {
+                assert.equal(response.statusCode, 200, 'Expected statusCode to be 200.');
+
+                var bodyAsJson = JSON.parse(response.body);
+                assert.isNotNull(bodyAsJson.stores, "Expect stores property in response.");
+                assert.isArray(bodyAsJson.stores, "Expect stores property asarray.");
+                assert.isNotNull(bodyAsJson.locations, "Expect locations property in response.");
+                assert.isArray(bodyAsJson.locations, "Expect locations property asarray.");
+                assert.isNotNull(bodyAsJson.searchKey.lat, "Expect searchKey.lat property in response.");
+                assert.isNotNull(bodyAsJson.searchKey.long, "Expect searchKey.long property in response.");
+                assert.equal(bodyAsJson.radius, 100, "Expect radius default to 100.");
+                assert.equal(bodyAsJson.actionUrl, expectedActionUrl, "Expect actionUrl to be " + expectedActionUrl);
+                assert.equal(bodyAsJson.googleMapsApi, expectGoogleMapsApiUrl, "Expect googleMapsApiUrl to be " + expectGoogleMapsApiUrl);
+                assert.deepEqual(bodyAsJson.radiusOptions, [15, 30, 50, 100, 300], "Expect radiusOptions to be [15, 30, 50, 100, 300]");
 
                 done();
             });
