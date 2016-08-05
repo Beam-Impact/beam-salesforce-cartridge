@@ -134,7 +134,7 @@ function getApplicableShippingMethods(shipmentModel) {
 
 /**
  * Creates an array of objects containing a product line item's selected variants
- * @param {dw.catalog.Product} product - results returned by the search
+ * @param {dw.catalog.Product} product - the product that the line item represents
  * @returns {Array} an array of objects containing a product line item's selected variants
  */
 function getSelectedVariationAttributes(product) {
@@ -149,6 +149,26 @@ function getSelectedVariationAttributes(product) {
     });
 
     return selectedAttributes;
+}
+
+/**
+ * Creates an array of numbers
+ * @param {dw.order.ProductLineItem} productLineItem - a line item of the basket
+ * @returns {Array} an array of numbers
+ */
+function getQuantityOptions(productLineItem) {
+    var quantity = productLineItem.quantity.value;
+    var availableToSell = productLineItem.product.availabilityModel.inventoryRecord.ATS.value;
+
+    var min = Math.min(availableToSell, 10);
+    var max = Math.max(min, quantity);
+
+    var quantityOptions = [];
+    for (var i = 1; i <= max; i++) {
+        quantityOptions.push(i);
+    }
+
+    return quantityOptions;
 }
 
 /**
@@ -172,6 +192,7 @@ function createProductLineItemsObject(allLineItems) {
             ).toString(),
             variationAttributes: getSelectedVariationAttributes(item.product),
             quantity: item.quantity.value,
+            quantityOptions: getQuantityOptions(item),
             price: item.product.priceModel.price.value,
             priceTotal: item.adjustedPrice.value,
             name: item.productName,
