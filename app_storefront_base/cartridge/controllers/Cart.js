@@ -62,6 +62,7 @@ server.get('Show', locale, function (req, res, next) {
     var shipmentShippingModel = ShippingMgr.getShipmentShippingModel(currentBasket.defaultShipment);
     var basket = new Cart(currentBasket, shipmentShippingModel);
     res.render('cart', basket);
+    //res.json(basket);
     next();
 });
 

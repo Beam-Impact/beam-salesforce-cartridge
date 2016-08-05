@@ -1,4 +1,144 @@
 <isdecorate template="common/layout/page">
-	<div class="container">
-	</div>
+    <isscript>
+        var assets = require('~/cartridge/scripts/assets.js');
+        assets.addCss('/css/cart.css');
+    </isscript>
+    <div class="container cart">
+        <div class="row">
+            <div class="col-xs-6">
+                <p>hero text xxx</p>
+            </div>
+            <div class="col-xs-6">
+                <p class="text-muted num-items">${pdict.numItems}</p>
+            </div>
+        </div>
+
+        <isloop items="${pdict.items}" var="lineItem">
+            <div class="panel panel-default product-info">
+                <div class="row">
+                    <div class="col-xs-10">
+                        <p class="line-item-name">${lineItem.name}</p>
+                    </div>
+                    <div class="col-xs-2">
+                        <!--<button type="button" class="remove-btn" aria-label="remove"><span aria-hidden="true">&times;</span></button>-->
+                    </div>
+                </div>
+
+                <div class="row line-item-content">
+                    <div class="col-xs-4">
+                        <img class="line-item-img" src="${lineItem.image.src}" alt="${lineItem.image.alt}" title="${lineItem.image.title}">
+                    </div>
+                    <div class="col-xs-8">
+                        <isloop items="${lineItem.variationAttributes}" var="attribute">
+                            <div class="row" data-attr="${attribute.displayName}">
+                                <div class="col-xs-12 line-item-attributes">
+                                    ${attribute.displayName}: ${attribute.displayValue}
+                                </div>
+                            </div>
+                        </isloop>
+                        <div class="row hidden-xs">
+                            <div class="col-xs-4">
+                                <p>Edit xxx</p>
+                            </div>
+                            <div class="col-xs-8">
+                                <p>Add to Wishlist xxx</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="line-item-divider">
+
+                <div class="row text-center">
+                    <div class="col-xs-4">
+                        <div class="row">
+                            <p class="line-item-price-info">${Resource.msg('cart.each.item','cart',null)}</p>
+                        </div>
+                        <div class="row">
+                            <p class="line-item-price">${lineItem.price}</p>
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <form action="" method="get">
+                            <div class="form-group">
+                                <label class="line-item-price-info" for="quantity">${Resource.msg('global.quantity','cart',null)}</label>
+                                <select class="form-control" id="quantity" name="quantity">
+                                    <isloop items="${lineItem.quantityOptions}" var="option" status="loopstate">
+                                        <option data-shipping-id="${option.ID}">${StringUtils.formatInteger(option)}</option>
+                                    </isloop>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="row">
+                            <p class="line-item-price-info">${Resource.msg('global.totalprice','cart',null)}</p>
+                        </div>
+                        <div class="row">
+                            <p class="line-item-price">${lineItem.priceTotal}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </isloop>
+        <div class="row">
+            <div class="col-xs-12">
+                <p class="optional-promo">Enter promo code (optional) xxx <i class="fa fa-chevron-up" aria-hidden="true"></i></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <form action="" method="">
+                    <div class="form-group">
+                        <label for="shippingMethods">${Resource.msg('order.ordersummary.ordershipping','cart',null)}</label>
+                        <select class="form-control" id="shippingMethods" name="shippingMethods">
+                            <isloop items="${pdict.shippingMethods}" var="option" status="loopstate">
+                                <option data-shipping-id="${option.ID}">${option.displayName} ( ${option.estimatedArrivalTime} )</option>
+                            </isloop>
+                        </select>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-8">
+                <p>${Resource.msg('cart.shipping.cost','cart',null)}</p>
+            </div>
+            <div class="col-lg-4">
+                <p class="text-right">${pdict.totalShippingCost}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-8">
+                <p>${Resource.msg('order.ordersummary.ordertax','cart',null)}</p>
+            </div>
+            <div class="col-lg-4">
+                <p class="text-right">${pdict.totalTax}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-8">
+                <strong>${Resource.msg('global.estimatedtotal','cart',null)}</strong>
+            </div>
+            <div class="col-lg-4">
+                <p class="text-right">${pdict.subTotal}</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <button class="btn btn-block" type="submit" name="submit" value="submit">
+                    ${Resource.msg('global.checkout','cart',null)}
+                </button>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-xs-12">
+                <isapplepay></isapplepay>
+            </div>
+        </div>
+        <br>
+
+    </div>
 </isdecorate>

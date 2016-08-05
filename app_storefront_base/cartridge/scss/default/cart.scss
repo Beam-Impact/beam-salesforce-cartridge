@@ -1,0 +1,58 @@
+@charset "UTF-8";
+@import "variables";
+@import "bootstrap/variables";
+
+.cart {
+    background-color: #f6f6f6;
+}
+
+.line-item-attributes {
+    font-size: 13px;
+}
+
+.line-item-content {
+}
+
+.line-item-img {
+    padding-left: 5px;
+}
+
+.line-item-name {
+    padding: 5px 0 0 5px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
+}
+
+.line-item-price {
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
+}
+
+.line-item-price-info {
+    font-size: 12px;
+}
+
+.remove-btn {
+    color: #aaa;
+    float: right;
+    font-size: 26px;
+    padding: 0;
+}
+
+.line-item-divider {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.num-items {
+    float: right;
+}
+
+.optional-promo {
+    color: $brand-color;
+}
