@@ -1,5 +1,5 @@
 <div class="country-selector">
-    <a href="${#}">
+    <a href="${"#"}">
         <i class="flag-icon flag-icon-${pdict.locale.countryCode.toLowerCase()}"></i>
         ${pdict.locale.name}
         <i class="fa fa-sort" aria-hidden="true"></i>

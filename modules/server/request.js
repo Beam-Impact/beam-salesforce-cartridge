@@ -24,7 +24,7 @@ function parseQueryString(querystring) {
                         id: variableParts[1],
                         value: decodeURIComponent(pair[1])
                     };
-                    continue;
+                    continue; // eslint-disable-line no-continue
                 }
             }
             result[left] = decodeURIComponent(pair[1]);

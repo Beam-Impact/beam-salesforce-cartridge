@@ -7,7 +7,7 @@
  * @constructor
  */
 function content(contentValue) {
-    this.body = contentValue && contentValue.custom && contentValue.custom.body || null;
+    this.body = (contentValue && contentValue.custom && contentValue.custom.body) || null;
     this.UUID = contentValue.UUID;
     this.template = contentValue.template || 'components/content/contentassetinc';
 }
