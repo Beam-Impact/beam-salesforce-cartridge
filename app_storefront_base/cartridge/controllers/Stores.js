@@ -1,7 +1,6 @@
 'use strict';
 
 var server = require('server');
-var categories = require('~/cartridge/scripts/middleware/categories');
 var locale = require('~/cartridge/scripts/middleware/locale');
 
 /**
@@ -56,7 +55,7 @@ function getModel(req) {
     return new StoresModel(storesMgrResult.keySet(), searchKey, radius, actionUrl, apiKey);
 }
 
-server.get('Find', categories, locale, server.middleware.https, function (req, res, next) {
+server.get('Find', locale, server.middleware.https, function (req, res, next) {
     res.render('storelocator/storelocator', getModel(req));
     next();
 });

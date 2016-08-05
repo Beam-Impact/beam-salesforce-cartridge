@@ -27,7 +27,7 @@
 				<div class="col-md-5 hidden-sm hidden-xs">
 					<ul class="header-menu">
 						<li class="account">
-							<isinclude url="${URLUtils.url('Home-IncludeHeaderCustomerInfo')}"/>
+							<isinclude url="${URLUtils.url('Page-IncludeHeaderCustomerInfo')}"/>
 						</li>
 						<li class="stores">
 							<a href="${URLUtils.https('Stores-Find')}" title="${Resource.msg('global.header.storelocator.label', 'common', null)}">
@@ -64,7 +64,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
-					<isinclude template="components/header/menu"/>
+					<isinclude url="${URLUtils.url('Page-IncludeHeaderMenu')}"/>
 				</div>
 			</div>
 		</div>
