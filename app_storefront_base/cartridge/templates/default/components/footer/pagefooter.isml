@@ -2,6 +2,9 @@
     <div class="container">
         <div class="footer-container row">
             <div class="footer-item col-sm-3">
+                <iscontentasset aid="footer-locate-store" />
+            </div>
+            <div class="footer-item col-sm-3">
                 <iscontentasset aid="footer-account" />
             </div>
             <div class="footer-item col-sm-3">
@@ -13,11 +16,11 @@
         </div>
         <hr />
         <div class="row">
-            <div class="col-sm-5 pull-right-sm pull-right-md pull-right-lg social">
+            <div class="col-md-3 col-sm-5 pull-right-sm pull-right-md pull-right-lg social">
                 <isslot id="footer-column" description="Content in column 1 of the Footer" context="global" />
                 <button class="back-to-top"><i class="fa fa-arrow-up" aria-hidden="true"></i></button>
             </div>
-            <div class="col-sm-7 text-center-md copyright">
+            <div class="col-md-9 col-sm-7 text-center-md copyright">
                 <iscontentasset aid="footer-copy" />
             </div>
         </div>

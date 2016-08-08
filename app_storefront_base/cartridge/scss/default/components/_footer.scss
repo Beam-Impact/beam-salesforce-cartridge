@@ -18,12 +18,15 @@ footer {
         @include clearfix;
     }
 
-    .copyright {
+    .copyright,
+    .social {
         margin-top: 20px;
     }
 
     .social-links {
+
         @include clearfix;
+
         float: left;
 
         li {
@@ -33,10 +36,11 @@ footer {
     }
 
     .back-to-top {
-        background-color: white;
-        border-radius: 50%;
 
         @include box-shadow(0 5px 15px rgba(0,0,0,0.5));
+
+        background-color: white;
+        border-radius: 50%;
         float: left;
         margin: 5px;
         border-bottom-color: white;

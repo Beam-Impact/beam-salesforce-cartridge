@@ -13,6 +13,7 @@ $desktop-menu-breakpoint: $mobile-menu-breakpoint + 1;
 
 .navbar-toggle {
     float: none;
+
     .icon-bar {
         background-color: $gray-light;
     }
@@ -86,6 +87,7 @@ $desktop-menu-breakpoint: $mobile-menu-breakpoint + 1;
 
         ul > li {
             list-style: none;
+
             a {
                 white-space: nowrap;
                 display: block;
@@ -122,6 +124,7 @@ $desktop-menu-breakpoint: $mobile-menu-breakpoint + 1;
         > a {
             color: $dark-gray;
         }
+
         > a:hover,
         > a:active,
         > a:focus {
@@ -139,6 +142,7 @@ $desktop-menu-breakpoint: $mobile-menu-breakpoint + 1;
         border-radius: 0;
 
         @include box-shadow(0 5px 15px rgba(0,0,0,0.5));
+
         z-index: 1;
 
         &.active .close-menu {
@@ -164,6 +168,7 @@ $desktop-menu-breakpoint: $mobile-menu-breakpoint + 1;
         > .close-menu {
             border-bottom: 1px solid $dark-gray;
             background-color: $light-gray;
+
             a {
                 padding: 15px 20px;
                 display: block;
@@ -215,6 +220,7 @@ $desktop-menu-breakpoint: $mobile-menu-breakpoint + 1;
 
         .dropdown {
             @include clearfix;
+
             .caret {
                 @include horizontalCaret;
             }
