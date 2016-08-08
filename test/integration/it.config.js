@@ -12,6 +12,4 @@ var opts = Object.assign({}, getConfig({
     locale: 'x_default'
 }, './config.json'), argv);
 
-var specs = 'test/integration/' + opts.suite;
-
-module.exports=opts;
+module.exports = opts;
