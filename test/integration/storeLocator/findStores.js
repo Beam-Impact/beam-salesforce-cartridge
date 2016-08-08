@@ -4,14 +4,6 @@ var config = require('../it.config');
 
 
 describe('Store Locator', function () {
-    var baseUrlSplit = config.baseUrl.split('/');
-    var expectedActionUrl = '/' +
-                            baseUrlSplit[baseUrlSplit.length - 4] + '/' +
-                            baseUrlSplit[baseUrlSplit.length - 3] + '/' +
-                            baseUrlSplit[baseUrlSplit.length - 2] + '/' +
-                            baseUrlSplit[baseUrlSplit.length - 1] + '/Stores-FindStores';
-    var expectGoogleMapsApiUrl = 'https://maps.googleapis.com/maps/api/js?key=null';
-
     describe('FindStores using Postal Code and radius', function () {
         it('should returns locations for valid postal code and radius', function (done) {
             var url = config.baseUrl + '/Stores-FindStores?postalCode=01803&radius=15';
@@ -98,8 +90,6 @@ describe('Store Locator', function () {
                     'postalCode': '01803'
                 },
                 'radius': 15,
-                'actionUrl': expectedActionUrl,
-                'googleMapsApi': expectGoogleMapsApiUrl,
                 'radiusOptions': [
                     15,
                     30,
@@ -113,7 +103,11 @@ describe('Store Locator', function () {
                 assert.equal(response.statusCode, 200, 'Expected statusCode to be 200.');
 
                 var bodyAsJson = JSON.parse(response.body);
-                assert.deepEqual(bodyAsJson.stores, ExpectedResBody.stores, 'Actual response body not as expected.');
+                assert.deepEqual(bodyAsJson.stores, ExpectedResBody.stores, 'Actual response.stores not as expected.');
+                assert.deepEqual(bodyAsJson.locations, ExpectedResBody.locations, 'Actual response.locations not as expected.');
+                assert.deepEqual(bodyAsJson.searchKey, ExpectedResBody.searchKey, 'Actual response.searchKey not as expected.');
+                assert.deepEqual(bodyAsJson.radius, ExpectedResBody.radius, 'Actual response.radius not as expected.');
+                assert.deepEqual(bodyAsJson.radiusOptions, ExpectedResBody.radiusOptions, 'Actual response.radiusOptions not as expected.');
 
                 done();
             });
@@ -148,23 +142,16 @@ describe('Store Locator', function () {
                 'searchKey': {
                     'postalCode': '04330'
                 },
-                'radius': 100,
-                'actionUrl': expectedActionUrl,
-                'googleMapsApi': expectGoogleMapsApiUrl,
-                'radiusOptions': [
-                    15,
-                    30,
-                    50,
-                    100,
-                    300
-                ]
+                'radius': 100
             };
 
             request(myRequest, function (error, response) {
                 assert.equal(response.statusCode, 200, 'Expected statusCode to be 200.');
 
                 var bodyAsJson = JSON.parse(response.body);
-                assert.deepEqual(bodyAsJson, ExpectedResBody, 'Actual response body not as expected.');
+                assert.deepEqual(bodyAsJson.stores, ExpectedResBody.stores, 'Actual response.stores not as expected.');
+                assert.deepEqual(bodyAsJson.locations, ExpectedResBody.locations, 'Actual response.locations not as expected.');
+                assert.deepEqual(bodyAsJson.radius, ExpectedResBody.radius, 'Actual response.radius not as expected.');
 
                 done();
             });
@@ -179,27 +166,15 @@ describe('Store Locator', function () {
             };
             var ExpectedResBody = {
                 'stores': [],
-                'locations': [],
-                'searchKey': {
-                    'postalCode': '012AB'
-                },
-                'radius': 5,
-                'actionUrl': expectedActionUrl,
-                'googleMapsApi': expectGoogleMapsApiUrl,
-                'radiusOptions': [
-                    15,
-                    30,
-                    50,
-                    100,
-                    300
-                ]
+                'locations': []
             };
 
             request(myRequest, function (error, response) {
                 assert.equal(response.statusCode, 200, 'Expected statusCode to be 200.');
 
                 var bodyAsJson = JSON.parse(response.body);
-                assert.deepEqual(bodyAsJson, ExpectedResBody, 'Actual response body not as expected.');
+                assert.deepEqual(bodyAsJson.stores, ExpectedResBody.stores, 'Actual response.stores not as expected.');
+                assert.deepEqual(bodyAsJson.locations, ExpectedResBody.locations, 'Actual response.locations not as expected.');
 
                 done();
             });
@@ -214,27 +189,15 @@ describe('Store Locator', function () {
             };
             var ExpectedResBody = {
                 'stores': [],
-                'locations': [],
-                'searchKey': {
-                    'postalCode': '01803'
-                },
-                'radius': -15,
-                'actionUrl': expectedActionUrl,
-                'googleMapsApi': expectGoogleMapsApiUrl,
-                'radiusOptions': [
-                    15,
-                    30,
-                    50,
-                    100,
-                    300
-                ]
+                'locations': []
             };
 
             request(myRequest, function (error, response) {
                 assert.equal(response.statusCode, 200, 'Expected statusCode to be 200.');
 
                 var bodyAsJson = JSON.parse(response.body);
-                assert.deepEqual(bodyAsJson, ExpectedResBody, 'Actual response body not as expected.');
+                assert.deepEqual(bodyAsJson.stores, ExpectedResBody.stores, 'Actual response.stores not as expected.');
+                assert.deepEqual(bodyAsJson.locations, ExpectedResBody.locations, 'Actual response.locations not as expected.');
 
                 done();
             });
@@ -300,8 +263,6 @@ describe('Store Locator', function () {
                     'long': -71.14878340000001
                 },
                 'radius': 23,
-                'actionUrl': expectedActionUrl,
-                'googleMapsApi': expectGoogleMapsApiUrl,
                 'radiusOptions': [
                     15,
                     30,
@@ -315,7 +276,11 @@ describe('Store Locator', function () {
                 assert.equal(response.statusCode, 200, 'Expected statusCode to be 200.');
 
                 var bodyAsJson = JSON.parse(response.body);
-                assert.deepEqual(bodyAsJson, ExpectedResBody, 'Actual response body not as expected.');
+                assert.deepEqual(bodyAsJson.stores, ExpectedResBody.stores, 'Actual response.stores not as expected.');
+                assert.deepEqual(bodyAsJson.locations, ExpectedResBody.locations, 'Actual response.locations not as expected.');
+                assert.deepEqual(bodyAsJson.searchKey, ExpectedResBody.searchKey, 'Actual response.searchKey not as expected.');
+                assert.deepEqual(bodyAsJson.radius, ExpectedResBody.radius, 'Actual response.radius not as expected.');
+                assert.deepEqual(bodyAsJson.radiusOptions, ExpectedResBody.radiusOptions, 'Actual response.radiusOptions not as expected.');
 
                 done();
             });
@@ -330,28 +295,15 @@ describe('Store Locator', function () {
             };
             var ExpectedResBody = {
                 'stores': [],
-                'locations': [],
-                'searchKey': {
-                    'lat': 0,
-                    'long': 0
-                },
-                'radius': 100,
-                'actionUrl': expectedActionUrl,
-                'googleMapsApi': expectGoogleMapsApiUrl,
-                'radiusOptions': [
-                    15,
-                    30,
-                    50,
-                    100,
-                    300
-                ]
+                'locations': []
             };
 
             request(myRequest, function (error, response) {
                 assert.equal(response.statusCode, 200, 'Expected statusCode to be 200.');
 
                 var bodyAsJson = JSON.parse(response.body);
-                assert.deepEqual(bodyAsJson, ExpectedResBody, 'Actual response body not as expected.');
+                assert.deepEqual(bodyAsJson.stores, ExpectedResBody.stores, 'Actual response.stores not as expected.');
+                assert.deepEqual(bodyAsJson.locations, ExpectedResBody.locations, 'Actual response.locations not as expected.');
 
                 done();
             });
@@ -366,28 +318,15 @@ describe('Store Locator', function () {
             };
             var ExpectedResBody = {
                 'stores': [],
-                'locations': [],
-                'searchKey': {
-                    'lat': 100,
-                    'long': 190
-                },
-                'radius': 15,
-                'actionUrl': expectedActionUrl,
-                'googleMapsApi': expectGoogleMapsApiUrl,
-                'radiusOptions': [
-                    15,
-                    30,
-                    50,
-                    100,
-                    300
-                ]
+                'locations': []
             };
 
             request(myRequest, function (error, response) {
                 assert.equal(response.statusCode, 200, 'Expected statusCode to be 200.');
 
                 var bodyAsJson = JSON.parse(response.body);
-                assert.deepEqual(bodyAsJson, ExpectedResBody, 'Actual response body not as expected.');
+                assert.deepEqual(bodyAsJson.stores, ExpectedResBody.stores, 'Actual response.stores not as expected.');
+                assert.deepEqual(bodyAsJson.locations, ExpectedResBody.locations, 'Actual response.locations not as expected.');
 
                 done();
             });
@@ -410,15 +349,9 @@ describe('Store Locator', function () {
 
                 var bodyAsJson = JSON.parse(response.body);
                 assert.isNotNull(bodyAsJson.stores, 'Expect stores property in response.');
-                assert.isArray(bodyAsJson.stores, 'Expect stores property asarray.');
+                assert.isArray(bodyAsJson.stores, 'Expect stores property as array.');
                 assert.isNotNull(bodyAsJson.locations, 'Expect locations property in response.');
-                assert.isArray(bodyAsJson.locations, 'Expect locations property asarray.');
-                assert.isNotNull(bodyAsJson.searchKey.lat, 'Expect searchKey.lat property in response.');
-                assert.isNotNull(bodyAsJson.searchKey.long, 'Expect searchKey.long property in response.');
-                assert.equal(bodyAsJson.radius, 100, 'Expect radius default to 100.');
-                assert.equal(bodyAsJson.actionUrl, expectedActionUrl, 'Expect actionUrl to be ' + expectedActionUrl);
-                assert.equal(bodyAsJson.googleMapsApi, expectGoogleMapsApiUrl, 'Expect googleMapsApiUrl to be ' + expectGoogleMapsApiUrl);
-                assert.deepEqual(bodyAsJson.radiusOptions, [15, 30, 50, 100, 300], 'Expect radiusOptions to be [15, 30, 50, 100, 300]');
+                assert.isArray(bodyAsJson.locations, 'Expect locations property as array.');
 
                 done();
             });
