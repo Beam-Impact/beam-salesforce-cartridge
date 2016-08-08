@@ -89,7 +89,14 @@ describe('Store Locator', function () {
                 'searchKey': {
                     'postalCode': '01803'
                 },
-                'radius': 15
+                'radius': 15,
+                'radiusOptions': [
+                    15,
+                    30,
+                    50,
+                    100,
+                    300
+                ]
             };
 
             request(myRequest, function (error, response) {
@@ -97,9 +104,10 @@ describe('Store Locator', function () {
 
                 var bodyAsJson = JSON.parse(response.body);
                 assert.deepEqual(bodyAsJson.stores, ExpectedResBody.stores, 'Actual response.stores not as expected.');
-                assert.deepEqual(bodyAsJson.locations, ExpectedResBody.locations, 'Actual response.locations body not as expected.');
-                assert.deepEqual(bodyAsJson.searchKey, ExpectedResBody.searchKey, 'Actual response.searchKey body not as expected.');
-                assert.deepEqual(bodyAsJson.radius, ExpectedResBody.radius, 'Actual response.radius body not as expected.');
+                assert.deepEqual(bodyAsJson.locations, ExpectedResBody.locations, 'Actual response.locations not as expected.');
+                assert.deepEqual(bodyAsJson.searchKey, ExpectedResBody.searchKey, 'Actual response.searchKey not as expected.');
+                assert.deepEqual(bodyAsJson.radius, ExpectedResBody.radius, 'Actual response.radius not as expected.');
+                assert.deepEqual(bodyAsJson.radiusOptions, ExpectedResBody.radiusOptions, 'Actual response.radiusOptions not as expected.');
 
                 done();
             });
@@ -142,8 +150,8 @@ describe('Store Locator', function () {
 
                 var bodyAsJson = JSON.parse(response.body);
                 assert.deepEqual(bodyAsJson.stores, ExpectedResBody.stores, 'Actual response.stores not as expected.');
-                assert.deepEqual(bodyAsJson.locations, ExpectedResBody.locations, 'Actual response.locations body not as expected.');
-                assert.deepEqual(bodyAsJson.radius, ExpectedResBody.radius, 'Actual response.radius body not as expected.');
+                assert.deepEqual(bodyAsJson.locations, ExpectedResBody.locations, 'Actual response.locations not as expected.');
+                assert.deepEqual(bodyAsJson.radius, ExpectedResBody.radius, 'Actual response.radius not as expected.');
 
                 done();
             });
@@ -166,7 +174,7 @@ describe('Store Locator', function () {
 
                 var bodyAsJson = JSON.parse(response.body);
                 assert.deepEqual(bodyAsJson.stores, ExpectedResBody.stores, 'Actual response.stores not as expected.');
-                assert.deepEqual(bodyAsJson.locations, ExpectedResBody.locations, 'Actual response.locations body not as expected.');
+                assert.deepEqual(bodyAsJson.locations, ExpectedResBody.locations, 'Actual response.locations not as expected.');
 
                 done();
             });
@@ -189,7 +197,7 @@ describe('Store Locator', function () {
 
                 var bodyAsJson = JSON.parse(response.body);
                 assert.deepEqual(bodyAsJson.stores, ExpectedResBody.stores, 'Actual response.stores not as expected.');
-                assert.deepEqual(bodyAsJson.locations, ExpectedResBody.locations, 'Actual response.locations body not as expected.');
+                assert.deepEqual(bodyAsJson.locations, ExpectedResBody.locations, 'Actual response.locations not as expected.');
 
                 done();
             });
@@ -254,7 +262,14 @@ describe('Store Locator', function () {
                     'lat': 42.6895548,
                     'long': -71.14878340000001
                 },
-                'radius': 23
+                'radius': 23,
+                'radiusOptions': [
+                    15,
+                    30,
+                    50,
+                    100,
+                    300
+                ]
             };
 
             request(myRequest, function (error, response) {
@@ -262,9 +277,10 @@ describe('Store Locator', function () {
 
                 var bodyAsJson = JSON.parse(response.body);
                 assert.deepEqual(bodyAsJson.stores, ExpectedResBody.stores, 'Actual response.stores not as expected.');
-                assert.deepEqual(bodyAsJson.locations, ExpectedResBody.locations, 'Actual response.locations body not as expected.');
-                assert.deepEqual(bodyAsJson.searchKey, ExpectedResBody.searchKey, 'Actual response.searchKey body not as expected.');
-                assert.deepEqual(bodyAsJson.radius, ExpectedResBody.radius, 'Actual response.radius body not as expected.');
+                assert.deepEqual(bodyAsJson.locations, ExpectedResBody.locations, 'Actual response.locations not as expected.');
+                assert.deepEqual(bodyAsJson.searchKey, ExpectedResBody.searchKey, 'Actual response.searchKey not as expected.');
+                assert.deepEqual(bodyAsJson.radius, ExpectedResBody.radius, 'Actual response.radius not as expected.');
+                assert.deepEqual(bodyAsJson.radiusOptions, ExpectedResBody.radiusOptions, 'Actual response.radiusOptions not as expected.');
 
                 done();
             });
@@ -287,7 +303,7 @@ describe('Store Locator', function () {
 
                 var bodyAsJson = JSON.parse(response.body);
                 assert.deepEqual(bodyAsJson.stores, ExpectedResBody.stores, 'Actual response.stores not as expected.');
-                assert.deepEqual(bodyAsJson.locations, ExpectedResBody.locations, 'Actual response.locations body not as expected.');
+                assert.deepEqual(bodyAsJson.locations, ExpectedResBody.locations, 'Actual response.locations not as expected.');
 
                 done();
             });
@@ -310,7 +326,7 @@ describe('Store Locator', function () {
 
                 var bodyAsJson = JSON.parse(response.body);
                 assert.deepEqual(bodyAsJson.stores, ExpectedResBody.stores, 'Actual response.stores not as expected.');
-                assert.deepEqual(bodyAsJson.locations, ExpectedResBody.locations, 'Actual response.locations body not as expected.');
+                assert.deepEqual(bodyAsJson.locations, ExpectedResBody.locations, 'Actual response.locations not as expected.');
 
                 done();
             });
