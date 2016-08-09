@@ -23,6 +23,7 @@ function maps() {
     var map;
     var latlng = new google.maps.LatLng(-34.397, 150.644);
     var mapOptions = {
+        scrollwheel: false,
         zoom: 8,
         center: latlng
     };
@@ -201,4 +202,3 @@ module.exports = function () {
         });
     });
 };
-

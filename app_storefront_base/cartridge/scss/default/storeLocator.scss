@@ -1,6 +1,6 @@
-@charset "UTF-8";
 @import "variables";
-@import "bootstrap/variables";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins/breakpoints";
 
 .btn-storelocator-search {
     background-color: $light-gray;
@@ -35,7 +35,7 @@
 .map-canvas {
     height: 225px;
 
-    @media (min-width: $screen-sm-min) {
+    @include media-breakpoint-up(sm) {
         height: 450px;
     }
 }
@@ -54,7 +54,7 @@
 
 .store-separator {
 
-    @media (min-width: $screen-sm-min) {
+    @include media-breakpoint-up(sm) {
         width: 60%;
     }
 }

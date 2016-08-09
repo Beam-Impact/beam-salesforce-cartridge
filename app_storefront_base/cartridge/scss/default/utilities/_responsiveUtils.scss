@@ -1,29 +1,30 @@
 $alignment: left, center, right;
 $pull: left, right;
 
-$responsive-sizes: (xs, $screen-xs-min, $screen-xs-max),
-    (sm, $screen-sm-min, $screen-sm-max),
-    (md, $screen-md-min, $screen-md-max),
-    (lg, $screen-md-min, 0);
+$responsive-sizes: (xs),
+    (sm),
+    (md),
+    (lg),
+    (xl);
 
-@mixin media($min, $max) {
+@mixin media($size) {
 
-    @if $max == 0 {
+    @if $size == xs {
 
-        @media (min-width: $min) {
+        @include media-breakpoint-up($size) {
             @content;
         }
     } @else {
 
-        @media (min-width: $min) and (max-width: $max) {
+        @include media-breakpoint-only($size) {
             @content;
         }
     }
 }
 
-@each $size, $min-width, $max-width in $responsive-sizes {
+@each $size in $responsive-sizes {
 
-    @include media($min-width, $max-width) {
+    @include media($size) {
 
         @each $align in $alignment {
             .text-#{$align}-#{$size} {

@@ -8,8 +8,7 @@
     margin-left: 60px;
 }
 
-$mobile-menu-breakpoint: $screen-sm-max;
-$desktop-menu-breakpoint: $mobile-menu-breakpoint + 1;
+$desktop-menu-breakpoint: md;
 
 .navbar-toggle {
     float: none;
@@ -48,7 +47,7 @@ $desktop-menu-breakpoint: $mobile-menu-breakpoint + 1;
     height: 0;
 }
 
-@media (min-width: $desktop-menu-breakpoint) {
+@include media-breakpoint-up($desktop-menu-breakpoint) {
     .navbar-nav > .dropdown {
         position: static;
 
@@ -115,7 +114,7 @@ $desktop-menu-breakpoint: $mobile-menu-breakpoint + 1;
     }
 }
 
-@media (max-width: $mobile-menu-breakpoint) {
+@include media-breakpoint-down($desktop-menu-breakpoint) {
     .navbar-toggle {
         display: block;
     }
@@ -228,7 +227,7 @@ $desktop-menu-breakpoint: $mobile-menu-breakpoint + 1;
     }
 }
 
-@media (max-width: $screen-xs-max) {
+@include media-breakpoint-down(sm) {
     .navbar.active {
         width: 100%;
     }
