@@ -8,7 +8,7 @@
     "test:integration": "./node_modules/.bin/mocha --reporter spec",
     "compile:scss": "node-sass --include-path node_modules/bootstrap-sass/assets/stylesheets --include-path node_modules/font-awesome/scss --include-path node_modules/flag-icon-css/sass app_storefront_base/cartridge/scss/default/ -o app_storefront_base/cartridge/static/default/css/",
     "compile:js": "mkdir -p app_storefront_base/cartridge/static/default/js && node bin/Makefile.js browserify",
-    "compile:fonts": "mkdir -p app_storefront_base/cartridge/static/default/fonts && cp -r node_modules/font-awesome/fonts/ $_ && cp -r node_modules/flag-icon-css/flags/ $_/flags",
+    "compile:fonts": "mkdir -p app_storefront_base/cartridge/static/default/fonts && cp -r node_modules/font-awesome/fonts/ app_storefront_base/cartridge/static/default/fonts && cp -r node_modules/flag-icon-css/flags/ app_storefront_base/cartridge/static/default/fonts/flags",
     "lint": "eslint . && stylelint --syntax scss \"app_storefront_base/cartridge/scss/**/*.scss\"",
     "copyResource": "node bin/Makefile.js copyResource -- ",
     "doc": "bin/doc.sh"
