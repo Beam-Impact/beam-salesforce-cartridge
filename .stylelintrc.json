@@ -10,7 +10,7 @@
         "scss/dollar-variable-no-missing-interpolation": true,
         "scss/media-feature-value-dollar-variable": "always",
         "scss/selector-no-redundant-nesting-selector": true,
-        "at-rule-empty-line-before": [ "always", { "ignoreAtRules": ["else"] } ],
+        "at-rule-empty-line-before": [ "always", { "ignoreAtRules": ["else"], "ignore": ["blockless-after-same-name-blockless", "blockless-group"] } ],
         "block-closing-brace-newline-after": [ "always", { "ignoreAtRules": ["if", "else"] } ]
     }
 }

@@ -7,11 +7,14 @@ $responsive-sizes: (xs, $screen-xs-min, $screen-xs-max),
     (lg, $screen-md-min, 0);
 
 @mixin media($min, $max) {
+
     @if $max == 0 {
+
         @media (min-width: $min) {
             @content;
         }
     } @else {
+
         @media (min-width: $min) and (max-width: $max) {
             @content;
         }
@@ -19,7 +22,9 @@ $responsive-sizes: (xs, $screen-xs-min, $screen-xs-max),
 }
 
 @each $size, $min-width, $max-width in $responsive-sizes {
+
     @include media($min-width, $max-width) {
+
         @each $align in $alignment {
             .text-#{$align}-#{$size} {
                 text-align: center;

@@ -9,6 +9,7 @@ $menu-horizontal-align-margin: 8px;
     list-style: none;
 
     @include clearfix;
+
     > li {
         float: left;
         margin-left: $menu-item-margin;
@@ -42,6 +43,7 @@ $menu-horizontal-align-margin: 8px;
 
 #mini-cart {
     margin-top: $menu-horizontal-align-margin;
+
     a {
         color: $dark-gray;
     }
