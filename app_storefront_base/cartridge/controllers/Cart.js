@@ -9,6 +9,7 @@ var locale = require('~/cartridge/scripts/middleware/locale');
 var ProductMgr = require('dw/catalog/ProductMgr');
 var ShippingMgr = require('dw/order/ShippingMgr');
 var Transaction = require('dw/system/Transaction');
+var URLUtils = require('dw/web/URLUtils');
 
 /**
  * performs cart calculation
@@ -50,20 +51,86 @@ server.get('Show', locale, function (req, res, next) {
     var currentBasket = BasketMgr.getCurrentOrNewBasket();
 
     Transaction.wrap(function () {
-        var productLineItem = currentBasket.createProductLineItem(
-            '701642823940',
-            currentBasket.defaultShipment
-        );
-
-        productLineItem.setQuantityValue(1);
         calculateCart(currentBasket);
     });
 
+    var removeProductLineItemUrl = URLUtils.url('Cart-RemoveProductLineItem').toString();
+    var updateQuantityUrl = URLUtils.url('Cart-UpdateQuantity').toString();
     var shipmentShippingModel = ShippingMgr.getShipmentShippingModel(currentBasket.defaultShipment);
-    var basket = new Cart(currentBasket, shipmentShippingModel);
+    var basket = new Cart(
+        currentBasket,
+        shipmentShippingModel,
+        removeProductLineItemUrl,
+        updateQuantityUrl
+    );
+
     res.render('cart', basket);
-    //res.json(basket);
     next();
 });
+
+server.get('RemoveProductLineItem', categories, locale, function (req, res, next) {
+    var currentBasket = BasketMgr.getCurrentBasket();
+    var removeProductLineItemUrl = URLUtils.url('Cart-RemoveProductLineItem').toString();
+    var updateQuantityUrl = URLUtils.url('Cart-UpdateQuantity').toString();
+
+    var shipmentShippingModel = ShippingMgr.getShipmentShippingModel(currentBasket.defaultShipment);
+
+    Transaction.wrap(function () {
+        if (req.querystring.pid && req.querystring.uuid) {
+            var productLineItems = currentBasket.getAllProductLineItems(req.querystring.pid);
+            for (var i = 0; i < productLineItems.length; i++) {
+                var item = productLineItems[i];
+                if ((item.UUID === req.querystring.uuid)) {
+                    currentBasket.removeProductLineItem(item);
+                    break;
+                }
+            }
+            calculateCart(currentBasket);
+        }
+    });
+
+    var basket = new Cart(
+        currentBasket,
+        shipmentShippingModel,
+        removeProductLineItemUrl,
+        updateQuantityUrl
+    );
+
+    res.json(basket);
+    next();
+});
+
+server.get('UpdateQuantity', categories, locale, function (req, res, next) {
+    var currentBasket = BasketMgr.getCurrentBasket();
+    var removeProductLineItemUrl = URLUtils.url('Cart-RemoveProductLineItem').toString();
+    var updateQuantityUrl = URLUtils.url('Cart-UpdateQuantity').toString();
+
+    var shipmentShippingModel = ShippingMgr.getShipmentShippingModel(currentBasket.defaultShipment);
+
+    Transaction.wrap(function () {
+        if (req.querystring.pid && req.querystring.uuid) {
+            var productLineItems = currentBasket.getAllProductLineItems(req.querystring.pid);
+            for (var i = 0; i < productLineItems.length; i++) {
+                var item = productLineItems[i];
+                if ((req.querystring.quantity && item.UUID === req.querystring.uuid)) {
+                    item.setQuantityValue(req.querystring.quantity);
+                    break;
+                }
+            }
+            calculateCart(currentBasket);
+        }
+    });
+
+    var basket = new Cart(
+        currentBasket,
+        shipmentShippingModel,
+        removeProductLineItemUrl,
+        updateQuantityUrl
+    );
+
+    res.json(basket);
+    next();
+});
+
 
 module.exports = server.exports();

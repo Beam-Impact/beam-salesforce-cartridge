@@ -4,21 +4,20 @@
 
 .cart {
     background-color: #f6f6f6;
+    padding-left: 5px;
+    padding-right: 5px;
+    @media (min-width: $screen-sm-min) {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
 }
 
 .line-item-attributes {
     font-size: 13px;
 }
 
-.line-item-content {
-}
-
-.line-item-img {
-    padding-left: 5px;
-}
-
 .line-item-name {
-    padding: 5px 0 0 5px;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
@@ -39,9 +38,13 @@
 
 .remove-btn {
     color: #aaa;
-    float: right;
     font-size: 26px;
     padding: 0;
+    position: absolute;
+    top: -10px;
+    right: 20px;
+    border: none;
+    background-color: #fff;
 }
 
 .line-item-divider {
@@ -55,4 +58,13 @@
 
 .optional-promo {
     color: $brand-color;
+}
+
+.product-info {
+    margin-bottom: 5px;
+    padding: 10px;
+}
+
+.remove-line-item {
+    position: relative;
 }

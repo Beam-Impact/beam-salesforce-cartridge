@@ -132,7 +132,14 @@ function getApplicableShippingMethods(shipmentModel) {
     });
 }
 
-function cart(basket, shipmentShippingModel) {
+/**
+ * Cart class that represents collection of line items
+ * @param {dw.order.Basket} basket Current users's basket
+ * @param {dw.order.ShipmentShippingModel} shipmentShippingModel - Instance of the shipping model
+ * @constructor
+ */
+function cart(basket, shipmentShippingModel, removeProductLineItemUrl, updateQuantityUrl) {
+>>>>>>> [RAP-5039: add service to remove product line item and to update quantity]
     if (basket !== null) {
         this.items = createProductLineItemsObject(basket.allProductLineItems);
         this.numItems = getTotalQuantity(basket.allProductLineItems);
@@ -156,6 +163,8 @@ function cart(basket, shipmentShippingModel) {
             basket.shippingTotalPrice.value,
             basket.shippingTotalPrice.currencyCode
         ));
+        this.removeProductLineItemUrl = removeProductLineItemUrl;
+        this.updateQuantityUrl = updateQuantityUrl;
     } else {
         this.items = [];
         this.numItems = 0;
