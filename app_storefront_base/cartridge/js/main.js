@@ -1,5 +1,5 @@
 window.jQuery = window.$ = require('jquery');
-require('../../../node_modules/bootstrap-sass/assets/javascripts/bootstrap');
+require('../../../node_modules/bootstrap/dist/js/bootstrap');
 
 $(document).ready(function () {
     require('./components/menu')();
