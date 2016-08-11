@@ -20,6 +20,41 @@ function calculateCart(basket) {
     HookMgr.callHook('dw.ocapi.shop.basket.calculate', 'calculate', basket);
 }
 
+function selectShippingMethod(defaultShipment, shippingMethodID, shippingMethods) {
+    var applicableShippingMethods;
+    var defaultShippingMethod = ShippingMgr.getDefaultShippingMethod();
+    var isShipmentSet = false;
+    var shipment = defaultShipment.ID;
+
+    if (shippingMethods) {
+        applicableShippingMethods = shippingMethods;
+    } else {
+        var shipmentModel = ShippingMgr.getShipmentShippingModel(defaultShipment);
+        // what if there is an address, this can narrow down the list of shipping methods
+        applicableShippingMethods = shipmentModel.applicableShippingMethods;
+    }
+
+    // loop through the shipping methods to get shipping method
+    for (var i = 0; i < applicableShippingMethods.length; i++) {
+        var shippingMethod = applicableShippingMethods[i];
+        if (shippingMethod.ID === shippingMethodID) {
+            defaultShipment.setShippingMethod(shippingMethod);
+            isShipmentSet = true;
+            break;
+        }
+    }
+
+    if (!isShipmentSet) {
+        if (applicableShippingMethods.contains(defaultShippingMethod)) {
+            defaultShipment.setShippingMethod(defaultShippingMethod);
+        } else if (applicableShippingMethods.length > 0) {
+            defaultShipment.setShippingMethod(applicableShippingMethods.iterator().next());
+        } else {
+            defaultShipment.setShippingMethod(null);
+        }
+    }
+}
+
 server.get('MiniCart', server.middleware.include, function (req, res, next) {
     var currentBasket = BasketMgr.getCurrentOrNewBasket();
     var quantityTotal = Cart.getTotalQuantity(currentBasket.allProductLineItems);
@@ -56,12 +91,16 @@ server.get('Show', locale, function (req, res, next) {
 
     var removeProductLineItemUrl = URLUtils.url('Cart-RemoveProductLineItem').toString();
     var updateQuantityUrl = URLUtils.url('Cart-UpdateQuantity').toString();
+    var selectShippingUrl = URLUtils.url('Cart-SelectShippingMethod').toString();
+
     var shipmentShippingModel = ShippingMgr.getShipmentShippingModel(currentBasket.defaultShipment);
+
     var basket = new Cart(
         currentBasket,
         shipmentShippingModel,
         removeProductLineItemUrl,
-        updateQuantityUrl
+        updateQuantityUrl,
+        selectShippingUrl
     );
 
     res.render('cart', basket);
@@ -72,6 +111,7 @@ server.get('RemoveProductLineItem', categories, locale, function (req, res, next
     var currentBasket = BasketMgr.getCurrentBasket();
     var removeProductLineItemUrl = URLUtils.url('Cart-RemoveProductLineItem').toString();
     var updateQuantityUrl = URLUtils.url('Cart-UpdateQuantity').toString();
+    var selectShippingUrl = URLUtils.url('Cart-SelectShippingMethod').toString();
 
     var shipmentShippingModel = ShippingMgr.getShipmentShippingModel(currentBasket.defaultShipment);
 
@@ -93,7 +133,8 @@ server.get('RemoveProductLineItem', categories, locale, function (req, res, next
         currentBasket,
         shipmentShippingModel,
         removeProductLineItemUrl,
-        updateQuantityUrl
+        updateQuantityUrl,
+        selectShippingUrl
     );
 
     res.json(basket);
@@ -104,6 +145,7 @@ server.get('UpdateQuantity', categories, locale, function (req, res, next) {
     var currentBasket = BasketMgr.getCurrentBasket();
     var removeProductLineItemUrl = URLUtils.url('Cart-RemoveProductLineItem').toString();
     var updateQuantityUrl = URLUtils.url('Cart-UpdateQuantity').toString();
+    var selectShippingUrl = URLUtils.url('Cart-SelectShippingMethod').toString();
 
     var shipmentShippingModel = ShippingMgr.getShipmentShippingModel(currentBasket.defaultShipment);
 
@@ -113,7 +155,8 @@ server.get('UpdateQuantity', categories, locale, function (req, res, next) {
             for (var i = 0; i < productLineItems.length; i++) {
                 var item = productLineItems[i];
                 if ((req.querystring.quantity && item.UUID === req.querystring.uuid)) {
-                    item.setQuantityValue(req.querystring.quantity);
+                    var updatedQuantity = parseInt(req.querystring.quantity, 10);
+                    item.setQuantityValue(updatedQuantity);
                     break;
                 }
             }
@@ -125,7 +168,35 @@ server.get('UpdateQuantity', categories, locale, function (req, res, next) {
         currentBasket,
         shipmentShippingModel,
         removeProductLineItemUrl,
-        updateQuantityUrl
+        updateQuantityUrl,
+        selectShippingUrl
+    );
+
+    res.json(basket);
+    next();
+});
+
+server.get('SelectShippingMethod', categories, locale, function (req, res, next) {
+    var currentBasket = BasketMgr.getCurrentBasket();
+    var removeProductLineItemUrl = URLUtils.url('Cart-RemoveProductLineItem').toString();
+    var updateQuantityUrl = URLUtils.url('Cart-UpdateQuantity').toString();
+    var selectShippingUrl = URLUtils.url('Cart-SelectShippingMethod').toString();
+
+    var shipmentShippingModel = ShippingMgr.getShipmentShippingModel(currentBasket.defaultShipment);
+
+    if (req.querystring.methodID) {
+        Transaction.wrap(function () {
+            selectShippingMethod(currentBasket.defaultShipment, req.querystring.methodID);
+            calculateCart(currentBasket);
+        });
+    }
+
+    var basket = new Cart(
+        currentBasket,
+        shipmentShippingModel,
+        removeProductLineItemUrl,
+        updateQuantityUrl,
+        selectShippingUrl
     );
 
     res.json(basket);

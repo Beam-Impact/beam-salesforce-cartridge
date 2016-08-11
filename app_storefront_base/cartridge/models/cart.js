@@ -138,8 +138,12 @@ function getApplicableShippingMethods(shipmentModel) {
  * @param {dw.order.ShipmentShippingModel} shipmentShippingModel - Instance of the shipping model
  * @constructor
  */
-function cart(basket, shipmentShippingModel, removeProductLineItemUrl, updateQuantityUrl) {
->>>>>>> [RAP-5039: add service to remove product line item and to update quantity]
+function cart(basket,
+              shipmentShippingModel,
+              removeProductLineItemUrl,
+              updateQuantityUrl,
+              selectShippingUrl
+    ) {
     if (basket !== null) {
         this.items = createProductLineItemsObject(basket.allProductLineItems);
         this.numItems = getTotalQuantity(basket.allProductLineItems);
@@ -165,6 +169,8 @@ function cart(basket, shipmentShippingModel, removeProductLineItemUrl, updateQua
         ));
         this.removeProductLineItemUrl = removeProductLineItemUrl;
         this.updateQuantityUrl = updateQuantityUrl;
+        this.selectShippingUrl = selectShippingUrl;
+        this.selectedShippingMethod = basket.defaultShipment.shippingMethod.ID;
     } else {
         this.items = [];
         this.numItems = 0;

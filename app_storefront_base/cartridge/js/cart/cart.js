@@ -86,12 +86,10 @@ module.exports = function () {
             type: 'get',
             dataType: 'json',
             success: function (data) {
-                console.log(data);
-                $('.line-item-price').empty();
+                $('.item-total-' + uuid).empty();
                 for (var i = 0; i < data.items.length; i++) {
                     if (data.items[i].UUID === uuid) {
-                        // TODO will uuid have to be everywhere?
-                        $('.line-item-price').append(data.items[i].priceTotal);
+                        $('.item-total-' + uuid).append(data.items[i].priceTotal);
                         break;
                     }
                 }
@@ -100,4 +98,24 @@ module.exports = function () {
         });
     });
 
+    $('.shippingMethods').change(function () {
+        var url = $(this).attr('data-actionUrl');
+
+        console.log($(this).find(':selected').attr('data-shipping-id'));
+
+        var urlParams = {
+            methodID: $(this).find(':selected').attr('data-shipping-id')
+        };
+        url = appendToUrl(url, urlParams);
+        console.log(url);
+
+        $.ajax({
+            url: url,
+            type: 'get',
+            dataType: 'json',
+            success: function (data) {
+                updateCartTotals(data);
+            }
+        });
+    });
 };

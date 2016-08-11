@@ -83,12 +83,11 @@
                                         <form action="" method="get">
                                             <div class="form-group">
                                                 <label class="line-item-price-info" for="quantity">${Resource.msg('global.quantity','cart',null)}</label>
-                                                <select class="form-control"
+                                                <select class="form-control quantity"
                                                         data-uuid="${lineItem.UUID}"
                                                         data-pid="${lineItem.productID}"
                                                         data-actionUrl="${pdict.updateQuantityUrl}"
                                                         id="quantity"
-                                                        calss="quantity"
                                                         name="quantity">
                                                     <isloop items="${lineItem.quantityOptions}" var="option" status="loopstate">
                                                         <isif condition="${lineItem.quantity === option}">
@@ -106,7 +105,7 @@
                                             <p class="line-item-price-info">${Resource.msg('global.totalprice','cart',null)}</p>
                                         </div>
                                         <div class="row">
-                                            <span class="line-item-price">${lineItem.priceTotal}</span>
+                                            <span class="line-item-price item-total-${lineItem.UUID}">${lineItem.priceTotal}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -124,9 +123,16 @@
                                 <form action="" method="">
                                     <div class="form-group">
                                         <label for="shippingMethods">${Resource.msg('order.ordersummary.ordershipping','cart',null)}</label>
-                                        <select class="form-control" id="shippingMethods" name="shippingMethods">
+                                        <select class="form-control shippingMethods"
+                                                id="shippingMethods" name="shippingMethods"
+                                                data-actionUrl="${pdict.selectShippingUrl}">
                                             <isloop items="${pdict.shippingMethods}" var="option" status="loopstate">
-                                                <option data-shipping-id="${option.ID}">${option.displayName} ( ${option.estimatedArrivalTime} )</option>
+
+                                                <isif condition="${pdict.selectedShippingMethod === option.ID}">
+                                                    <option selected data-shipping-id="${option.ID}">${option.displayName} ( ${option.estimatedArrivalTime} )</option>
+                                                    <iselse/>
+                                                    <option data-shipping-id="${option.ID}">${option.displayName} ( ${option.estimatedArrivalTime} )</option>
+                                                </isif>
                                             </isloop>
                                         </select>
                                     </div>
