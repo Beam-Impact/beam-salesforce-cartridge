@@ -10,10 +10,10 @@ var Resource = require('dw/web/Resource');
  * @typedef ProductDetailPageResourceMap
  * @type Object
  * @property {String} global_availability - Localized string for "Availability"
- * @property {String} global_instock - Localized string for "In Stock"
+ * @property {String} label_instock - Localized string for "In Stock"
  * @property {String} global_availability - Localized string for "This item is currently not
  *     available"
- * @property {String} product_selectforstock - Localized string for "Select Styles for Availability"
+ * @property {String} info_selectforstock - Localized string for "Select Styles for Availability"
  */
 
 /**
@@ -23,10 +23,10 @@ var Resource = require('dw/web/Resource');
  */
 function getResources() {
     return {
-        global_instock: Resource.msg('global.instock', 'common', 'In Stock'),
-        global_allnotavailable: Resource.msg('global.allnotavailable', 'common',
+        label_instock: Resource.msg('label.instock', 'common', 'In Stock'),
+        label_allnotavailable: Resource.msg('label.allnotavailable', 'common',
             'This item is currently not available'),
-        product_selectforstock: Resource.msg('product.selectforstock', 'product',
+        info_selectforstock: Resource.msg('info.selectforstock', 'product',
             'Select Styles for Availability')
     };
 }

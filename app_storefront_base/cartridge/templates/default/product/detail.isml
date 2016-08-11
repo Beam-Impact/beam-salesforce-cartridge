@@ -26,11 +26,11 @@
 
                     <a class="left carousel-control" href="#pdpCarousel" role="button" data-slide="prev">
                         <span class="fa fa-chevron-left glyphicon-chevron-left" aria-hidden="true"></span>
-                        <span class="sr-only">${Resource.msg('global.previous', 'common', null)}</span>
+                        <span class="sr-only">${Resource.msg('button.previous', 'common', null)}</span>
                     </a>
                     <a class="right carousel-control" href="#pdpCarousel" role="button" data-slide="next">
                         <span class="fa fa-chevron-right glyphicon-chevron-right" aria-hidden="true"></span>
-                        <span class="sr-only">${Resource.msg('global.next', 'common', null)}</span>
+                        <span class="sr-only">${Resource.msg('button.next', 'common', null)}</span>
                     </a>
                 </div>
             </figure>
@@ -39,7 +39,7 @@
                 <section>
                     <h3>${pdict.product.name}</h3>
                     <h6>
-                        ${Resource.msg('product.item', 'product', null)}
+                        ${Resource.msg('label.item', 'product', null)}
                         <span id="product_id">${pdict.product.id}</span>
                     </h6>
                 </section>
@@ -51,7 +51,7 @@
                                 <div data-attr="${attr.attributeID}" class="swatch">
                                     <div class="attribute">
                                         <menu class="${attr.attributeID}">
-                                            ${Resource.msg('global.select', 'common', null)} ${attr.displayName}
+                                            ${Resource.msg('label.select', 'common', null)} ${attr.displayName}
                                         </menu>
                                         <isif condition="${attr.isSwatchable}">
                                             <isloop items="${attr.values}" var="attrValue">
@@ -72,7 +72,7 @@
                                         <iselse>
                                             <select name="select_${attr.attributeID}">
                                                 <option value="null">
-                                                    ${Resource.msg('global.select', 'common', null)} ${attr.displayName}
+                                                    ${Resource.msg('label.select', 'common', null)} ${attr.displayName}
                                                 </option>
                                                 <isloop items="${attr.values}" var="attrValue">
                                                     <option value="${attrValue.url}" data-attr-value="${attrValue.value}"
@@ -89,7 +89,7 @@
                             </isloop>
                         </div>
                         <div class="col-sm-6">
-                            <menu class="quantity">${Resource.msg('global.quantity', 'common', null)}</menu>
+                            <menu class="quantity">${Resource.msg('label.quantity', 'common', null)}</menu>
                             <select name="quantity">
                                 <isloop begin="${pdict.product.minOrderQuantity}"
                                         end="${pdict.product.maxOrderQuantity}"
@@ -100,15 +100,15 @@
                         </div>
                         <div>
                             <span>
-                                ${Resource.msg('global.availability', 'common', null)}:
+                                ${Resource.msg('label.availability', 'common', null)}:
                                 <span class="availability-msg">
                                     <isif condition="${pdict.product.hasRequiredAttrsSelected && pdict.product.isAvailable}">
-                                        ${pdict.resources.global_instock}
+                                        ${pdict.resources.label_instock}
                                     <iselseif condition="${pdict.product.hasRequiredAttrsSelected && !pdict.product.isAvailable}">
-                                        ${pdict.resources.global_allnotavailable}
+                                        ${pdict.resources.label_allnotavailable}
                                     </iselseif>
                                     <iselse>
-                                        ${pdict.resources.product_selectforstock}
+                                        ${pdict.resources.info_selectforstock}
                                     </isif>
                                 </span>
                             </span>
@@ -126,7 +126,7 @@
                                 id="btn_add_to_cart"
                                 disabled="${!pdict.product.hasRequiredAttrsSelected || !pdict.product.isAvailable}">
                             <i class="fa fa-shopping-bag"></i>
-                            ${Resource.msg('global.addtocart', 'common', null)}
+                            ${Resource.msg('button.addtocart', 'common', null)}
                         </button>
                     </div>
                 </div>

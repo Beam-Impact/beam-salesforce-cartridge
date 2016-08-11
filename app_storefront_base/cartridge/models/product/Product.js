@@ -4,6 +4,8 @@ var defaultImageViewTypes = ['large', 'medium', 'small', 'swatch'];
 var dwHelpers = require('../../scripts/dwHelpers');
 var PricingModel = require('./productPricingModel');
 
+var DEFAULT_MAX_ORDER_QUANTITY = 9;
+
 /**
  * Retrieves the Demandware ProductVariationAttribute within a collection of such objects
  *
@@ -11,7 +13,7 @@ var PricingModel = require('./productPricingModel');
  *     objects
  * @param {dw.catalog.ProductVariationAttribute} attr - Instance of a ProductVariationAttribute to
  *     look for in dwVariationAttrs
- * @returns {dw.catalog.ProductVariationAttribute|undefined}
+ * @returns {dw.catalog.ProductVariationAttribute|null}
  */
 function getDwVariationAttr(dwVariationAttrs, attr) {
     var iter = dwVariationAttrs.iterator();
@@ -95,18 +97,15 @@ function getImages(imageHolder) {
     var images = {};
 
     defaultImageViewTypes.forEach(function (type) {
-        var imageList = [];
         var dwImages = imageHolder.getImages(type);
 
-        dwHelpers.forEach(dwImages, function (dwMediaFile) {
-            imageList.push({
+        images[type] = dwHelpers.map(dwImages, function (dwMediaFile) {
+            return {
                 alt: dwMediaFile.alt,
                 url: dwMediaFile.URL.relative().toString(),
                 title: dwMediaFile.title
-            });
+            };
         });
-
-        images[type] = imageList;
     });
 
     return images;
@@ -220,14 +219,12 @@ function Product(args) {
         attrs: params.variables
     });
 
-    var defaultMaxOrderQuantity = 9;
-
     this.id = dwProduct.ID;
     this.name = dwProduct.name;
     this.isOnline = dwProduct.online;
     this.isSearchable = dwProduct.searchable;
     this.minOrderQuantity = dwProduct.minOrderQuantity.value || 1;
-    this.maxOrderQuantity = defaultMaxOrderQuantity;
+    this.maxOrderQuantity = DEFAULT_MAX_ORDER_QUANTITY;
 
     this.attributes = getAttrs({
         dwVariationModel: updatedVariationModel

@@ -27,8 +27,7 @@ function processSwatchValues(attr) {
         }
 
         // Disable if not selectable
-        $attrValue.removeClass('selectable')
-            .removeClass('unselectable');
+        $attrValue.removeClass('selectable unselectable');
 
         $attrValue.addClass(attrValue.isSelectable ? 'selectable' : 'unselectable');
     });
@@ -86,9 +85,9 @@ function updateAttrs(attrs) {
  */
 function updateAvailability(response) {
     var resources = {
-        instock: response.resources.global_instock,
-        allnotavailable: response.resources.global_allnotavailable,
-        selectforstock: response.resources.product_selectforstock
+        instock: response.resources.label_instock,
+        allnotavailable: response.resources.label_allnotavailable,
+        selectforstock: response.resources.info_selectforstock
     };
     var hasRequiredAttrsSelected = response.product.hasRequiredAttrsSelected;
     var isAvailable = response.product.isAvailable;
@@ -117,11 +116,13 @@ function updateAvailability(response) {
  *     can be enabled
  */
 function parseJsonResponse(response) {
+    // Update Item No.
     $('#product_id').text(response.product.id);
 
     updateAttrs(response.product.attributes);
 
-    // REMOVEME: Just for dev testing to see JSON response object in page
+    // REMOVEME (After RAP-5073 is completed): Just for dev testing to see JSON response object in
+    //     page
     $('#response_object').text(JSON.stringify(response.product, null, 4));
 
     // Enable "Add to Cart" button if all required attributes have been selected
@@ -134,7 +135,6 @@ function parseJsonResponse(response) {
             .attr('src', imageUrl.url);
     });
 
-    // Update Availability
     updateAvailability(response);
 }
 
