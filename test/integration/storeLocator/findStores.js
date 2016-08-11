@@ -4,6 +4,8 @@ var config = require('../it.config');
 
 
 describe('Store Locator', function () {
+    this.timeout(5000);
+
     describe('FindStores using Postal Code and radius', function () {
         it('should returns locations for valid postal code and radius', function (done) {
             var url = config.baseUrl + '/Stores-FindStores?postalCode=01803&radius=15';

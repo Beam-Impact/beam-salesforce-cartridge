@@ -4,8 +4,9 @@
   "description": "Mobile first SiteGenesis",
   "main": "index.js",
   "scripts": {
-    "test": "istanbul test ./node_modules/mocha/bin/_mocha -- -R spec test/unit/**/*.js",
-    "test:integration": "./node_modules/.bin/mocha --reporter spec",
+    "test": "mocha -R spec test/unit/**/*.js",
+    "cover": "istanbul cover ./node_modules/.bin/_mocha -- -R spec test/unit/**/*.js",
+    "test:integration": "mocha --reporter spec",
     "compile:scss": "node-sass --include-path node_modules --include-path node_modules/flag-icon-css/sass app_storefront_base/cartridge/scss/default/ -o app_storefront_base/cartridge/static/default/css/",
     "compile:js": "mkdir -p app_storefront_base/cartridge/static/default/js && node bin/Makefile.js browserify",
     "compile:fonts": "mkdir -p app_storefront_base/cartridge/static/default/fonts && cp -r node_modules/font-awesome/fonts/ app_storefront_base/cartridge/static/default/fonts && cp -r node_modules/flag-icon-css/flags/ app_storefront_base/cartridge/static/default/fonts/flags",
