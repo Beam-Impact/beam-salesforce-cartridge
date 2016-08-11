@@ -1,7 +1,7 @@
 'use strict';
 
 var assert = require('chai').assert;
-var Collection = require('../../../mocks/dw.util.Collection');
+var ArrayList = require('../../../mocks/dw.util.Collection.js');
 var proxyquire = require('proxyquire').noCallThru().noPreserveCache();
 var util = require('../../../util');
 
@@ -32,7 +32,7 @@ describe('categories', function () {
     var Categories = null;
     beforeEach(function () {
         var helper = proxyquire('../../../../app_storefront_base/cartridge/scripts/dwHelpers', {
-            'dw/util/Collection': Collection
+            'dw/util/ArrayList': ArrayList
         });
         Categories = proxyquire('../../../../app_storefront_base/cartridge/models/categories', {
             '~/cartridge/scripts/dwHelpers': helper,

@@ -10,8 +10,8 @@ var URLUtils = require('dw/web/URLUtils');
  */
 function cart(basket) {
     if (basket !== null) {
-        this.numItems = basket.productLineItems.length + basket.giftCertificateLineItems.length;
-        var allItems = helper.concat(basket.productLineItems, basket.giftCertificate);
+        this.quantityTotal = basket.getProductQuantityTotal();
+        var allItems = helper.concat(basket.productLineItems, basket.giftCertificateLineItems);
         this.totalPrice = 0;
         this.items = helper.map(allItems, function (item) {
             var result = {};

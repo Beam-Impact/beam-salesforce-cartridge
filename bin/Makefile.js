@@ -25,10 +25,10 @@ target.browserify = function () {
                 return;
             }
             var resultFile = path.join(jsDest, '/', path.basename(file));
-            fs.open(resultFile, 'w', function (err, fd) {
+            fs.open(resultFile, 'w', function (fileOpenError, fd) {
                 fs.write(fd, buf, 0, buf.length, null, function (error) {
                     if (error) {
-                        console.log('Error writting ' + file);
+                        console.log('Error writing ' + file);
                         console.log(error);
                     }
                     fs.close(fd);

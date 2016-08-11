@@ -1,0 +1,38 @@
+@mixin circle($width, $color) { // Source:  https://gist.github.com/kogakure/4769904
+    width: $width;
+    height: $width;
+    background: $color;
+    -moz-border-radius: $width/2;
+    border-radius: $width/2;
+}
+
+menuitem {
+    display: inline-block;
+    margin-right: 5px;
+    border: 1px solid #dadada;
+}
+
+menuitem[data-selected=true] {
+    border: 1px solid green;
+}
+
+.swatch-circle {
+    // $color param will be replaced by color image background via Javascript
+    @include circle(50px, #fff);
+}
+
+.swatch-value img {
+    display: none;
+}
+
+.attributes menu {
+    padding-left: 0;
+}
+
+.carousel {
+    display: block;
+    margin: auto;
+    // Default dimensions.  May be resized on initial load.  Setting these here mitigates FUOC.
+    width: 350px;
+    height: 350px;
+}

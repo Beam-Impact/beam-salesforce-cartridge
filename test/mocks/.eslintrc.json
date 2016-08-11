@@ -3,9 +3,8 @@
     "mocha": true
   },
   "rules": {
-    "require-jsdoc": "off",
     "max-len": "off",
-    "quote-props": "off",
-    "no-new": "off"
+    "no-use-before-define": "off",
+    "require-jsdoc": "off"
   }
 }
