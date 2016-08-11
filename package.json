@@ -10,7 +10,10 @@
     "compile:js": "mkdir -p app_storefront_base/cartridge/static/default/js && node bin/Makefile.js browserify",
     "compile:fonts": "mkdir -p app_storefront_base/cartridge/static/default/fonts && cp -r node_modules/font-awesome/fonts/ app_storefront_base/cartridge/static/default/fonts && cp -r node_modules/flag-icon-css/flags/ app_storefront_base/cartridge/static/default/fonts/flags",
     "lint": "eslint . && stylelint --syntax scss \"app_storefront_base/cartridge/scss/**/*.scss\"",
-    "copyResource": "node bin/Makefile.js copyResource -- ",
+    "upload": "dwupload --file ",
+    "watch:static": "onchange 'app_storefront_base/cartridge/js/**/*.js' -- npm run compile:js & onchange 'app_storefront_base/cartridge/scss/**/*.scss' -- npm run compile:scss & onchange 'app_storefront_base/cartridge/static/**/*' -w -- npm run upload -- {{changed}}",
+    "watch:cartridge": "onchange 'app_storefront_base/cartridge/(controllers|models|scripts|templates)/**/*' -w -- npm run upload -- {{changed}}",
+    "watch": "npm run watch:static & npm run watch:cartridge",
     "doc": "bin/doc.sh"
   },
   "repository": {
@@ -26,6 +29,7 @@
     "autoprefixer": "^6.3.7",
     "browserify": "^13.0.1",
     "chai": "^3.5.0",
+    "dwupload": "^3.4.0",
     "eslint": "^3.2.2",
     "eslint-config-airbnb-base": "^5.0.1",
     "eslint-plugin-import": "^1.12.0",
@@ -35,14 +39,14 @@
     "istanbul": "^0.4.4",
     "mocha": "^2.5.3",
     "node-sass": "^3.8.0",
+    "onchange": "^2.5.0",
     "postcss-cli": "^2.5.1",
     "proxyquire": "1.7.4",
     "shelljs": "^0.7.0",
     "sinon": "^1.17.4",
     "stylelint": "^7.1.0",
     "stylelint-config-standard": "^12.0.0",
-    "stylelint-scss": "^1.3.4",
-    "watchify": "^3.7.0"
+    "stylelint-scss": "^1.3.4"
   },
   "dependencies": {
     "@tridnguyen/config": "^2.3.1",
@@ -52,8 +56,5 @@
     "jquery": "^2.2.4",
     "minimist": "^1.2.0",
     "request": "^2.74.0"
-  },
-  "paths": {
-    "resources": "../sitegenesis/app_storefront_base/cartridge/templates/resources/"
   }
 }
