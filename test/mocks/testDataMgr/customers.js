@@ -28,7 +28,7 @@ export const globalPhone = {
 };
 
 export class Customer {
-    constructor (customer) {
+    constructor(customer) {
         const profile = customer.profile[0];
 
         this.login = customer.credentials[0].login[0];
@@ -46,13 +46,13 @@ export class Customer {
         this.fax = profile.fax[0];
         this.gender = profile.gender[0] === '1' ? 'M' : 'F';
 
-        if (customer.hasOwnProperty('addresses')) {
-            this.addresses = _parseAddresses(customer.addresses[0].address);
+        if (Object.hasOwnProperty.call(customer, 'addresses')) {
+            this.addresses = parseAddresses(customer.addresses[0].address);
         }
     }
 
-    getPreferredAddress () {
-        return _.findWhere(this.addresses, {preferred: true});
+    getPreferredAddress() {
+        return _.findWhere(this.addresses, { preferred: true });
     }
 }
 
@@ -63,7 +63,7 @@ export class Customer {
  * @param {String} login - Customer's login value
  * @returns {Customer} - customer
  */
-export function getCustomer (customers, login) {
+export function getCustomer(customers, login) {
     return new Customer(customers[login]);
 }
 
@@ -73,7 +73,7 @@ export function getCustomer (customers, login) {
  * @param {Object} rawCustomers - Parsed data from XML files
  * @returns {Array} - Customer objects
  */
-export function parseCustomers (rawCustomers, currentCustomers) {
+export function parseCustomers(rawCustomers, currentCustomers) {
     let parsedCustomers = currentCustomers || {};
 
     rawCustomers.customers.customer.forEach(customer => {
@@ -84,7 +84,7 @@ export function parseCustomers (rawCustomers, currentCustomers) {
     return parsedCustomers;
 }
 
-function _parseAddresses (rawAddresses) {
+function parseAddresses(rawAddresses) {
     let addresses = [];
 
     for (let address of rawAddresses) {

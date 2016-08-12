@@ -11,21 +11,24 @@ import * as common from './common';
  * @param {String} file - File path of promotions.xml demo data file, used to extract Site name
  * @returns {Array} - Promotions
  */
-export function parsePromotions (rawPromotions, processedPromotions, file) {
+export function parsePromotions(rawPromotions, processedPromotions, file) {
     const site = file.split('/sites/')[1].split('/')[0];
     let parsedPromotions = processedPromotions || {};
 
-    parsedPromotions[site] = parsedPromotions.hasOwnProperty(site) ? parsedPromotions[site] : {};
+    parsedPromotions[site] = Object.hasOwnProperty.call(parsedPromotions, site) ? parsedPromotions[site] : {};
     parsedPromotions[site].campaigns = {};
     parsedPromotions[site].promotions = {};
     parsedPromotions[site].promotionCampaignAssignments = {};
 
-    rawPromotions.promotions.campaign.forEach(campaign =>
-        parsedPromotions[site].campaigns[campaign.$['campaign-id']] = campaign);
-    rawPromotions.promotions.promotion.forEach(promotion =>
-        parsedPromotions[site].promotions[promotion.$['promotion-id']] = promotion);
-    rawPromotions.promotions['promotion-campaign-assignment'].forEach(assignment =>
-        parsedPromotions[site].promotionCampaignAssignments[assignment.$['promotion-id']] = assignment);
+    rawPromotions.promotions.campaign.forEach(campaign => {
+        parsedPromotions[site].campaigns[campaign.$['campaign-id']] = campaign;
+    });
+    rawPromotions.promotions.promotion.forEach(promotion => {
+        parsedPromotions[site].promotions[promotion.$['promotion-id']] = promotion;
+    });
+    rawPromotions.promotions['promotion-campaign-assignment'].forEach(assignment => {
+        parsedPromotions[site].promotionCampaignAssignments[assignment.$['promotion-id']] = assignment;
+    });
 
     return parsedPromotions;
 }
@@ -37,7 +40,7 @@ export function parsePromotions (rawPromotions, processedPromotions, file) {
  * @param {String} id - Promotion ID
  * @return {Promotion} - Promotion instance
  */
-export function getPromotion (promotions, id) {
+export function getPromotion(promotions, id) {
     return new Promotion(promotions[id]);
 }
 
@@ -48,7 +51,7 @@ export function getPromotion (promotions, id) {
  * @param {String} id - Campaign ID
  * @return {Campaign} - Campaign instance
  */
-export function getCampaign (campaigns, id) {
+export function getCampaign(campaigns, id) {
     return new Campaign(campaigns[id]);
 }
 
@@ -60,13 +63,13 @@ export function getCampaign (campaigns, id) {
  * @param {String} campaignId - Campaign ID
  * @return {PromotionCampaignAssignment} - Promotion-Campaign Assignment instance
  */
-export function getPromotionCampaignAssignment (assignments, promotionId, campaignId) {
-    const assignment = _.findWhere(assignments, {$: {'promotion-id': promotionId, 'campaign-id': campaignId}});
+export function getPromotionCampaignAssignment(assignments, promotionId, campaignId) {
+    const assignment = _.findWhere(assignments, { $: { 'promotion-id': promotionId, 'campaign-id': campaignId } });
     return new PromotionCampaignAssignment(assignment);
 }
 
 export class Campaign {
-    constructor (campaign) {
+    constructor(campaign) {
         this.id = campaign.$['campaign-id'];
         this.description = campaign.description[0];
         this.isEnabled = campaign['enabled-flag'][0] === 'true';
@@ -75,23 +78,23 @@ export class Campaign {
 }
 
 export class PromotionCampaignAssignment {
-    constructor (assignment) {
+    constructor(assignment) {
         this.promotionId = assignment.$['promotion-id'];
         this.campaignId = assignment.$['campaign-id'];
         this.qualifiers = {};
 
-        if (assignment.qualifiers.hasOwnProperty('match-mode')) {
+        if (Object.hasOwnProperty.call(assignment.qualifiers, 'match-mode')) {
             this.qualifiers.matchMode = assignment.qualifiers['match-mode'];
         }
 
-        if (assignment.hasOwnProperty('coupons')) {
+        if (Object.hasOwnProperty.call(assignment, 'coupons')) {
             this.coupons = assignment.coupons.coupon.map(coupon => coupon.$['coupon-id']);
         }
     }
 }
 
 export class Promotion extends common.AbstractDwModelMock {
-    constructor (promotion) {
+    constructor(promotion) {
         super(promotion);
 
         this.id = promotion.$['promotion-id'];
@@ -101,11 +104,11 @@ export class Promotion extends common.AbstractDwModelMock {
         this.name = common.parseLocalizedValues(promotion.name);
         this.calloutMsg = common.parseLocalizedValues(promotion['callout-msg']);
 
-        if (promotion.hasOwnProperty('details')) {
+        if (Object.hasOwnProperty.call(promotion, 'details')) {
             this.details = common.parseLocalizedValues(promotion.details);
         }
 
-        if (promotion.hasOwnProperty('currency')) {
+        if (Object.hasOwnProperty.call(promotion, 'currency')) {
             this.currency = promotion.currency[0];
         }
 
@@ -116,70 +119,70 @@ export class Promotion extends common.AbstractDwModelMock {
 
         this.promotionRuleType = promotionRuleKey.split(ruleKeySuffix)[0];
 
-        if (promotionRule.hasOwnProperty('discounts')) {
-            this.discounts = _processDiscounts(promotionRule);
+        if (Object.hasOwnProperty.call(promotionRule, 'discounts')) {
+            this.discounts = processDiscounts(promotionRule);
         }
 
-        if (promotionRule.hasOwnProperty('qualifying-products')) {
+        if (Object.hasOwnProperty.call(promotionRule, 'qualifying-products')) {
             this.qualifyingProducts = {
-                includedProducts: _processIncludedProducts(promotionRule['qualifying-products'][0]['included-products'][0])
+                includedProducts: processIncludedProducts(promotionRule['qualifying-products'][0]['included-products'][0])
             };
         }
 
-        if (promotionRule.hasOwnProperty('excluded-products')) {
+        if (Object.hasOwnProperty.call(promotionRule, 'excluded-products')) {
             this.excludedProducts = {
-                includedProducts: _processIncludedProducts(promotionRule['excluded-products'][0]['included-products'][0])
+                includedProducts: processIncludedProducts(promotionRule['excluded-products'][0]['included-products'][0])
             };
         }
 
-        if (promotionRule.hasOwnProperty('discounted-products')) {
+        if (Object.hasOwnProperty.call(promotionRule, 'discounted-products')) {
             this.discountedProducts = {
-                includedProducts: _processIncludedProducts(promotionRule['discounted-products'][0]['included-products'][0])
+                includedProducts: processIncludedProducts(promotionRule['discounted-products'][0]['included-products'][0])
             };
         }
 
-        if (promotionRule.hasOwnProperty('enable-upsells')) {
+        if (Object.hasOwnProperty.call(promotionRule, 'enable-upsells')) {
             this.enableUpsells = promotionRule['enable-upsells'][0] === 'true';
         }
 
-        if (promotionRule.hasOwnProperty('upsell-threshold')) {
+        if (Object.hasOwnProperty.call(promotionRule, 'upsell-threshold')) {
             this.upsellThreshold = promotionRule['upsell-threshold'][0];
         }
 
-        if (promotionRule.hasOwnProperty('discount-only-qualifying-products')) {
+        if (Object.hasOwnProperty.call(promotionRule, 'discount-only-qualifying-products')) {
             this.discountOnlyQualifyingProducts = promotionRule['discount-only-qualifying-products'][0] === 'true';
         }
 
-        if (promotionRule.hasOwnProperty('payment-methods')) {
+        if (Object.hasOwnProperty.call(promotionRule, 'payment-methods')) {
             this.paymentMethods = promotionRule['payment-methods'][0]['method-id'][0];
         }
 
-        if (promotionRule.hasOwnProperty('disable-global-excluded-products')) {
+        if (Object.hasOwnProperty.call(promotionRule, 'disable-global-excluded-products')) {
             this.disableGlobalExcludedProducts = promotionRule['disable-global-excluded-products'][0] === 'true';
         }
 
-        if (promotionRule.hasOwnProperty('max-applications')) {
-            this.maxApplications = parseInt(promotionRule['max-applications'][0]);
+        if (Object.hasOwnProperty.call(promotionRule, 'max-applications')) {
+            this.maxApplications = parseInt(promotionRule['max-applications'][0], 10);
         }
 
-        if (promotionRule.hasOwnProperty('identical-products')) {
+        if (Object.hasOwnProperty.call(promotionRule, 'identical-products')) {
             this.identicalProducts = promotionRule['identical-products'][0] === 'true';
         }
 
-        if (promotionRule.hasOwnProperty('bogo')) {
-            this.bogo = _processBogo(promotionRule.bogo[0]);
+        if (Object.hasOwnProperty.call(promotionRule, 'bogo')) {
+            this.bogo = processBogo(promotionRule.bogo[0]);
         }
 
-        if (promotionRule.hasOwnProperty('simple-discount')) {
-            this.simpleDiscount = _processSimpleDiscount(promotionRule['simple-discount'][0]);
+        if (Object.hasOwnProperty.call(promotionRule, 'simple-discount')) {
+            this.simpleDiscount = processSimpleDiscount(promotionRule['simple-discount'][0]);
         }
 
-        if (promotionRule.hasOwnProperty('total-discounts')) {
-            this.totalDiscounts = _processTotalDiscounts(promotionRule['total-discounts'][0]);
+        if (Object.hasOwnProperty.call(promotionRule, 'total-discounts')) {
+            this.totalDiscounts = processTotalDiscounts(promotionRule['total-discounts'][0]);
         }
 
-        if (promotionRule.hasOwnProperty('discounted-products-combination')) {
-            this.discountedProductsCombination = _processProductConstraint(promotionRule['discounted-products-combination'][0]['product-constraints'][0]);
+        if (Object.hasOwnProperty.call(promotionRule, 'discounted-products-combination')) {
+            this.discountedProductsCombination = processProductConstraint(promotionRule['discounted-products-combination'][0]['product-constraints'][0]);
         }
     }
 
@@ -189,7 +192,7 @@ export class Promotion extends common.AbstractDwModelMock {
      * @param {String} [locale] - xx_XX locale (i.e., it_IT, zh_CN, ja_JP)
      * @return {String} - Localized Promotion Call Out Message
      */
-    getCalloutMsg (locale = 'x_default') {
+    getCalloutMsg(locale = 'x_default') {
         return this.getLocalizedProperty('calloutMsg', locale);
     }
 
@@ -198,8 +201,8 @@ export class Promotion extends common.AbstractDwModelMock {
      *
      * @return {String} - Discount threshold value
      */
-    getDiscountThreshold () {
-        return this.hasOwnProperty('discounts') ? this.discounts.threshold : undefined;
+    getDiscountThreshold() {
+        return Object.hasOwnProperty.call(this, 'discounts') ? this.discounts.threshold : undefined;
     }
 
     /**
@@ -207,23 +210,22 @@ export class Promotion extends common.AbstractDwModelMock {
      *
      * @return {String} - Discount percentage
      */
-    getDiscountPercentage () {
-        const hasDiscountsPercentage = this.hasOwnProperty('discounts') &&
-            this.discounts.hasOwnProperty('discountType') &&
+    getDiscountPercentage() {
+        const hasDiscountsPercentage = Object.hasOwnProperty.call(this, 'discounts') &&
+            Object.hasOwnProperty.call(this.discounts, 'discountType') &&
             this.discounts.discountType === 'percentage';
 
-        if (this.hasOwnProperty('simpleDiscount')) {
+        if (Object.hasOwnProperty.call(this, 'simpleDiscount')) {
             return this.simpleDiscount.percentage[0];
         } else if (hasDiscountsPercentage) {
             return this.discounts.value;
-        } else {
-            return;
         }
+        return null;
     }
 }
 
-function _processIncludedProducts (includedProductsRaw) {
-    const conditionGroup = includedProductsRaw['condition-group'][0];
+function processIncludedProducts(includedProductsRaw) {
+    const includedConditionGroup = includedProductsRaw['condition-group'][0];
     let includedProducts = {};
 
     const processConditionType = {
@@ -264,15 +266,15 @@ function _processIncludedProducts (includedProductsRaw) {
         }
     };
 
-    Object.keys(conditionGroup).forEach(condition => {
+    Object.keys(includedConditionGroup).forEach(condition => {
         const conditionType = condition.replace('-condition', '');
-        includedProducts[conditionType] = processConditionType[conditionType](conditionGroup[condition][0]);
+        includedProducts[conditionType] = processConditionType[conditionType](includedConditionGroup[condition][0]);
     });
 
     return includedProducts;
 }
 
-function _processDiscounts (promotionRule) {
+function processDiscounts(promotionRule) {
     const discounts = promotionRule.discounts[0];
     const discount = discounts.discount[0];
     const discountType = _.remove(Object.keys(discount), key => key !== 'threshold')[0];
@@ -288,8 +290,8 @@ function _processDiscounts (promotionRule) {
                     bonusProductPrice: bonusProduct['bonus-product-price'][0]
                 };
             }),
-            maxBonusItems: discount['bonus-choice'][0].hasOwnProperty('max-bonus-items') ?
-                parseInt(discount['bonus-choice'][0]['max-bonus-items'][0]) : null
+            maxBonusItems: Object.hasOwnProperty.call(discount['bonus-choice'][0], 'max-bonus-items') ?
+                parseInt(discount['bonus-choice'][0]['max-bonus-items'][0], 10) : null
         };
     }
 
@@ -301,46 +303,46 @@ function _processDiscounts (promotionRule) {
     };
 }
 
-function _processBogo (rawBogo) {
+function processBogo(rawBogo) {
     let bogo = {};
 
     bogo.threshold = rawBogo.threshold[0];
     bogo.eligibleQuantity = rawBogo['eligible-quantity'][0];
 
-    if (rawBogo.hasOwnProperty('fixed-price')) {
+    if (Object.hasOwnProperty.call(rawBogo, 'fixed-price')) {
         bogo.fixedPrice = rawBogo['fixed-price'][0];
     }
 
-    if (rawBogo.hasOwnProperty('percentage')) {
+    if (Object.hasOwnProperty.call(rawBogo, 'percentage')) {
         bogo.percentage = rawBogo.percentage[0];
     }
 
-    if (rawBogo.hasOwnProperty('free')) {
+    if (Object.hasOwnProperty.call(rawBogo, 'free')) {
         bogo.free = rawBogo.free[0];
     }
 
     return bogo;
 }
 
-function _processSimpleDiscount (simpleDiscountRaw) {
+function processSimpleDiscount(simpleDiscountRaw) {
     let simpleDiscount = {};
 
-    if (simpleDiscountRaw.hasOwnProperty('percentage')) {
+    if (Object.hasOwnProperty.call(simpleDiscountRaw, 'percentage')) {
         simpleDiscount.percentage = simpleDiscountRaw.percentage;
     }
 
-    if (simpleDiscountRaw.hasOwnProperty('amount')) {
+    if (Object.hasOwnProperty.call(simpleDiscountRaw, 'amount')) {
         simpleDiscount.amount = simpleDiscountRaw.amount;
     }
 
-    if (simpleDiscountRaw.hasOwnProperty('free-shipping')) {
+    if (Object.hasOwnProperty.call(simpleDiscountRaw, 'free-shipping')) {
         simpleDiscount.freeShipping = simpleDiscountRaw['free-shipping'];
     }
 
     return simpleDiscount;
 }
 
-function _processTotalDiscounts (totalDiscountsRaw) {
+function processTotalDiscounts(totalDiscountsRaw) {
     const discount = totalDiscountsRaw.discount[0];
 
     return {
@@ -349,11 +351,11 @@ function _processTotalDiscounts (totalDiscountsRaw) {
     };
 }
 
-function _processProductConstraint (productConstraints) {
+function processProductConstraint(productConstraints) {
     const productConstraint = productConstraints['product-constraint'][0];
 
     return {
         quantity: productConstraint.quantity[0],
-        includedProducts: _processIncludedProducts(productConstraint['product-specification'][0]['included-products'][0])
+        includedProducts: processIncludedProducts(productConstraint['product-specification'][0]['included-products'][0])
     };
 }

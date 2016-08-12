@@ -1,10 +1,6 @@
 'use strict';
 
 import _ from 'lodash';
-// using Q to be compliant with webdriver.
-// should switch to native Promise if it is used in webdriver v3
-// https://github.com/webdriverio/webdriverio/issues/498
-import Q from 'q';
 import nodeUrl from 'url';
 
 export const defaultLocale = 'x_default';
@@ -25,18 +21,18 @@ export const BTN_ADD_TO_CART = '#add-to-cart';
 export const PRIMARY_CONTENT = '.primary-content';
 
 export function getPageTitle() {
-    return Q.Promise(resolve => {
+    return new Promise(resolve => {
         browser.getTitle()
             .then(title => resolve(title.split('|')[0].trim()));
     });
 }
 
-export function checkElementEquals (selector, value) {
+export function checkElementEquals(selector, value) {
     return browser.getText(selector)
         .then(text => text === value);
 }
 
-export function removeItems (removeLink) {
+export function removeItems(removeLink) {
     let promises = [];
 
     return browser.elements(removeLink)
@@ -48,7 +44,9 @@ export function removeItems (removeLink) {
             if (!removeLinks.value.length) {
                 return Promise.resolve();
             }
-            removeLinks.value.forEach(() => promises.push(_clickFirstRemoveLink(removeLink)));
+            removeLinks.value.forEach(() => promises.push(clickFirstRemoveLink(removeLink)));
+
+            return Promise.resolve();
         })
         .then(() => Promise.all(promises));
 }
@@ -71,16 +69,17 @@ export function uncheckCheckbox(selector) {
             if (selected) {
                 return browser.click(selector);
             }
+            return Promise.resolve();
         });
 }
 
 
-export function selectAttributeByIndex (attributeName, index, deselect) {
+export function selectAttributeByIndex(attributeName, index, deselect) {
     let selector = '.swatches.' + attributeName + ' li:nth-child(' + index + ')';
     return browser.waitForVisible(selector)
         // Before clicking on an attribute value, we must check whether it has already been selected.
         // Clicking on an already selected value will deselect it.
-        .then(() => _isAttributeSelected(selector))
+        .then(() => isAttributeSelected(selector))
         .then(isAlreadySelected => {
             if (deselect && isAlreadySelected) {
                 return browser.waitForVisible('.loader', 500, true)
@@ -95,7 +94,7 @@ export function selectAttributeByIndex (attributeName, index, deselect) {
         });
 }
 
-function _isAttributeSelected (selector) {
+function isAttributeSelected(selector) {
     return browser.getAttribute(selector, 'class')
         .then(classes => Promise.resolve(classes.indexOf('selectable') > -1 && classes.indexOf('selected') > -1));
 }
@@ -111,7 +110,7 @@ function _isAttributeSelected (selector) {
  *     this represents the index value for the size options
  * @param {String} btnAdd - selector for Add to { Cart | Wishlist | Registry } button
  */
-export function addProductVariationToBasket (product, btnAdd) {
+export function addProductVariationToBasket(product, btnAdd) {
     return browser.url(product.get('resourcePath'))
         .then(() => {
             if (product.has('colorIndex')) {
@@ -142,7 +141,7 @@ export function addProductVariationToBasket (product, btnAdd) {
  * Clicks the first Remove link in a Cart or WishList
  *
  */
-function _clickFirstRemoveLink (removeLink) {
+function clickFirstRemoveLink(removeLink) {
     return browser.elements(removeLink)
         .then(removeLinks => {
             if (removeLinks.value.length) {
@@ -163,19 +162,19 @@ export function clickAndWait(selectorToClick, selectorToWait) {
         .waitForVisible(selectorToWait);
 }
 
-export function getSearchParams () {
+export function getSearchParams() {
     return browser.url()
         .then(url => {
             let parsedUrl = nodeUrl.parse(url.value);
             let search = parsedUrl.search ? parsedUrl.search.replace('?', '') : '';
-            let params = _.zipObject(
+            let params = _.fromPairs(
                 _.map(search.split('&'), param => param.split('='))
             );
             return Promise.resolve(params);
         });
 }
 
-export function getLocale () {
+export function getLocale() {
     return getSearchParams()
         .then(params =>
             Promise.resolve(params && params.lang && supportedLocales.indexOf(params.lang) > -1 ? params.lang : defaultLocale)

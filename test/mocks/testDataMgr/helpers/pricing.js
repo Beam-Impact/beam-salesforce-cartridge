@@ -10,7 +10,7 @@ export const localeCurrency = {
         currencyCode: 'usd',
         symbol: '$'
     },
-    'en-US':  {
+    'en-US': {
         currencyCode: 'usd',
         symbol: '$'
     },
@@ -43,7 +43,7 @@ export const localeCurrency = {
  * @param {String} [locale]
  * @returns {Number}
  */
-export function getCurrencyValue (price, locale = 'en-US') {
+export function getCurrencyValue(price, locale = 'en-US') {
     const normalizedLocale = normalizeLocale(locale);
     const normalizedPrice = price.replace(/[^0-9-.,]/g, '');
 
@@ -57,7 +57,7 @@ export function getCurrencyValue (price, locale = 'en-US') {
  * @param {String} [locale]
  * @returns {String} - Formatted price
  */
-export function getFormattedPrice (price, locale = 'en-US') {
+export function getFormattedPrice(price, locale = 'en-US') {
     const normalizedLocale = normalizeLocale(locale);
     const currencyCode = localeCurrency[normalizedLocale].currencyCode.toUpperCase();
     const currencyValue = getCurrencyValue(price, normalizedLocale);
@@ -72,13 +72,11 @@ export function getFormattedPrice (price, locale = 'en-US') {
         })(currencyValue);
 
         return `${localeCurrency[normalizedLocale].symbol} ${amount}`;
-
     } else if (normalizedLocale === 'ja-JP') {
         const symbol = localeCurrency[normalizedLocale].symbol;
         const number = globalize.numberFormatter()(currencyValue, normalizedLocale);
 
         return `${symbol} ${number}`;
-
     } else if (normalizedLocale === 'zh-CN') {
         const number = globalize.numberFormatter({
             minimumFractionDigits: 2,
@@ -86,13 +84,11 @@ export function getFormattedPrice (price, locale = 'en-US') {
         })(currencyValue, normalizedLocale);
 
         return `${localeCurrency[normalizedLocale].symbol}${number}`;
-
-    } else {
-        return globalize.currencyFormatter(currencyCode)(currencyValue);
     }
+    return globalize.currencyFormatter(currencyCode)(currencyValue);
 }
 
-export function getCurrencySymbol (locale = 'en-US') {
+export function getCurrencySymbol(locale = 'en-US') {
     return localeCurrency[normalizeLocale(locale)].symbol;
 }
 
@@ -102,7 +98,7 @@ export function getCurrencySymbol (locale = 'en-US') {
  * @param {String} locale - 'xx_XX'
  * @returns {String} - 'xx-XX'
  */
-function normalizeLocale (locale = 'en-US') {
+function normalizeLocale(locale = 'en-US') {
     return locale.replace('_', '-');
 }
 
@@ -135,9 +131,9 @@ export function localizeNumber(price, locale = 'en-US') {
  * @param promotionInfo.discountAmount - the percent to mark down the expectedSalePrice with
  * @returns {Number} - the expectedSalePrice with the promotionInfo.discountAmount applied to it
  */
-export function getPercentageDiscountedPrice (expectedSalePrice, locale, discountAmount) {
+export function getPercentageDiscountedPrice(expectedSalePrice, locale, discountAmount) {
     const price = getCurrencyValue(expectedSalePrice, locale);
-    const discount = parseInt(discountAmount) / 100;
+    const discount = parseInt(discountAmount, 10) / 100;
 
     return price - (price * discount);
 }

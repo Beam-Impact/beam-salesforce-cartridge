@@ -33,7 +33,7 @@ export const FIELD_NEWPASSWORDCONFIRM = `${PREFIX_LOGIN_FIELDS}_newpasswordconfi
  * @param {String} profileFields.password - Customer's password
  * @returns {undefined}
  */
-export function editAccount (profileFields) {
+export function editAccount(profileFields) {
     return Object.keys(profileFields).reduce((setField, field) => {
         return setField.then(() => browser.setValue(field, profileFields[field]));
     }, Promise.resolve())
@@ -42,7 +42,7 @@ export function editAccount (profileFields) {
     .then(() => browser.click(BTN_APPLY));
 }
 
-export function changePassword (profileFields) {
+export function changePassword(profileFields) {
     return Object.keys(profileFields).reduce((setField, field) => {
         return setField.then(() => browser.setValue(field, profileFields[field]));
     }, Promise.resolve())

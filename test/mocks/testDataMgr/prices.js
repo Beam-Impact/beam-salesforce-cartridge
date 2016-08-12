@@ -12,12 +12,12 @@ export const priceTypes = ['list', 'sale'];
  * @param {string} currencyCode - three-letter currency code
  * @returns {Object} - JSON object with specific Price Book test data
  */
-export function getPricesForProduct (priceBooks, productId, currencyCode = 'usd') {
+export function getPricesForProduct(priceBooks, productId, currencyCode = 'usd') {
     let prices = {};
 
     for (let type of priceTypes) {
-        let products = priceBooks[_getPriceBookName(type, currencyCode)].products;
-        let price = _.findWhere(products, {productId: productId});
+        let products = priceBooks[getPriceBookName(type, currencyCode)].products;
+        let price = _.findWhere(products, { productId: productId });
         prices[type] = price ? _.result(price, 'amount') : undefined;
     }
     return prices;
@@ -29,7 +29,7 @@ export function getPricesForProduct (priceBooks, productId, currencyCode = 'usd'
  * @param {Object} priceBooks - Parsed data from XML files
  * @returns {Object} - Map of Price Books grouped by Price Book IDs
  */
-export function parsePriceBooks (priceBooks, currentPricebooks) {
+export function parsePriceBooks(priceBooks, currentPricebooks) {
     let priceBookList = currentPricebooks || {};
 
     priceBooks.pricebooks.pricebook.forEach(element => {
@@ -44,11 +44,11 @@ export function parsePriceBooks (priceBooks, currentPricebooks) {
             onlineFlag: header['online-flag'][0] === 'true'
         };
 
-        priceTables.forEach(element => {
+        priceTables.forEach(priceTable => {
             let proxy = {
-                productId: element.$['product-id'],
-                amount: element.amount[0]._,
-                amountQty: element.amount[0].$.quantity
+                productId: priceTable.$['product-id'],
+                amount: priceTable.amount[0]._,
+                amountQty: priceTable.amount[0].$.quantity
             };
 
             priceTableList.push(proxy);
@@ -59,8 +59,8 @@ export function parsePriceBooks (priceBooks, currentPricebooks) {
     return priceBookList;
 }
 
-function _getPriceBookName (priceType, currencyCode = 'usd') {
-    currencyCode = currencyCode.toLowerCase();
-    return [currencyCode, priceType, 'prices'].join('-');
+function getPriceBookName(priceType, currencyCode = 'usd') {
+    let parsedCurrencyCode = currencyCode.toLowerCase();
+    return [parsedCurrencyCode, priceType, 'prices'].join('-');
 }
 

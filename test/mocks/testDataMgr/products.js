@@ -2,7 +2,7 @@
 
 import _ from 'lodash';
 import * as common from './helpers/common';
-import {AbstractDwModelMock} from './common';
+import { AbstractDwModelMock } from './common';
 
 let defaultLocale = common.defaultLocale;
 
@@ -14,30 +14,32 @@ let defaultLocale = common.defaultLocale;
  * @param {Object} [currentCatalog] - parsedData.catalog processed-to-date
  * @returns {Object} - Map of Product* instances grouped by Product IDs
  */
-export function parseCatalog (fileData, currentCatalog) {
+export function parseCatalog(fileData, currentCatalog) {
     let proxy = currentCatalog || {};
     proxy.categories = currentCatalog.categories || {};
     proxy.categoryAssignments = currentCatalog.categoryAssignments || {};
     proxy.products = currentCatalog.products || {};
 
-    if (fileData.catalog.hasOwnProperty('category')) {
+    if (Object.hasOwnProperty.call(fileData.catalog, 'category')) {
         for (let category of fileData.catalog.category) {
             let id = category.$['category-id'];
             proxy.categories[id] = category;
         }
     }
 
-    if (fileData.catalog.hasOwnProperty('category-assignment')) {
+    if (Object.hasOwnProperty.call(fileData.catalog, 'category-assignment')) {
         for (let categoryAssignment of fileData.catalog['category-assignment']) {
             let productId = categoryAssignment.$['product-id'];
             proxy.categoryAssignments[productId] = categoryAssignment;
         }
     }
 
-    if (fileData.catalog.hasOwnProperty('product')) {
+    if (Object.hasOwnProperty.call(fileData.catalog, 'product')) {
         for (let product of fileData.catalog.product) {
             let id = product.$['product-id'];
-            proxy.products[id] = proxy.products.hasOwnProperty(id) ? _.merge(proxy.products[id], product) : product;
+            proxy.products[id] = Object.hasOwnProperty.call(proxy.products, id)
+                ? _.merge(proxy.products[id], product)
+                : product;
         }
     }
 
@@ -52,7 +54,7 @@ export function parseCatalog (fileData, currentCatalog) {
  * @param {String} productId - Product ID
  * @returns {ProductStandard|ProductVariationMaster|ProductSet|ProductBundle} - product instance
  */
-export function getProduct (catalog, productId) {
+export function getProduct(catalog, productId) {
     const product = catalog.products[productId];
     const type = getProductType(product);
 
@@ -65,10 +67,12 @@ export function getProduct (catalog, productId) {
             return new ProductStandard(product, catalog);
         case 'bundle':
             return new ProductBundle(product, catalog);
+        default:
+            return null;
     }
 }
 
-export function getProductType (product) {
+export function getProductType(product) {
     if (isProductSet(product)) {
         return 'set';
     } else if (isProductVariationMaster(product)) {
@@ -77,30 +81,29 @@ export function getProductType (product) {
         return 'standard';
     } else if (isProductBundle(product)) {
         return 'bundle';
-    } else {
-        return 'unknown';
     }
+    return null;
 }
 
-export function isProductSet (product) {
-    return product.hasOwnProperty('product-set-products');
+export function isProductSet(product) {
+    return Object.hasOwnProperty.call(product, 'product-set-products');
 }
 
-export function isProductVariationMaster (product) {
-    return product.hasOwnProperty('variations');
+export function isProductVariationMaster(product) {
+    return Object.hasOwnProperty.call(product, 'variations');
 }
 
-export function isProductBundle (product) {
-    return product.hasOwnProperty('bundled-products');
+export function isProductBundle(product) {
+    return Object.hasOwnProperty.call(product, 'bundled-products');
 }
 
-export function isProductStandard (product) {
+export function isProductStandard(product) {
     return !isProductSet(product) &&
         !isProductVariationMaster(product) &&
         !isProductBundle(product);
 }
 
-export function getVariationMasterInstances (catalogProducts) {
+export function getVariationMasterInstances(catalogProducts) {
     return _.filter(catalogProducts, product => isProductVariationMaster(product));
 }
 
@@ -111,49 +114,56 @@ export function getVariationMasterInstances (catalogProducts) {
  * @param {String} variantId
  * @returns {ProductVariationMaster}
  */
-export function getVariantParent (catalog, variantID) {
+export function getVariantParent(catalog, variantID) {
     const variationMasters = getVariationMasterInstances(catalog.products);
     const variantParent = _.find(variationMasters, master => {
         const variants = master.variations[0].variants;
-        return variants ? _.some(variants[0].variant, {$: {'product-id': variantID}}) : false;
+        return variants ? _.some(variants[0].variant, { $: { 'product-id': variantID } }) : false;
     });
 
     return new ProductVariationMaster(variantParent, catalog);
 }
 
 export class Category {
-    constructor (category) {
-        this.parent = category.hasOwnProperty('parent') ? category.parent[0] : undefined;
-        this.displayName = _getLocalizedValues(category['display-name']);
-        this.position = category.hasOwnProperty('position') ? category.position[0] : undefined;
-        this.image = category.hasOwnProperty('image') ? category.image[0] : undefined;
-        this.template = category.hasOwnProperty('template') ? category.template[0] : undefined;
-        this.pageAttributes = _parsePageAttrs(category['page-attributes'][0]);
+    constructor(category) {
+        this.parent = Object.hasOwnProperty.call(category, 'parent')
+            ? category.parent[0]
+            : undefined;
+        this.displayName = getLocalizedValues(category['display-name']);
+        this.position = Object.hasOwnProperty.call(category, 'position')
+            ? category.position[0]
+            : undefined;
+        this.image = Object.hasOwnProperty.call(category, 'image') ? category.image[0] : undefined;
+        this.template = Object.hasOwnProperty.call(category, 'template')
+            ? category.template[0]
+            : undefined;
+        this.pageAttributes = parsePageAttrs(category['page-attributes'][0]);
     }
 
-    getDisplayName (locale = defaultLocale) {
-        if (locale === 'en_GB') { locale = defaultLocale; }
-        return this.displayName[locale];
+    getDisplayName(locale = defaultLocale) {
+        let parsedLocale;
+        if (locale === 'en_GB') { parsedLocale = defaultLocale; }
+        return this.displayName[parsedLocale];
     }
 
-    getPageTitle (locale = defaultLocale) {
+    getPageTitle(locale = defaultLocale) {
         return this.pageAttributes.pageTitle[locale];
     }
 
-    getPageDescription (locale = defaultLocale) {
+    getPageDescription(locale = defaultLocale) {
         return this.pageAttributes.pageDescription[locale];
     }
 }
 
 export class CategoryAssignment {
-    constructor (assignment) {
+    constructor(assignment) {
         this.productId = assignment.$['product-id'];
         this.categoryId = assignment.$['category-id'];
     }
 }
 
 export class AbstractProductBase extends AbstractDwModelMock {
-    constructor (product) {
+    constructor(product) {
         super(product);
 
         this.id = product.$['product-id'];
@@ -175,33 +185,33 @@ export class AbstractProductBase extends AbstractDwModelMock {
             this.brand = product.brand[0];
         }
         if (_.size(product['page-attributes'])) {
-            this.pageAttributes = _parsePageAttrs(product['page-attributes'][0]);
+            this.pageAttributes = parsePageAttrs(product['page-attributes'][0]);
         }
         if (_.size(product['custom-attributes'])) {
-            this.customAttributes = _parseCustomAttrs(product['custom-attributes'][0]['custom-attribute']);
+            this.customAttributes = parseCustomAttrs(product['custom-attributes'][0]['custom-attribute']);
         }
         if (_.size(product.images)) {
-            this.images = _parseImages(product.images[0]);
+            this.images = parseImages(product.images[0]);
         }
 
-        if (product.hasOwnProperty('display-name')) {
-            this.displayName = _getLocalizedValues(product['display-name']);
+        if (Object.hasOwnProperty.call(product, 'display-name')) {
+            this.displayName = getLocalizedValues(product['display-name']);
         }
-        if (product.hasOwnProperty('short-description')) {
-            this.shortDescription = _getLocalizedValues(product['short-description']);
+        if (Object.hasOwnProperty.call(product, 'short-description')) {
+            this.shortDescription = getLocalizedValues(product['short-description']);
         }
-        if (product.hasOwnProperty('long-description')) {
-            this.longDescription = _getLocalizedValues(product['long-description']);
+        if (Object.hasOwnProperty.call(product, 'long-description')) {
+            this.longDescription = getLocalizedValues(product['long-description']);
         }
-        if (product.hasOwnProperty('classification-category')) {
+        if (Object.hasOwnProperty.call(product, 'classification-category')) {
             this.classificationCategory = product['classification-category'];
         }
-        if (product.hasOwnProperty('options')) {
-            this.options = _parseOptions(product.options);
+        if (Object.hasOwnProperty.call(product, 'options')) {
+            this.options = parseOptions(product.options);
         }
     }
 
-    toString () {
+    toString() {
         return JSON.stringify(this);
     }
 
@@ -212,7 +222,7 @@ export class AbstractProductBase extends AbstractDwModelMock {
      * @param {String} attrValue - attribute value
      * @returns {String} Image path value, i.e., 'large/PG.15J0037EJ.WHITEFB.PZ.jpg'
      */
-    getImage (viewType, attrValue) {
+    getImage(viewType, attrValue) {
         return this.getImages(viewType, attrValue)[0];
     }
 
@@ -223,59 +233,60 @@ export class AbstractProductBase extends AbstractDwModelMock {
      * @param {String} attrValue - attribute value
      * @returns {Array.<String>} Image path values, i.e., ['small/PG.15J0037EJ.SLABLFB.PZ.jpg', small/PG.15J0037EJ.SLABLFB.BZ.jpg]
      */
-    getImages (viewType, attrValue) {
-        return _.find(this.images, {viewType: viewType, variationValue: attrValue}).paths;
+    getImages(viewType, attrValue) {
+        return _.find(this.images, { viewType: viewType, variationValue: attrValue }).paths;
     }
 }
 
 export class ProductStandard extends AbstractProductBase {
-    constructor (product) {
+    constructor(product) {
         super(product);
 
         // Assigned when testData/main:getProductById is called
-        this.master;
+        this.master = undefined;
     }
 
-    getUrlResourcePath (locale = defaultLocale) {
+    getUrlResourcePath(locale = defaultLocale) {
         const pageUrl = this.master.getPageUrl(locale);
         return `/${pageUrl}/${this.id}.html?lang=${locale}`;
     }
 
-    getDisplayName (locale = defaultLocale) {
-        if (locale === 'en_GB') { locale = defaultLocale; }
-        return this.master.displayName[locale];
+    getDisplayName(locale = defaultLocale) {
+        let parsedLocale;
+        if (locale === 'en_GB') { parsedLocale = defaultLocale; }
+        return this.master.displayName[parsedLocale];
     }
 }
 
 export class ProductSet extends AbstractProductBase {
-    constructor (product, catalog) {
+    constructor(product, catalog) {
         super(product);
 
         let productSet = product['product-set-products'][0]['product-set-product'];
         this.productSetProducts = _.map(productSet, '$.product-id') || [];
-        this.urlResourcePaths = _generateUrlResourcePaths(catalog, this.id);
+        this.urlResourcePaths = generateUrlResourcePaths(catalog, this.id);
     }
 
-    getUrlResourcePath (locale = 'en_US') {
+    getUrlResourcePath(locale = 'en_US') {
         return `${this.urlResourcePaths[locale]}/${this.id}.html?lang=${locale}`;
     }
 
-    getDisplayName (locale = defaultLocale) {
+    getDisplayName(locale = defaultLocale) {
         return this.displayName[locale];
     }
 
-    getProductIds () {
+    getProductIds() {
         return this.productSetProducts;
     }
 
-    getProducts (catalog) {
+    getProducts(catalog) {
         return this.getProductIds().map(id => getProduct(catalog, id));
     }
 
 }
 
 export class ProductVariationMaster extends AbstractProductBase {
-    constructor (product, catalog) {
+    constructor(product, catalog) {
         super(product);
 
         this.variationAttributes = {};
@@ -300,7 +311,7 @@ export class ProductVariationMaster extends AbstractProductBase {
             _.each(value['variation-attribute-values'][0]['variation-attribute-value'], val => {
                 proxy.values.push({
                     value: val.$.value,
-                    displayValues: _getLocalizedValues(val['display-value'])
+                    displayValues: getLocalizedValues(val['display-value'])
                 });
             });
 
@@ -311,7 +322,7 @@ export class ProductVariationMaster extends AbstractProductBase {
         let categoryAssignment = new CategoryAssignment(categoryAssignmentJSON);
         this.classificationCategory = categoryAssignment.categoryId;
 
-        if (product.variations[0].hasOwnProperty('variants')) {
+        if (Object.hasOwnProperty.call(product.variations[0], 'variants')) {
             this.variantIds = _.map(product.variations[0].variants[0].variant, '$.product-id');
         }
     }
@@ -326,36 +337,37 @@ export class ProductVariationMaster extends AbstractProductBase {
         return this.pageAttributes.pageUrl[locale];
     }
 
-    getUrlResourcePath (locale = defaultLocale) {
+    getUrlResourcePath(locale = defaultLocale) {
         const path = this.getPageUrl(locale);
         const urlLocale = locale !== defaultLocale ? locale : 'en_US';
         return `/${path}/${this.id}.html?lang=${urlLocale}`;
     }
 
-    getVariantProductIds () {
+    getVariantProductIds() {
         return this.variantIds;
     }
 
-    getAttrTypeValueIndex (type, value) {
-        return _.findIndex(this.variationAttributes[type].values, {value: value});
+    getAttrTypeValueIndex(type, value) {
+        return _.findIndex(this.variationAttributes[type].values, { value: value });
     }
 
-    getAttrDisplayValue (type, codedValue, locale = defaultLocale) {
-        let attrValues = _.find(this.variationAttributes[type].values, {value: codedValue});
-        locale = _validateLocale(attrValues.displayValues, locale);
-        return attrValues ? attrValues.displayValues[locale] : undefined;
+    getAttrDisplayValue(type, codedValue, locale = defaultLocale) {
+        let attrValues = _.find(this.variationAttributes[type].values, { value: codedValue });
+        let parsedLocale = validateLocale(attrValues.displayValues, locale);
+        return attrValues ? attrValues.displayValues[parsedLocale] : undefined;
     }
 
-    getAttrTypes () {
+    getAttrTypes() {
         return Object.keys(this.variationAttributes);
     }
 
-    getAttrValuesByType (type) {
+    getAttrValuesByType(type) {
         let definedValues = _.map(this.variationAttributes[type].values, 'value');
         let implementedValues = this.variants.map(variant => {
             if (variant.onlineFlag && variant.availableFlag) {
                 return variant.customAttributes[type];
             }
+            return null;
         });
 
         return _.intersection(definedValues, _.unique(implementedValues));
@@ -363,31 +375,31 @@ export class ProductVariationMaster extends AbstractProductBase {
 }
 
 export class ProductBundle extends AbstractProductBase {
-    constructor (product, catalog) {
+    constructor(product, catalog) {
         super(product);
 
         let bundleProducts = product['bundled-products'][0]['bundled-product'];
         this.bundleProducts = _.map(bundleProducts, '$.product-id');
-        this.urlResourcePaths = _generateUrlResourcePaths(catalog, this.id);
+        this.urlResourcePaths = generateUrlResourcePaths(catalog, this.id);
     }
 
-    getProductIds () {
+    getProductIds() {
         return this.bundleProducts;
     }
 
-    getProducts (catalog) {
+    getProducts(catalog) {
         return this.getProductIds().map(id => getProduct(catalog, id));
     }
 
-    getOptions () {
+    getOptions() {
         return this.options || [];
     }
 
-    getUrlResourcePath (locale = 'en_US') {
+    getUrlResourcePath(locale = 'en_US') {
         return `${this.urlResourcePaths[locale]}/${this.id}.html?lang=${locale}`;
     }
 
-    getImage (viewType) {
+    getImage(viewType) {
         let imgagePath = '';
         let i;
 
@@ -401,7 +413,7 @@ export class ProductBundle extends AbstractProductBase {
     }
 }
 
-function _parseImages (images) {
+function parseImages(images) {
     let imageList = images['image-group'];
     let parsed = [];
 
@@ -412,7 +424,7 @@ function _parseImages (images) {
             paths: []
         };
 
-        image.image.forEach (path => {
+        image.image.forEach(path => {
             proxy.paths.push(path.$.path);
         });
 
@@ -422,31 +434,37 @@ function _parseImages (images) {
     return parsed;
 }
 
-function _parsePageAttrs(attrs) {
-    return _.zipObject(_.map(attrs, (attr, key) => [_.camelCase(key), _getLocalizedValues(attr)]));
+function parsePageAttrs(attrs) {
+    return _.fromPairs(_.map(attrs, (attr, key) => [_.camelCase(key), getLocalizedValues(attr)]));
 }
 
-function _parseCustomAttrs(attrs) {
-    return _.zipObject(_.map(attrs, attr => [attr.$['attribute-id'], attr._]));
+function parseCustomAttrs(attrs) {
+    return _.fromPairs(_.map(attrs, attr => [attr.$['attribute-id'], attr._]));
 }
 
-function _parseOptions (options) {
+function parseOptions(options) {
     return _.map(options, 'shared-option[0].$.option-id');
 }
 
-function _getLocalizedValues (values) {
-    return _.zipObject(_.map(values, value => {
+function getLocalizedValues(values) {
+    let map = _.map(values, value => {
+        // Format key to match country code values in countries.json
+        let key = value.$['xml:lang'].replace('-', '_');
+        return [key, value._];
+    });
+    console.log('[getLocalizedValues] map =', JSON.stringify(map));
+    return _.fromPairs(_.map(values, value => {
         // Format key to match country code values in countries.json
         let key = value.$['xml:lang'].replace('-', '_');
         return [key, value._];
     }));
 }
 
-function _validateLocale(values, locale) {
+function validateLocale(values, locale) {
     return _.keys(values).indexOf(locale) > -1 ? locale : defaultLocale;
 }
 
-function _generateUrlResourcePaths (catalog, productId) {
+function generateUrlResourcePaths(catalog, productId) {
     const categoryAssignmentJSON = catalog.categoryAssignments[productId];
     const categoryAssignment = new CategoryAssignment(categoryAssignmentJSON);
     const categoryJSON = catalog.categories[categoryAssignment.categoryId];
@@ -454,7 +472,7 @@ function _generateUrlResourcePaths (catalog, productId) {
     let categoryParent = category.parent;
     let urlResourcePaths = {};
 
-    function addUrlResourcePath (locale) {
+    function addUrlResourcePath(locale) {
         const currentPath = urlResourcePaths[locale] || '';
         const demoDataLocale = locale === 'en_GB' || locale === 'en_US' ? defaultLocale : locale;
 

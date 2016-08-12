@@ -15,13 +15,13 @@ export const defaultPassword = 'Test123!';
 export const creditCard1 = {
     cardType: 'Visa',
     number: '4111111111111111',
-    yearIndex: _getCurrentYear() + 1,
+    yearIndex: getCurrentYear() + 1,
     cvn: 987
 };
 export const creditCard2 = {
     cardType: 'Discover',
     number: '6011111111111117',
-    yearIndex: _getCurrentYear() + 1,
+    yearIndex: getCurrentYear() + 1,
     cvn: 987
 };
 
@@ -77,32 +77,32 @@ export let parsedData = {};
  *
  * @returns {Promise} - Indicates when data has been loaded and processed
  */
-export function load () {
-    return new Promise (resolve => {
+export function load() {
+    return new Promise(resolve => {
         let promises = [];
 
         parsedData = {};
 
         Object.keys(subjectMeta).forEach(subject => {
-            promises.push(_loadAndJsonifyXmlData(subject));
+            promises.push(loadAndJsonifyXmlData(subject));
         });
 
         return Promise.all(promises).then(() => resolve());
     });
 }
 
-function _loadAndJsonifyXmlData (subject) {
+function loadAndJsonifyXmlData(subject) {
     return new Promise((resolve) => {
         let localPromises = [];
-        parsedData[subject] = parsedData.hasOwnProperty(subject) ? parsedData[subject] : {};
+        parsedData[subject] = Object.hasOwnProperty.call(parsedData, subject) ? parsedData[subject] : {};
         subjectMeta[subject].files.forEach(file => {
-            localPromises.push(new Promise(resolve =>
+            localPromises.push(new Promise(innerResolve =>
                 fs.readFile(file, (err, data) => {
                     let parser = xml2js.Parser();
                     parser.parseString(data, (err, result) => {
                         // file is an optional processor parameter
                         parsedData[subject] = subjectMeta[subject].processor(result, parsedData[subject], file);
-                        resolve(parsedData[subject]);
+                        innerResolve(parsedData[subject]);
                     });
                 })
             ));
@@ -119,7 +119,7 @@ function _loadAndJsonifyXmlData (subject) {
  * @param {String} productId - product ID
  * @returns {Object} - JSON object of product
  */
-export function getProductById (productId) {
+export function getProductById(productId) {
     var product = products.getProduct(parsedData.catalog, productId);
 
     switch (product.type) {
@@ -131,6 +131,9 @@ export function getProductById (productId) {
         case 'standard':
             product.master = products.getVariantParent(parsedData.catalog, productId);
             break;
+        default:
+            // eslint wants a default case, hence this break
+            break;
     }
 
     return product;
@@ -141,7 +144,7 @@ export function getProductById (productId) {
  *
  * @returns {Object} - ProductStandard instance
  */
-export function getProductStandard () {
+export function getProductStandard() {
     return getProductById(standardProductId);
 }
 
@@ -150,7 +153,7 @@ export function getProductStandard () {
  *
  * @returns {Object} - ProductVariationMaster instance
  */
-export function getProductVariationMaster () {
+export function getProductVariationMaster() {
     return getProductById(variationMasterProductId);
 }
 
@@ -159,7 +162,7 @@ export function getProductVariationMaster () {
  *
  * @returns {Object} - ProductSet instance
  */
-export function getProductSet () {
+export function getProductSet() {
     return getProductById(setProductId);
 }
 
@@ -168,7 +171,7 @@ export function getProductSet () {
  *
  * @returns {Object} - ProductBundle instance
  */
-export function getProductBundle () {
+export function getProductBundle() {
     return getProductById(bundleProductId);
 }
 
@@ -180,7 +183,7 @@ export function getProductBundle () {
  * @param {String} login - test customer's login value
  * @returns {Promise.Object} - JSON object with Customer's test data
  */
-export function getCustomerByLogin (login) {
+export function getCustomerByLogin(login) {
     return customers.getCustomer(parsedData.customers, login);
 }
 
@@ -193,7 +196,7 @@ export function getCustomerByLogin (login) {
  * @param {String} [locale=x_default] - page locale
  * @returns {Object} - prices
  */
-export function getPricesByProductId (productId, locale = 'x_default') {
+export function getPricesByProductId(productId, locale = 'x_default') {
     const normalizedLocale = locale.replace(/_/g, '-');
     const currencyCode = pricingHelpers.localeCurrency[normalizedLocale].currencyCode;
     const product = getProductById(productId);
@@ -218,11 +221,11 @@ export function getPricesByProductId (productId, locale = 'x_default') {
     }
 }
 
-function getPricesForStandardProduct (pricebooks, productId, locale = 'x_default') {
+function getPricesForStandardProduct(pricebooks, productId, locale = 'x_default') {
     let priceResults = {};
 
     prices.priceTypes.forEach(type => {
-        let entry = _.find(pricebooks[type].products, {productId: productId});
+        let entry = _.find(pricebooks[type].products, { productId: productId });
 
         if (entry) {
             const localizedNumber = pricingHelpers.localizeNumber(entry.amount, locale);
@@ -233,7 +236,7 @@ function getPricesForStandardProduct (pricebooks, productId, locale = 'x_default
     return priceResults;
 }
 
-function getPricesForVariationMaster (productId, locale = 'x_default') {
+function getPricesForVariationMaster(productId, locale = 'x_default') {
     const variationMaster = getProductById(productId);
     let priceResults = {};
 
@@ -242,7 +245,9 @@ function getPricesForVariationMaster (productId, locale = 'x_default') {
         prices.priceTypes.forEach(type => {
             if (variantPrices[type]) {
                 let variantPrice = pricingHelpers.getCurrencyValue(variantPrices[type], locale);
-                let priceResult = priceResults.hasOwnProperty(type) ? pricingHelpers.getCurrencyValue(priceResults[type], locale) : undefined;
+                let priceResult = Object.hasOwnProperty.call(priceResults, type)
+                    ? pricingHelpers.getCurrencyValue(priceResults[type], locale)
+                    : undefined;
                 priceResults[type] = !priceResult || variantPrice < priceResult
                     ? pricingHelpers.getFormattedPrice(variantPrices[type], locale)
                     : pricingHelpers.getFormattedPrice(priceResults[type], locale);
@@ -253,13 +258,13 @@ function getPricesForVariationMaster (productId, locale = 'x_default') {
     return priceResults;
 }
 
-function getPricesForProductSet (productId, locale = 'x_default') {
+function getPricesForProductSet(productId, locale = 'x_default') {
     let productSet = getProductById(productId);
     let price = 0.00;
 
-    productSet.getProductIds().forEach(productId => {
-        var prices = getPricesByProductId(productId, locale);
-        let values = _.values(prices);
+    productSet.getProductIds().forEach(productSetItemProductId => {
+        let productSetItemPrices = getPricesByProductId(productSetItemProductId, locale);
+        let values = _.values(productSetItemPrices);
         values = values.map(value => pricingHelpers.getCurrencyValue(value, locale));
         price += _.min(values);
     });
@@ -267,12 +272,12 @@ function getPricesForProductSet (productId, locale = 'x_default') {
     return pricingHelpers.getFormattedPrice(price.toString(), locale);
 }
 
-function getPricesForProductBundle (pricebooks, productId, locale = 'x_default') {
-    let entry = _.find(pricebooks.list.products, {productId: productId});
+function getPricesForProductBundle(pricebooks, productId, locale = 'x_default') {
+    let entry = _.find(pricebooks.list.products, { productId: productId });
     return pricingHelpers.getFormattedPrice(entry.amount, locale);
 }
 
-export function getVariationMasterInstances () {
+export function getVariationMasterInstances() {
     return products.getVariationMasters(parsedData.catalog.products);
 }
 
@@ -298,6 +303,6 @@ export function getPromotionCampaignAssignmentById(promotionId, campaignId, site
 }
 
 /* Helper Methods for this module only */
-function _getCurrentYear() {
+function getCurrentYear() {
     return moment(new Date()).year();
 }

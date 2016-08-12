@@ -1,7 +1,7 @@
 'use strict';
 
 export class AbstractDwModelMock {
-    toString () {
+    toString() {
         return JSON.stringify(this);
     }
 
@@ -12,16 +12,16 @@ export class AbstractDwModelMock {
      * @param {String} [locale] - Locale code (i.e., fr_FR or zh_CN)
      * @returns {String}
      */
-    getLocalizedProperty (propertyPath, locale = 'x_default') {
+    getLocalizedProperty(propertyPath, locale = 'x_default') {
         let tokens = propertyPath.split('.');
         let property = tokens.reduce((product, token) => product[token], this);
         let keys = Object.keys(property);
-        locale = keys.indexOf(locale) > -1 ? locale : 'x_default';
-        return property[locale];
+        let parsedLocale = keys.indexOf(locale) > -1 ? locale : 'x_default';
+        return property[parsedLocale];
     }
 }
 
-export function parseLocalizedValues (values) {
+export function parseLocalizedValues(values) {
     let result = {};
 
     values.forEach(value => {

@@ -7,7 +7,7 @@
  * @param {string} selector - CSS selector of the DOM element
  * @param {string} value - Value to set the field to
  */
-export function populateField (selector, value, fieldType = 'input') {
+export function populateField(selector, value, fieldType = 'input') {
     switch (fieldType) {
         case 'input':
             return browser.clearElement(selector).setValue(selector, value);
@@ -19,5 +19,7 @@ export function populateField (selector, value, fieldType = 'input') {
         case 'date':
             return browser.element(selector)
                 .then(el => browser.elementIdValue(el.value.ELEMENT, value));
+        default:
+            return Promise.resolve();
     }
 }
