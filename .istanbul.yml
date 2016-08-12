@@ -8,6 +8,8 @@ instrumentation:
         "**/js/**", # Those are client-side scripts
         "**/controllers/**", # We can't test controllers without too much mocking
         "**/server/EventEmitter.js", # Third-party library
-        '**/modules/*.js' # Those are just wrappers around modules
+        "**/modules/*.js", # Those are just wrappers around modules
+        "./bin/**", # Those are build scripts
+        "./doc/**" # Those are documentation scripts
     ]
     include-all-sources: true
