@@ -5,7 +5,7 @@ var argv = minimist(process.argv.slice(2));
 var getConfig = require('@tridnguyen/config');
 
 var opts = Object.assign({}, getConfig({
-    baseUrl: '',
+    baseUrl: 'https://REPLACE.ME',
     suite: '*',
     reporter: 'spec',
     timeout: 60000,
