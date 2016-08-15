@@ -447,12 +447,6 @@ function parseOptions(options) {
 }
 
 function getLocalizedValues(values) {
-    let map = _.map(values, value => {
-        // Format key to match country code values in countries.json
-        let key = value.$['xml:lang'].replace('-', '_');
-        return [key, value._];
-    });
-    console.log('[getLocalizedValues] map =', JSON.stringify(map));
     return _.fromPairs(_.map(values, value => {
         // Format key to match country code values in countries.json
         let key = value.$['xml:lang'].replace('-', '_');

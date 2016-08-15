@@ -5,6 +5,6 @@ app_storefront_base/cartridge/static/default/fonts/
 coverage/
 npm-debug.log
 cartridges.zip
-dw.json
 .idea/
 dw.json
+sitegenesisdata/
