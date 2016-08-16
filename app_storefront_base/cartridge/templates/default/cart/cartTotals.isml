@@ -1,0 +1,24 @@
+<div class="row">
+    <div class="col-xs-8">
+        <p>${Resource.msg('cart.shipping.cost','cart',null)}</p>
+    </div>
+    <div class="col-lg-4">
+        <p class="text-xs-right shipping-cost">${pdict.totalShippingCost}</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-8">
+        <p>${Resource.msg('order.ordersummary.ordertax','cart',null)}</p>
+    </div>
+    <div class="col-lg-4">
+        <p class="text-xs-right tax-total">${pdict.totalTax}</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-8">
+        <strong>${Resource.msg('global.estimatedtotal','cart',null)}</strong>
+    </div>
+    <div class="col-lg-4">
+        <p class="text-xs-right sub-total">${pdict.subTotal}</p>
+    </div>
+</div>

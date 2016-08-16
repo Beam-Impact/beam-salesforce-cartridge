@@ -103,7 +103,7 @@ server.get('Show', locale, function (req, res, next) {
         selectShippingUrl
     );
 
-    res.render('cart', basket);
+    res.render('cart/cart', basket);
     next();
 });
 

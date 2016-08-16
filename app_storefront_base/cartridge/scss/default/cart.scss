@@ -1,14 +1,27 @@
-@charset "UTF-8";
 @import "variables";
-@import "bootstrap/variables";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins/breakpoints";
 
 .cart {
-    background-color: #f6f6f6;
+    background-color: #f9f9f9;
     padding-left: 5px;
     padding-right: 5px;
-    @media (min-width: $screen-sm-min) {
+    @include media-breakpoint-up(sm) {
         padding-left: 15px;
         padding-right: 15px;
+    }
+
+}
+
+.checkout-btn {
+    background-color: $brand-color;
+    color: #f9f9f9;
+}
+
+.edit-add-to-wishlist {
+    a {
+        color: $brand-color;
+        font-size: 0.8125rem;
     }
 
 }
@@ -34,6 +47,7 @@
 
 .line-item-price-info {
     font-size: 12px;
+    margin-bottom: 0.5rem;
 }
 
 .remove-btn {
@@ -45,11 +59,30 @@
     right: 20px;
     border: none;
     background-color: #fff;
+    @include media-breakpoint-up(lg) {
+        top: 0;
+        bottom: 0;
+        right: -10px;
+        margin-top: -10px;
+        margin-bottom: -10px;
+    }
+}
+
+.remove-btn-lg {
+    color: #aaa;
+    font-size: 26px;
+    background-color: #f9f9f9;
+    position: absolute;
+    margin-top: -10px;
+    margin-right: -34px;
+    margin-bottom: -10px;
+    min-height: 110px;
+    max-height: 150px;
 }
 
 .line-item-divider {
-    margin-top: 5px;
-    margin-bottom: 5px;
+    margin-top: 0.625rem;
+    margin-bottom: 0.625rem;
 }
 
 .num-items {
@@ -65,6 +98,19 @@
     padding: 10px;
 }
 
+.quantity-form{
+    margin-bottom: 0;
+    margin-top: -0.3125rem;
+}
+
 .remove-line-item {
+    position: relative;
+}
+
+.sub-total {
+    font-weight: bold;
+}
+
+.test-remove {
     position: relative;
 }

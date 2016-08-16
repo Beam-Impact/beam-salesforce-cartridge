@@ -1,0 +1,65 @@
+<isdecorate template="common/layout/page">
+    <isscript>
+        var assets = require('~/cartridge/scripts/assets.js');
+        assets.addJs('/js/cart.js');
+        assets.addCss('/css/cart.css');
+    </isscript>
+
+    <div class="container cart-header">
+        <div class="row">
+            <div class="col-xs-6">
+                <p>hero text xxx</p>
+            </div>
+            <div class="col-xs-6">
+                <p class="text-muted num-items">${pdict.numItems}</p>
+            </div>
+        </div>
+    </div>
+
+
+    <isif condition="${pdict.items.length === 0}">
+        <div class="container cart-empty">
+            <div class="row">
+                <div class="col-xs-12 text-xs-center">
+                    <h1>${Resource.msg('cart.cartempty','cart',null)}</h1>
+                </div>
+            </div>
+        </div>
+    <iselse/>
+        <div class="container cart">
+            <div class="row">
+                <!--product cards-->
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-8">
+                    <isinclude template="cart/cartProductCard" />
+                </div>
+                <!--totals, and checkout actions-->
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
+                    <isinclude template="cart/cartPromoCode" />
+                    <div class="row">
+                        <isinclude template="cart/cartShippingMethodSelection" />
+                    </div>
+                    <isinclude template="cart/cartTotals" />
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <button class="btn btn-block checkout-btn" type="submit" name="submit" value="submit">
+                                ${Resource.msg('global.checkout','cart',null)}
+                            </button>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <button class="btn btn-block" type="submit" name="submit" value="submit">
+                                Apple Pay
+                            </button>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+            </div>
+        </div>
+        <isinclude template="cart/cartRemoveProductModal"/>
+    </isif>
+
+
+</isdecorate>
