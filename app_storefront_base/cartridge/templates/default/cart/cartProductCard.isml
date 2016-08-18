@@ -1,11 +1,11 @@
 <isloop items="${pdict.items}" var="lineItem">
     <div class="card product-info uuid-${lineItem.UUID}">
         <!--product name-->
-        <div class="row hidden-lg-up">
-            <div class="col-xs-10">
-                <p class="line-item-name">${lineItem.name}</p>
+        <div class="row">
+            <div class="line-item-name col-xs-10">
+                <span>${lineItem.name}</span>
             </div>
-            <div class="col-xs-2 remove-line-item">
+            <div class="col-xs-2 remove-line-item hidden-lg-up">
                 <button type="button" class="remove-btn" data-toggle="modal"
                         data-target="#myModal" data-pid="${lineItem.productID}"
                         data-name="${lineItem.name}"
@@ -26,13 +26,9 @@
                         <img src="${lineItem.image.src}" alt="${lineItem.image.alt}" title="${lineItem.image.title}">
                     </div>
                     <!--product details-->
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-">
+                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" >
                         <isloop items="${lineItem.variationAttributes}" var="attribute">
-                            <div class="row" data-attr="${attribute.displayName}">
-                                <div class="col-xs-12 line-item-attributes">
-                                    <span>${attribute.displayName}: ${attribute.displayValue}</span>
-                                </div>
-                            </div>
+                            <p class="line-item-attributes">${attribute.displayName}: ${attribute.displayValue}</p>
                         </isloop>
                         <div class="row hidden-sm-down edit-add-to-wishlist">
                             <div class="col-md-4">
@@ -44,14 +40,13 @@
                         </div>
                     </div>
                 </div>
-
             </div>
             <!--product price-->
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-5">
                 <hr class="hidden-lg-up line-item-divider">
                 <div class="row text-xs-center">
                     <!--item price-->
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-3">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                         <div class="row">
                             <div class="col-xs-12">
                                 <p class="line-item-price-info">${Resource.msg('cart.each.item','cart',null)}</p>
@@ -59,12 +54,12 @@
                         </div>
                         <div class="row">
                             <div class="col-xs-12">
-                                <span class="line-item-price">${lineItem.price}</span>
+                                <span class="line-item-price">${lineItem.priceModelPricing.formatted}</span>
                             </div>
                         </div>
                     </div>
                     <!--quantity-->
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-3">
                         <form action="" method="get">
                             <div class="form-group quantity-form">
                                 <label class="line-item-price-info" for="quantity">${Resource.msg('global.quantity','cart',null)}</label>
@@ -74,11 +69,13 @@
                                         data-actionUrl="${pdict.updateQuantityUrl}"
                                         id="quantity"
                                         name="quantity">
-                                    <isloop items="${lineItem.quantityOptions}" var="option" status="loopstate">
-                                        <isif condition="${lineItem.quantity === option}">
-                                            <option selected>${StringUtils.formatInteger(option)}</option>
+                                    <isloop begin="${lineItem.quantityOptions.minOrderQuantity}"
+                                            end="${lineItem.quantityOptions.maxOrderQuantity}"
+                                            status="status">
+                                        <isif condition="${lineItem.quantity === status.index}">
+                                            <option selected>${status.index}</option>
                                             <iselse/>
-                                            <option>${StringUtils.formatInteger(option)}</option>
+                                            <option>${status.index}</option>
                                         </isif>
                                     </isloop>
                                 </select>
@@ -86,7 +83,7 @@
                         </form>
                     </div>
                     <!--line item total price-->
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-3">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                         <div class="row">
                             <div class="col-xs-12">
                                 <p class="line-item-price-info">${Resource.msg('global.totalprice','cart',null)}</p>
@@ -98,21 +95,29 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="col-lg-1 hidden-md-down remove-line-item-lg">
+                        <button type="button" class="remove-btn-lg" data-toggle="modal"
+                                data-target="#myModal" data-pid="${lineItem.productID}"
+                                data-name="${lineItem.name}"
+                                data-actionUrl="${pdict.removeProductLineItemUrl}"
+                                data-uuid="${lineItem.UUID}"
+                                aria-label="remove">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                 </div>
             </div>
-            <!--remove button on large screens-->
-            <div class="col-lg-1 hidden-md-down remove-line-item">
-                <div class="test-remove">
-                    <button type="button" class="remove-btn-lg" data-toggle="modal"
-                            data-target="#myModal" data-pid="${lineItem.productID}"
-                            data-name="${lineItem.name}"
-                            data-actionUrl="${pdict.removeProductLineItemUrl}"
-                            data-uuid="${lineItem.UUID}"
-                            aria-label="remove">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            </div>
+            <!--<div class="col-lg-1 hidden-md-down remove-line-item-lg">-->
+                <!--<button type="button" class="remove-btn-lg" data-toggle="modal"-->
+                        <!--data-target="#myModal" data-pid="${lineItem.productID}"-->
+                        <!--data-name="${lineItem.name}"-->
+                        <!--data-actionUrl="${pdict.removeProductLineItemUrl}"-->
+                        <!--data-uuid="${lineItem.UUID}"-->
+                        <!--aria-label="remove">-->
+                    <!--<span aria-hidden="true">&times;</span>-->
+                <!--</button>-->
+            <!--</div>-->
         </div>
     </div>
 </isloop>

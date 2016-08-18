@@ -7,6 +7,18 @@ var URLUtils = require('dw/web/URLUtils');
 var formatMoney = require('dw/util/StringUtils').formatMoney;
 var money = require('dw/value/Money');
 
+function getQuantityOptions(productLineItem) {
+    var quantity = productLineItem.quantity.value;
+    var availableToSell = productLineItem.product.availabilityModel.inventoryRecord.ATS.value;
+
+    var min = Math.min(availableToSell, 10);
+    var max = Math.max(min, quantity);
+    return {
+        minOrderQuantity: productLineItem.product.minOrderQuantity.value || 1,
+        maxOrderQuantity: max
+    };
+}
+
 /**
  * Creates an array of objects containing a product line item's selected variants
  * @param {dw.catalog.Product} product - the product that the line item represents
@@ -22,20 +34,6 @@ function getSelectedVariationAttributes(product) {
     });
 
     return selectedAttributes;
-}
-
-/**
- * Creates an array of numbers
- * @param {dw.order.ProductLineItem} productLineItem - a line item of the basket
- * @returns {Array} an array of numbers
- */
-function getQuantityOptions(productLineItem) {
-    var quantity = productLineItem.quantity.value;
-    var availableToSell = productLineItem.product.availabilityModel.inventoryRecord.ATS.value;
-
-    var min = Math.min(availableToSell, 10);
-    var max = Math.max(min, quantity);
-    return max;
 }
 
 /**
@@ -72,7 +70,9 @@ function createProductLineItemsObject(allLineItems) {
             isVariant: item.product.variant,
             isBonusProductLineItem: item.bonusProductLineItem,
             isGift: item.gift,
-            isOrderable: item.product.availabilityModel.isOrderable(item.quantity.value)
+            isOrderable: item.product.availabilityModel.isOrderable(item.quantity.value),
+            productID: item.productID,
+            UUID: item.UUID
         };
 
         if (item.product.getImage('small', 0)) {

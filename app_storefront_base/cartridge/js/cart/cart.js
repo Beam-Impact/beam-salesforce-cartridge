@@ -39,6 +39,18 @@ module.exports = function () {
         $('.product-to-remove').append(productName);
     });
 
+    $('.remove-btn-lg').click(function (e) {
+        e.preventDefault();
+        var actionUrl = $(this).attr('data-actionUrl');
+        var productID = $(this).attr('data-pid');
+        var productName = $(this).attr('data-name');
+        var uuid = $(this).attr('data-uuid');
+        $('.delete-confirmation-btn').attr('data-pid', productID);
+        $('.delete-confirmation-btn').attr('data-actionUrl', actionUrl);
+        $('.delete-confirmation-btn').attr('data-uuid', uuid);
+        $('.product-to-remove').append(productName);
+    });
+
     $('.delete-confirmation-btn').click(function (e) {
         e.preventDefault();
         var productID = $(this).attr('data-pid');
