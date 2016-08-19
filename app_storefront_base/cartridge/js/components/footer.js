@@ -6,4 +6,8 @@ module.exports = function () {
             scrollTop: 0
         }, 500);
     });
+
+    $('.collapsable-xs .title').click(function () {
+        $(this).parents('.collapsable-xs').toggleClass('active');
+    });
 };

@@ -6,7 +6,7 @@ var Cart = require('~/cartridge/models/cart');
 var ProductMgr = require('dw/catalog/ProductMgr');
 var Transaction = require('dw/system/Transaction');
 
-server.get('MiniCart', function (req, res, next) {
+server.get('MiniCart', server.middleware.include, function (req, res, next) {
     var currentBasket = BasketMgr.getCurrentOrNewBasket();
     var basket = new Cart(currentBasket);
     res.render('/components/header/minicart', basket);

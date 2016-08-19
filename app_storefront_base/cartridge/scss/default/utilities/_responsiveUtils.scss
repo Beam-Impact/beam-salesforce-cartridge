@@ -1,12 +1,6 @@
 $alignment: left, center, right;
 $pull: left, right;
 
-$responsive-sizes: (xs),
-    (sm),
-    (md),
-    (lg),
-    (xl);
-
 @mixin media($size) {
 
     @if $size == xs {
@@ -22,7 +16,7 @@ $responsive-sizes: (xs),
     }
 }
 
-@each $size in $responsive-sizes {
+@each $size in map-keys($grid-breakpoints) {
 
     @include media($size) {
 

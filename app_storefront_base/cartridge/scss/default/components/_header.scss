@@ -1,31 +1,51 @@
 @import "menu";
+@import "search";
 
 $banner-padding: 5px;
 $menu-padding: 8px;
 $menu-item-margin: 10px;
-$menu-horizontal-align-margin: 8px;
 
-.header-menu {
-    list-style: none;
+.header {
+    position: relative;
+}
 
-    @include clearfix;
+.account {
+    margin-right: 1.25em; /* 20/16 */
+}
 
-    > li {
-        float: left;
-        margin-left: $menu-item-margin;
-        margin-right: $menu-item-margin;
-        margin-top: $menu-horizontal-align-margin;
+.navbar-header.brand {
+    position: absolute;
+    width: 100%;
+    min-width: 18.75em; /* 300/16 */
+
+    .navbar-brand {
+        float: none;
+        display: block;
+
+        img {
+            margin-right: auto;
+            margin-left: auto;
+        }
     }
 }
 
-.top-menu {
-    padding-top: $menu-padding;
-    padding-bottom: $menu-padding;
-    background-color: $light-gray;
+.header-menu {
+    @include clearfix;
 
-    .navbar-toggle {
-        margin-top: 0;
-        margin-bottom: 0;
+    margin-top: 0.625em; /* 10/16 */
+    margin-bottom: 0.625em; /* 10/16 */
+
+    .account,
+    .country-selector,
+    .header-search,
+    .mini-cart {
+        float: left;
+    }
+
+    @include media-breakpoint-up(md) {
+        .pull-left {
+            margin-top: 0.5em; /* 8/16 */
+        }
     }
 }
 
@@ -41,8 +61,8 @@ $menu-horizontal-align-margin: 8px;
     color: white;
 }
 
-#mini-cart {
-    margin-top: $menu-horizontal-align-margin;
+.mini-cart {
+    margin-top: 0.1875em; /* 3/16 */
 
     a {
         color: $dark-gray;
@@ -59,19 +79,5 @@ $menu-horizontal-align-margin: 8px;
         top: -5px;
         left: -8px;
         color: white;
-    }
-}
-
-.site-search {
-    position: relative;
-
-    .fa-search {
-        position: absolute;
-        top: 9px;
-        left: 9px;
-    }
-
-    input {
-        text-indent: 32px;
     }
 }
