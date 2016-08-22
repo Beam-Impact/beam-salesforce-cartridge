@@ -4,3 +4,6 @@
         <input class="form-control search-field" type="text" id="q" name="q" value="" placeholder="${Resource.msg('simplesearch.searchtext', 'common', null)}" />
     </form>
 </div>
+<div class="search-button">
+    <i class="fa fa-search"></i>
+</div>

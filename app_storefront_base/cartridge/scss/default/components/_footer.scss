@@ -1,8 +1,14 @@
+@import "collapsable-menu";
+
 footer {
     background-color: $gray-lighter;
+    padding-top: 1.25em; /* 20/16 */
+    padding-bottom: 1.25em;
 
     h3 {
         font-size: $font-size-base;
+        margin-bottom: 0;
+        line-height: 2.5em; /* 40/16 */
     }
 
     ul {
@@ -33,6 +39,44 @@ footer {
             float: left;
             margin: 5px;
         }
+    }
+
+    .store {
+
+        @include media-breakpoint-down(xs) {
+            border-bottom: 1px solid $dark-gray;
+
+            .content {
+                display: none;
+            }
+
+            h3 {
+                @include clearfix;
+
+                &::after {
+                    font-family: "FontAwesome";
+                    float: right;
+                    content: "\f041";
+                }
+            }
+        }
+    }
+
+    .content {
+        font-size: 0.875em; /* 14/16 */
+
+        li {
+            height: 1.875rem; /* 30/16 */
+        }
+    }
+
+    .copyright,
+    .postscript {
+        font-size: 0.8125em; /* 13/16 */
+    }
+
+    .copyright {
+        margin-bottom: 0.625em; /* 10/16 */
     }
 
     .back-to-top {
