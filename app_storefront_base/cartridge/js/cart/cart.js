@@ -23,7 +23,7 @@ function updateCartTotals(data) {
     $('.tax-total').append(data.totalTax);
 
     $('.sub-total').empty();
-    $('.sub-total').append(data.subTotal);
+    $('.sub-total').append(data.grandTotal);
 }
 
 module.exports = function () {
@@ -36,6 +36,7 @@ module.exports = function () {
         $('.delete-confirmation-btn').attr('data-pid', productID);
         $('.delete-confirmation-btn').attr('data-actionUrl', actionUrl);
         $('.delete-confirmation-btn').attr('data-uuid', uuid);
+        $('.product-to-remove').empty();
         $('.product-to-remove').append(productName);
     });
 
@@ -48,7 +49,13 @@ module.exports = function () {
         $('.delete-confirmation-btn').attr('data-pid', productID);
         $('.delete-confirmation-btn').attr('data-actionUrl', actionUrl);
         $('.delete-confirmation-btn').attr('data-uuid', uuid);
+        $('.product-to-remove').empty();
         $('.product-to-remove').append(productName);
+    });
+
+    $('.optional-promo').click(function (e) {
+        e.preventDefault();
+        $('.promo-code-form').toggle();
     });
 
     $('.delete-confirmation-btn').click(function (e) {
@@ -112,14 +119,10 @@ module.exports = function () {
 
     $('.shippingMethods').change(function () {
         var url = $(this).attr('data-actionUrl');
-
-        console.log($(this).find(':selected').attr('data-shipping-id'));
-
         var urlParams = {
             methodID: $(this).find(':selected').attr('data-shipping-id')
         };
         url = appendToUrl(url, urlParams);
-        console.log(url);
 
         $.ajax({
             url: url,

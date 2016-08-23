@@ -6,7 +6,8 @@
                         <h4 class="modal-title" id="myModalLabel">Remove Product? xxx</h4>
                     </div>
                     <div class="modal-body delete-confirmation-body">
-                        Do you really want to remove xxx <span class="product-to-remove"></span> from the cart? xxx
+                        Are you sure you want to remove the following product from the cart? xxx
+                        <p class="product-to-remove"></p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">${Resource.msg('global.cancel','cart',null)}</button>

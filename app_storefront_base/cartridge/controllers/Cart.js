@@ -86,6 +86,26 @@ server.get('Show', locale, function (req, res, next) {
     var currentBasket = BasketMgr.getCurrentOrNewBasket();
 
     Transaction.wrap(function () {
+        var productLineItem = currentBasket.createProductLineItem(
+            '701642823940',
+            currentBasket.defaultShipment
+        );
+
+        productLineItem.setQuantityValue(1);
+
+        productLineItem = currentBasket.createProductLineItem(
+            '701642811503',
+            currentBasket.defaultShipment
+        );
+
+        productLineItem.setQuantityValue(1);
+
+        productLineItem = currentBasket.createProductLineItem(
+            '708141677289',
+            currentBasket.defaultShipment
+        );
+
+        productLineItem.setQuantityValue(1);
         calculateCart(currentBasket);
     });
 

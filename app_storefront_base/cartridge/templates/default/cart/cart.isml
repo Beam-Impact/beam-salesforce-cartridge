@@ -64,6 +64,4 @@
         </div>
         <isinclude template="cart/cartRemoveProductModal"/>
     </isif>
-
-
 </isdecorate>

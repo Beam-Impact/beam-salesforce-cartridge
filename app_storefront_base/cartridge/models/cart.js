@@ -7,6 +7,11 @@ var URLUtils = require('dw/web/URLUtils');
 var formatMoney = require('dw/util/StringUtils').formatMoney;
 var money = require('dw/value/Money');
 
+/**
+ * Sets the max number to display in the quantity drop down.
+ * @param {dw.order.ProductLineItem} productLineItem - a line item of the basket.
+ * @returns {Number} The max number to display in the quantity drop down.
+ */
 function getQuantityOptions(productLineItem) {
     var quantity = productLineItem.quantity.value;
     var availableToSell = productLineItem.product.availabilityModel.inventoryRecord.ATS.value;
@@ -22,7 +27,7 @@ function getQuantityOptions(productLineItem) {
 /**
  * Creates an array of objects containing a product line item's selected variants
  * @param {dw.catalog.Product} product - the product that the line item represents
- * @returns {Object[]} an array of objects containing a product line item's selected variants
+ * @returns {Array} an array of objects containing a product line item's selected variants
  */
 function getSelectedVariationAttributes(product) {
     var variationAttributes = product.variationModel.productVariationAttributes;
