@@ -1,8 +1,8 @@
 {
     "hooks": [
         {
-            "name": "dw.system.request.onRequest",
-            "script": "./request/OnRequest"
+            "name": "dw.ocapi.shop.basket.calculate",
+            "script": "./cart/calculate.js"
         }
     ]
 }

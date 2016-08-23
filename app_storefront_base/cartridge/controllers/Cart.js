@@ -47,7 +47,7 @@ server.post('AddProduct', function (req, res, next) {
     next();
 });
 
-server.get('Show', categories, locale, function (req, res, next) {
+server.get('Show', locale, function (req, res, next) {
     var currentBasket = BasketMgr.getCurrentOrNewBasket();
 
     Transaction.wrap(function () {

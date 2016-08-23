@@ -3,7 +3,7 @@
 /**
  * Creates an array of objects containing store information
  * @param {dw.util.Set <dw.catalog.Store>} storesObject - results returned by the search
- * @returns {Array} an array of objects that contains store information
+ * @returns {Object[]} an array of objects that contains store information
  */
 function createStoresObject(storesObject) {
     return Object.keys(storesObject).map(function (key) {

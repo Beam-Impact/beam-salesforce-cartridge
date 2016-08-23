@@ -15,11 +15,9 @@ var money = require('dw/value/Money');
 function getSelectedVariationAttributes(product) {
     var variationAttributes = product.variationModel.productVariationAttributes;
     var selectedAttributes = helper.map(variationAttributes, function (attribute) {
-        var variationAttribute = product.variationModel.getSelectedValue(attribute);
-        var attributeName = attribute.displayName;
         return {
-            displayName: attributeName,
-            displayValue: variationAttribute.displayValue
+            displayName: attribute.displayName,
+            displayValue: product.variationModel.getSelectedValue(attribute).displayValue
         };
     });
 
@@ -53,11 +51,11 @@ function createProductLineItemsObject(allLineItems) {
             url: !item.categoryID
                 ? URLUtils.http('Product-Show', 'pid', item.productID).toString()
                 : URLUtils.http(
-                'Product-Show',
-                'pid',
-                item.productID,
-                'cgid',
-                item.categoryID
+                    'Product-Show',
+                    'pid',
+                    item.productID,
+                    'cgid',
+                    item.categoryID
             ).toString(),
             variationAttributes: getSelectedVariationAttributes(item.product),
             quantity: item.quantity.value,
@@ -73,14 +71,9 @@ function createProductLineItemsObject(allLineItems) {
             isProductSet: item.product.productSet,
             isVariant: item.product.variant,
             isBonusProductLineItem: item.bonusProductLineItem,
-            isGift: item.gift
+            isGift: item.gift,
+            isOrderable: item.product.availabilityModel.isOrderable(item.quantity.value)
         };
-
-        if (item.product.availabilityModel.availability === 1) {
-            result.isAvailable = true;
-        } else {
-            result.isAvailable = false;
-        }
 
         if (item.product.getImage('small', 0)) {
             result.image = {
