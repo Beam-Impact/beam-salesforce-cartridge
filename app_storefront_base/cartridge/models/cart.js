@@ -56,7 +56,7 @@ function createProductLineItemsObject(allLineItems) {
                     item.productID,
                     'cgid',
                     item.categoryID
-            ).toString(),
+                ).toString(),
             variationAttributes: getSelectedVariationAttributes(item.product),
             quantity: item.quantity.value,
             quantityOptions: getQuantityOptions(item),

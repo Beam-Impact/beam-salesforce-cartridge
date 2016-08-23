@@ -116,6 +116,9 @@ var createApiProductLineItem = function (product) {
                     ATS: {
                         value: 15
                     }
+                },
+                isOrderable: function () {
+                    return true;
                 }
             },
             getImage: function () {
@@ -224,7 +227,6 @@ describe('cart', function () {
             unitPrice: 28.99,
             productVariationAttributes: ['Color, Size'],
             selectedValue: ['Grey Heather', 'XL'],
-            isAvailable: 1,
             isBundle: false,
             isMaster: false,
             isProductSet: false,
@@ -253,7 +255,6 @@ describe('cart', function () {
         assert.isFalse(result.items[0].isBonusProductLineItem);
         assert.isFalse(result.items[0].isGift);
         assert.isTrue(result.items[0].isVariant);
-        assert.isTrue(result.items[0].isAvailable);
         assert.equal(result.items[0].type, 'Product');
         assert.equal(result.items[0].variationAttributes.length, 2);
         assert.equal(result.items[0].variationAttributes[0].displayName, 'Color');
@@ -275,10 +276,9 @@ describe('cart', function () {
         );
     });
 
-    it('should create product line item with no image and not available', function () {
+    it('should create product line item with no image', function () {
         var productNoImage = {
             unitPrice: 99.99,
-            isAvailable: 0,
             isBundle: false,
             isMaster: false,
             isProductSet: false,
@@ -305,7 +305,6 @@ describe('cart', function () {
         assert.isFalse(result.items[0].isBonusProductLineItem);
         assert.isFalse(result.items[0].isGift);
         assert.isFalse(result.items[0].isVariant);
-        assert.isFalse(result.items[0].isAvailable);
         assert.equal(result.items[0].type, 'Product');
         assert.equal(result.items[0].variationAttributes.length, 2);
         assert.equal(result.items[0].variationAttributes[0].displayName, 'Color');
