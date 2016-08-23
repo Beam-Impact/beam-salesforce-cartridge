@@ -4,7 +4,6 @@ var server = require('server');
 
 var BasketMgr = require('dw/order/BasketMgr');
 var Cart = require('~/cartridge/models/cart');
-var categories = require('~/cartridge/scripts/middleware/categories');
 var HookMgr = require('dw/system/HookMgr');
 var locale = require('~/cartridge/scripts/middleware/locale');
 var ProductMgr = require('dw/catalog/ProductMgr');
