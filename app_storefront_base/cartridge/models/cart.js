@@ -10,7 +10,7 @@ var money = require('dw/value/Money');
 /**
  * Creates an array of objects containing a product line item's selected variants
  * @param {dw.catalog.Product} product - the product that the line item represents
- * @returns {Array} an array of objects containing a product line item's selected variants
+ * @returns {Object[]} an array of objects containing a product line item's selected variants
  */
 function getSelectedVariationAttributes(product) {
     var variationAttributes = product.variationModel.productVariationAttributes;
