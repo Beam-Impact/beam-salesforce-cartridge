@@ -11,15 +11,7 @@ var getMockProduct = require('../../../mocks/dw.catalog.Product');
 var getMockProductPriceModel = require('../../../mocks/dw.catalog.ProductPriceModel');
 var getMockProductPriceTable = require('../../../mocks/dw.catalog.ProductPriceTable');
 
-var urlUtilsMock = {
-    http: function (endPoint, pid, id) {
-        return id;
-    },
-    staticURL: function () {
-        return '/on/demandware.static/Sites-SiteGenesis-Site/-/' +
-            'en_US/v1469554021011/images/noimagesmall.png';
-    }
-};
+var urlUtilsMock = require('../../../mocks/dw.web.URLUtils');
 
 var createShipmentShippingModel = function () {
     return {
@@ -176,46 +168,40 @@ var createApiBasket = function (product) {
 
     basket.allProductLineItems = createApiProductLineItem(product);
 
-    basket.shipments = util.toArrayList([
-        {
-
-        }
-    ]);
+    basket.shipments = util.toArrayList([{}]);
 
     return basket;
 };
 
 describe('cart', function () {
     var Cart = null;
-    beforeEach(function () {
-        var helper = proxyquire('../../../../app_storefront_base/cartridge/scripts/dwHelpers', {
-            'dw/util/ArrayList': Collection
-        });
-        var mockProductPricingModel = proxyquire('../../../../app_storefront_base/cartridge/models/product/productPricingModel', {
-            'dw/value/Money': commonHelpers.returnObject,
-            'dw/util/StringUtils': {
-                formatMoney: function () {
-                    return 'formattedMoney';
-                }
-            },
-            'dw/campaign/Promotion': {
-                PROMOTION_CLASS_PRODUCT: 'someClass'
+    var helper = proxyquire('../../../../app_storefront_base/cartridge/scripts/dwHelpers', {
+        'dw/util/ArrayList': Collection
+    });
+    var mockProductPricingModel = proxyquire('../../../../app_storefront_base/cartridge/models/product/productPricingModel', {
+        'dw/value/Money': commonHelpers.returnObject,
+        'dw/util/StringUtils': {
+            formatMoney: function () {
+                return 'formattedMoney';
             }
-        });
-        Cart = proxyquire('../../../../app_storefront_base/cartridge/models/cart', {
-            '~/cartridge/scripts/dwHelpers': helper,
-            'dw/web/URLUtils': urlUtilsMock,
-            './product/productPricingModel': mockProductPricingModel,
-            'dw/util/StringUtils': {
-                formatMoney: function () {
-                    return 'formattedMoney';
-                }
-            },
-            'dw/value/Money': commonHelpers.returnObject
-        });
+        },
+        'dw/campaign/Promotion': {
+            PROMOTION_CLASS_PRODUCT: 'someClass'
+        }
+    });
+    Cart = proxyquire('../../../../app_storefront_base/cartridge/models/cart', {
+        '~/cartridge/scripts/dwHelpers': helper,
+        'dw/web/URLUtils': urlUtilsMock,
+        './product/productPricingModel': mockProductPricingModel,
+        'dw/util/StringUtils': {
+            formatMoney: function () {
+                return 'formattedMoney';
+            }
+        },
+        'dw/value/Money': getMockMoney
     });
 
-    it('should test null basket', function () {
+    it('should accept/process a null Basket object', function () {
         var nullBasket = null;
         var result = new Cart(nullBasket);
         assert.equal(result.items.length, 0);
@@ -262,11 +248,6 @@ describe('cart', function () {
         assert.equal(result.items[0].variationAttributes[1].displayName, 'Size');
         assert.equal(result.items[0].variationAttributes[1].displayValue, 'XL');
         assert.equal(
-            result.items[0].image.src,
-            '/on/demandware.static/-/Sites-apparel-catalog/default/dw824c6de7/' +
-            'images/small/PG.10217069.JJ908XX.PZ.jpg'
-        );
-        assert.equal(
             result.items[0].image.alt,
             'Long Sleeve Embellished Boat Neck Top, Grey Heather, small'
         );
@@ -311,11 +292,6 @@ describe('cart', function () {
         assert.equal(result.items[0].variationAttributes[0].displayValue, 'Grey Heather');
         assert.equal(result.items[0].variationAttributes[1].displayName, 'Size');
         assert.equal(result.items[0].variationAttributes[1].displayValue, 'XL');
-        assert.equal(
-            result.items[0].image.src,
-            '/on/demandware.static/Sites-SiteGenesis-Site/-/' +
-            'en_US/v1469554021011/images/noimagesmall.png'
-        );
         assert.equal(
             result.items[0].image.alt,
             'Upright Case (33L - 3.7Kg)'
