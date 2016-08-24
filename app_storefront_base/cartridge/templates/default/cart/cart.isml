@@ -8,13 +8,13 @@
     <div class="container cart-header">
         <div class="row">
             <div class="col-sm-3">
-                <a class="continue-shopping-link" href="#" title="Go to My Account">${Resource.msg('cart.continue.shopping.link','cart',null)}</a>
+                <a class="continue-shopping-link" href="{"#"}" title="Go to My Account">${Resource.msg('link.continue.shopping','cart',null)}</a>
             </div>
             <div class="col-xs-12 col-sm-6 text-xs-center">
                 ${pdict.numItems}
             </div>
             <div class="col-sm-3 text-xs-right">
-                <span>${Resource.msg('cart.need.help.text','cart',null)}</span> <span class="help-phone-number">${Resource.msg('cart.sample.phone.number','cart',null)}</span>
+                <span>${Resource.msg('info.need.help','cart',null)}</span> <span class="help-phone-number">${Resource.msg('info.phone.number','cart',null)}</span>
             </div>
         </div>
         <hr class="no-margin-top">
@@ -25,7 +25,7 @@
         <div class="container cart-empty">
             <div class="row">
                 <div class="col-xs-12 text-xs-center">
-                    <h1>${Resource.msg('cart.cartempty','cart',null)}</h1>
+                    <h1>${Resource.msg('info.cart.empty.msg','cart',null)}</h1>
                 </div>
             </div>
         </div>
@@ -33,11 +33,11 @@
         <div class="container cart">
             <div class="row">
                 <!--product cards-->
-                <div class="col-xs-12 col-sm-12 col-md-7 col-lg-8">
+                <div class="col-sm-7 col-md-8">
                     <isinclude template="cart/cartProductCard" />
                 </div>
                 <!--totals, and checkout actions-->
-                <div class="col-xs-12 col-sm-12 col-md-5 col-lg-4">
+                <div class="col-sm-5 col-md-4">
                     <isinclude template="cart/cartPromoCode" />
                     <div class="row">
                         <isinclude template="cart/cartShippingMethodSelection" />
@@ -46,7 +46,7 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <button class="btn btn-block checkout-btn" type="submit" name="submit" value="submit">
-                                ${Resource.msg('global.checkout','cart',null)}
+                                ${Resource.msg('button.checkout','cart',null)}
                             </button>
                         </div>
                     </div>

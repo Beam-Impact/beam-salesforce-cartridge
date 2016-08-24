@@ -17,13 +17,13 @@ function appendToUrl(url, params) {
 
 function updateCartTotals(data) {
     $('.shipping-cost').empty();
-    $('.shipping-cost').append(data.totalShippingCost);
+    $('.shipping-cost').append(data.totals.totalShippingCost);
 
     $('.tax-total').empty();
-    $('.tax-total').append(data.totalTax);
+    $('.tax-total').append(data.totals.totalTax);
 
     $('.sub-total').empty();
-    $('.sub-total').append(data.grandTotal);
+    $('.sub-total').append(data.totals.grandTotal);
 }
 
 module.exports = function () {

@@ -1,18 +1,18 @@
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header delete-confirmation-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">Remove Product? xxx</h4>
-                    </div>
-                    <div class="modal-body delete-confirmation-body">
-                        Are you sure you want to remove the following product from the cart? xxx
-                        <p class="product-to-remove"></p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">${Resource.msg('global.cancel','cart',null)}</button>
-                        <button type="button" class="btn btn-primary delete-confirmation-btn" data-dismiss="modal">${Resource.msg('global.yes','cart',null)}</button>
-                    </div>
-                </div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header delete-confirmation-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">${Resource.msg('heading.remove.product.confirmation.modal','cart',null)}</h4>
+            </div>
+            <div class="modal-body delete-confirmation-body">
+                ${Resource.msg('msg.remove.product.confirmation.modal','cart',null)}
+                <p class="product-to-remove"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">${Resource.msg('button.cancel','cart',null)}</button>
+                <button type="button" class="btn btn-primary delete-confirmation-btn" data-dismiss="modal">${Resource.msg('button.confirm','cart',null)}</button>
             </div>
         </div>
+    </div>
+</div>

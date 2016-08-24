@@ -26,40 +26,40 @@
                 </button>
             </div>
         </div>
-        <!--now split up details and price-->
+        <!---now split up details and price--->
         <div class="row">
             <!--product info-->
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+            <div class="col-lg-6">
                 <div class="row">
                     <!--product image-->
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    <div class="col-xs-4">
                         <img src="${lineItem.image.src}" alt="${lineItem.image.alt}" title="${lineItem.image.title}">
                     </div>
                     <!--product details-->
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" >
+                    <div class="col-xs-8" >
                         <isloop items="${lineItem.variationAttributes}" var="attribute">
                             <p class="line-item-attributes">${attribute.displayName}: ${attribute.displayValue}</p>
                         </isloop>
                         <div class="row hidden-sm-down edit-add-to-wishlist">
                             <div class="col-md-4">
-                                <a href="#" title="Go to My Account">${Resource.msg('cart.edit.item.link','cart',null)}</a>
+                                <a href="${"#"}" title="Go to My Account">${Resource.msg('link.edit.item','cart',null)}</a>
                             </div>
                             <div class="col-md-8">
-                                <a href="#" title="Go to My Account">${Resource.msg('cart.add.to.wishist.link','cart',null)}</a>
+                                <a href="$"{#"}" title="Go to My Account">${Resource.msg('link.add.to.wishlist','cart',null)}</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <!--product price-->
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+            <div class="col-lg-6">
                 <hr class="hidden-lg-up line-item-divider">
                 <div class="row text-xs-center">
                     <!--item price-->
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    <div class="col-xs-4">
                         <div class="row">
                             <div class="col-xs-12">
-                                <p class="line-item-price-info">${Resource.msg('cart.each.item','cart',null)}</p>
+                                <p class="line-item-price-info">${Resource.msg('label.each.item.price','cart',null)}</p>
                             </div>
                         </div>
                         <div class="row">
@@ -69,10 +69,10 @@
                         </div>
                     </div>
                     <!--quantity-->
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-3">
+                    <div class="col-xs-4 col-md-3">
                         <form action="" method="get">
                             <div class="form-group quantity-form">
-                                <label class="line-item-price-info" for="quantity">${Resource.msg('global.quantity','cart',null)}</label>
+                                <label class="line-item-price-info" for="quantity">${Resource.msg('field.selectquantity','cart',null)}</label>
                                 <select class="form-control quantity"
                                         data-uuid="${lineItem.UUID}"
                                         data-pid="${lineItem.productID}"
@@ -93,10 +93,10 @@
                         </form>
                     </div>
                     <!--line item total price-->
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    <div class="col-xs-4">
                         <div class="row">
                             <div class="col-xs-12">
-                                <p class="line-item-price-info">${Resource.msg('global.totalprice','cart',null)}</p>
+                                <p class="line-item-price-info">${Resource.msg('label.total.price','cart',null)}</p>
                             </div>
                         </div>
                         <div class="row">
@@ -105,22 +105,9 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="col-lg-1 hidden-md-down remove-line-item-lg">
-
-                    </div>
+                    <div class="col-lg-1 hidden-md-down remove-line-item-lg"></div>
                 </div>
             </div>
-            <!--<div class="col-lg-1 hidden-md-down remove-line-item-lg">-->
-                <!--<button type="button" class="remove-btn-lg" data-toggle="modal"-->
-                        <!--data-target="#myModal" data-pid="${lineItem.productID}"-->
-                        <!--data-name="${lineItem.name}"-->
-                        <!--data-actionUrl="${pdict.removeProductLineItemUrl}"-->
-                        <!--data-uuid="${lineItem.UUID}"-->
-                        <!--aria-label="remove">-->
-                    <!--<span aria-hidden="true">&times;</span>-->
-                <!--</button>-->
-            <!--</div>-->
         </div>
     </div>
 </isloop>

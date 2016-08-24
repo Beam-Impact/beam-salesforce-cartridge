@@ -24,7 +24,6 @@ function selectShippingMethod(defaultShipment, shippingMethodID, shippingMethods
     var applicableShippingMethods;
     var defaultShippingMethod = ShippingMgr.getDefaultShippingMethod();
     var isShipmentSet = false;
-    var shipment = defaultShipment.ID;
 
     if (shippingMethods) {
         applicableShippingMethods = shippingMethods;
@@ -34,13 +33,15 @@ function selectShippingMethod(defaultShipment, shippingMethodID, shippingMethods
         applicableShippingMethods = shipmentModel.applicableShippingMethods;
     }
 
-    // loop through the shipping methods to get shipping method
-    for (var i = 0; i < applicableShippingMethods.length; i++) {
-        var shippingMethod = applicableShippingMethods[i];
-        if (shippingMethod.ID === shippingMethodID) {
-            defaultShipment.setShippingMethod(shippingMethod);
-            isShipmentSet = true;
-            break;
+    if (shippingMethodID) {
+        // loop through the shipping methods to get shipping method
+        for (var i = 0; i < applicableShippingMethods.length; i++) {
+            var shippingMethod = applicableShippingMethods[i];
+            if (shippingMethod.ID === shippingMethodID) {
+                defaultShipment.setShippingMethod(shippingMethod);
+                isShipmentSet = true;
+                break;
+            }
         }
     }
 
@@ -86,6 +87,9 @@ server.get('Show', locale, function (req, res, next) {
     var currentBasket = BasketMgr.getCurrentOrNewBasket();
 
     Transaction.wrap(function () {
+        if (!currentBasket.defaultShipment.shippingMethod) {
+            selectShippingMethod(currentBasket.defaultShipment);
+        }
         var productLineItem = currentBasket.createProductLineItem(
             '701642823940',
             currentBasket.defaultShipment

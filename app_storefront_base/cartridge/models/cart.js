@@ -137,6 +137,32 @@ function getApplicableShippingMethods(shipmentModel) {
     });
 }
 
+function getTotals(basket) {
+    var totals = {};
+
+    totals.subTotal = !basket.adjustedMerchandizeTotalPrice.available ? '-' : formatMoney(money(
+        basket.adjustedMerchandizeTotalPrice.value,
+        basket.adjustedMerchandizeTotalPrice.currencyCode
+    ));
+
+    totals.grandTotal = !basket.totalGrossPrice.available ? totals.subTotal : formatMoney(money(
+        basket.totalGrossPrice.value,
+        basket.totalGrossPrice.currencyCode
+    ));
+
+    totals.totalTax = !basket.totalTax.available ? '-' : formatMoney(money(
+        basket.totalTax.value,
+        basket.totalTax.currencyCode
+    ));
+
+    totals.totalShippingCost = !basket.shippingTotalPrice.available ? '-' : formatMoney(money(
+        basket.shippingTotalPrice.value,
+        basket.shippingTotalPrice.currencyCode
+    ));
+
+    return totals;
+}
+
 /**
  * Cart class that represents collection of line items
  * @param {dw.order.Basket} basket Current users's basket
@@ -156,26 +182,13 @@ function cart(basket,
         if (shipmentShippingModel) {
             this.shippingMethods = getApplicableShippingMethods(shipmentShippingModel);
         }
-        this.grandTotal = formatMoney(money(
-            basket.totalGrossPrice.value,
-            basket.totalGrossPrice.currencyCode
-        ));
-        this.subTotal = formatMoney(money(
-            basket.adjustedMerchandizeTotalPrice.value,
-            basket.adjustedMerchandizeTotalPrice.currencyCode
-        ));
-        this.totalTax = formatMoney(money(
-            basket.totalTax.value,
-            basket.totalTax.currencyCode
-        ));
-        this.totalShippingCost = formatMoney(money(
-            basket.shippingTotalPrice.value,
-            basket.shippingTotalPrice.currencyCode
-        ));
+        this.totals = getTotals(basket);
         this.removeProductLineItemUrl = removeProductLineItemUrl;
         this.updateQuantityUrl = updateQuantityUrl;
         this.selectShippingUrl = selectShippingUrl;
-        this.selectedShippingMethod = basket.defaultShipment.shippingMethod.ID;
+        if (basket.defaultShipment.shippingMethod) {
+            this.selectedShippingMethod = basket.defaultShipment.shippingMethod.ID;
+        }
     } else {
         this.items = [];
         this.numItems = 0;
