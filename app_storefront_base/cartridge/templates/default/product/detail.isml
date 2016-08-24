@@ -1,140 +1,129 @@
 <isdecorate template="common/layout/page">
+
     <isscript>
         var assets = require('~/cartridge/scripts/assets');
         assets.addJs('/js/productDetail.js');
         assets.addCss('/css/product/detail.css');
     </isscript>
+
     <div class="container product-detail">
         <div class="row">
-            <figure id="primary_images" class="col-sm-6">
-                <div id="pdpCarousel" class="carousel" data-interval="0">
-                    <ol class="carousel-indicators">
-                        <isloop items="${pdict.product.images['large']}" var="image" status="loopStatus">
-                            <li data-target="#pdpCarousel" data-slide-to="${loopStatus.index}"
-                                class='<isif condition="${loopStatus.index == 0}">active</isif>'>
-                            </li>
-                        </isloop>
-                    </ol>
+            <h1 class="product-name hidden-md-up col-sm-12">${pdict.product.name}</h1>
+        </div>
 
-                    <div class="carousel-inner" role="listbox">
-                        <isloop items="${pdict.product.images['large']}" var="image" status="loopStatus">
-                            <div class='item <isif condition="${loopStatus.index == 0}">active</isif>'>
-                                <img src="${image.url}">
-                            </div>
-                        </isloop>
-                    </div>
+        <div class="row">
+            <!-- Product Images Carousel -->
+            <isinclude template="/product/image_carousel" />
 
-                    <a class="left carousel-control" href="#pdpCarousel" role="button" data-slide="prev">
-                        <span class="fa fa-chevron-left glyphicon-chevron-left" aria-hidden="true"></span>
-                        <span class="sr-only">${Resource.msg('button.previous', 'common', null)}</span>
-                    </a>
-                    <a class="right carousel-control" href="#pdpCarousel" role="button" data-slide="next">
-                        <span class="fa fa-chevron-right glyphicon-chevron-right" aria-hidden="true"></span>
-                        <span class="sr-only">${Resource.msg('button.next', 'common', null)}</span>
-                    </a>
-                </div>
-            </figure>
-
+            <!-- Product Name and Number -->
             <div class="col-sm-6">
                 <section>
-                    <h3>${pdict.product.name}</h3>
-                    <h6>
+                    <h1 class="product-name hidden-sm-down">${pdict.product.name}</h1>
+                    <div class="product-number hidden-xs-down">
                         ${Resource.msg('label.item', 'product', null)}
-                        <span id="product_id">${pdict.product.id}</span>
-                    </h6>
+                        <span class="product-id">${pdict.product.id}</span>
+                    </div>
                 </section>
+            </div>
 
-                <section class="attributes">
+            <div class="detail-panel col-xs-12 col-sm-6">
+                <!-- Left blank column -->
+                <section class="col-md-1"></section>
+
+                <!-- Attributes -->
+                <section class="attributes col-sm-12 col-md-10">
                     <div class="row">
-                        <div class="col-sm-6">
-                            <isloop items="${pdict.product.attributes}" var="attr">
-                                <div data-attr="${attr.attributeID}" class="swatch">
-                                    <div class="attribute">
-                                        <menu class="${attr.attributeID}">
-                                            ${Resource.msg('label.select', 'common', null)} ${attr.displayName}
-                                        </menu>
-                                        <isif condition="${attr.isSwatchable}">
-                                            <isloop items="${attr.values}" var="attrValue">
-                                                <a href="${attrValue.url}">
-                                                <menuitem data-attr-value="${attrValue.value}"
-                                                          data-selected="${attrValue.isSelected}"
-                                                          class="${attr.attributeID}-value swatch-circle swatch-value"
-                                                          style="background-image: url(${attrValue.images['swatch'][0].url})"
-                                                    <isif condition="${attrValue.isSelectable}">
-                                                        selectable
-                                                    <iselse>
-                                                        unselectable
-                                                    </isif>
-                                                >
-                                                </menuitem>
-                                                </a>
-                                            </isloop>
-                                        <iselse>
-                                            <select name="select_${attr.attributeID}">
-                                                <option value="null">
-                                                    ${Resource.msg('label.select', 'common', null)} ${attr.displayName}
-                                                </option>
-                                                <isloop items="${attr.values}" var="attrValue">
-                                                    <option value="${attrValue.url}" data-attr-value="${attrValue.value}"
-                                                        <isif condition="${!attrValue.isSelectable}">disabled</isif>
-                                                        <isif condition="${attrValue.isSelected}">selected</isif>
-                                                    >
-                                                        ${attrValue.displayValue}
-                                                    </option>
-                                                </isloop>
-                                            </select>
-                                        </isif>
-                                    </div>
-                                </div>
+                        <div class="col-sm-12">
+                            <isloop items="${pdict.product.attributes}" var="attr" status="attributeStatus">
+                                <isinclude template="/product/attributes" />
                             </isloop>
                         </div>
-                        <div class="col-sm-6">
-                            <menu class="quantity">${Resource.msg('label.quantity', 'common', null)}</menu>
-                            <select name="quantity">
-                                <isloop begin="${pdict.product.minOrderQuantity}"
-                                        end="${pdict.product.maxOrderQuantity}"
-                                        status="status">
-                                    <option value="${status.index}">${status.index}</option>
-                                </isloop>
-                            </select>
+                    </div>
+
+                    <!-- Size Chart -->
+                    <div class="row">
+                        <div class="size-chart">
+                            <a href="${"#"}" class="size-chart">${Resource.msg('link.size_chart', 'product', null)}</a>
                         </div>
-                        <div>
+                    </div>
+
+                    <!-- Availability -->
+                    <div class="row">
+                        <div class="availability">
                             <span>
-                                ${Resource.msg('label.availability', 'common', null)}:
+                                <label class="availability">
+                                    ${Resource.msg('label.availability', 'common', null)}:
+                                </label>
                                 <span class="availability-msg">
                                     <isif condition="${pdict.product.hasRequiredAttrsSelected && pdict.product.isAvailable}">
                                         ${pdict.resources.label_instock}
-                                    <iselseif condition="${pdict.product.hasRequiredAttrsSelected && !pdict.product.isAvailable}">
-                                        ${pdict.resources.label_allnotavailable}
-                                    </iselseif>
-                                    <iselse>
-                                        ${pdict.resources.info_selectforstock}
+                                        <iselseif condition="${pdict.product.hasRequiredAttrsSelected && !pdict.product.isAvailable}">
+                                            ${pdict.resources.label_allnotavailable}
+                                        </iselseif>
+                                        <iselse>
+                                            ${pdict.resources.info_selectforstock}
                                     </isif>
                                 </span>
                             </span>
                         </div>
-                        <div>
-                            <span class="price">${pdict.product.price.formatted}</span>
+                    </div>
+
+                    <hr>
+
+                    <!-- Prices -->
+                    <div class="prices row">
+                        <div class="col-sm-12">
+                            <isinclude template="/components/product/pricing" />
                         </div>
+                    </div>
+
+                    <!-- Cart and [Optionally] Apple Pay -->
+                    <div class="row cart-and-ipay">
+                        <div class="col-sm-12">
+                            <input type="hidden" name="addToCartUrl" value="${pdict.addToCartUrl}">
+                            <button class="add-to-cart btn btn-success button button-primary"
+                                    id="btn_add_to_cart" disabled="${!pdict.product.hasRequiredAttrsSelected || !pdict.product.isAvailable}">
+                                <i class="fa fa-shopping-bag"></i>
+                                ${Resource.msg('button.addtocart', 'common', null)}
+                            </button>
+                            <isapplepay></isapplepay>
+                        </div>
+                    </div>
+
+                    <!-- Add to Wishlist and Social Sharing Icons -->
+                    <div class="row wishlist-social hidden-sm-down">
+                        <a href="${"#"}" class="add-to-wish-list col-md-6">${Resource.msg('button.add_to_wishlist', 'common', null)}</a>
+                        <span class="social-icons col-md-6">
+                            <i class="fa fa-pinterest" alt="Pinterest"></i>
+                            <i class="fa fa-instagram" alt="Instagram"></i>
+                            <i class="fa fa-facebook-official" alt="Facebook"></i>
+                            <i class="fa fa-twitter" alt="Twitter"></i>
+                        </span>
                     </div>
                 </section>
 
-                <div class="row">
-                    <div class="col-sm-12">
-                        <input type="hidden" name="addToCartUrl" value="${pdict.addToCartUrl}">
-                        <button class="btn btn-success button button-primary"
-                                id="btn_add_to_cart"
-                                disabled="${!pdict.product.hasRequiredAttrsSelected || !pdict.product.isAvailable}">
-                            <i class="fa fa-shopping-bag"></i>
-                            ${Resource.msg('button.addtocart', 'common', null)}
-                        </button>
-                    </div>
-                </div>
+                <!-- Right blank column -->
+                <section class="col-md-1"></section>
             </div>
         </div>
 
-        <pre id="response_object">
-            <isprint value="${JSON.stringify(pdict.product, null, 2)}" encoding="off" />
-        </pre>
+        <div class="description-and-detail">
+            <div class="row description">
+                <h2 class="col-sm-12 col-md-4 col-lg-3">Description</h2>
+                <p class="col-sm-12 col-md-8 col-lg-9">
+                    ${pdict.product.shortDescription}
+                </p>
+            </div>
+
+            <hr class="hidden-sm-up">
+
+            <div class="row details">
+                <h2 class="col-sm-12 col-md-4 col-lg-3">Details</h2>
+                <p class="col-sm-12 col-md-8 col-lg-9">
+                    ${pdict.product.longDescription}
+                </p>
+            </div>
+        </div>
     </div>
+
 </isdecorate>

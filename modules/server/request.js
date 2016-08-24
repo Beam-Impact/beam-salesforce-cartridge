@@ -47,11 +47,13 @@ function Request(request) {
     this.https = request.isHttpSecure();
     this.locale = request.locale;
     this.includeRequest = request.includeRequest;
-    this.geolocation = {
-        countryCode: request.geolocation.countryCode,
-        latitude: request.geolocation.latitude,
-        longitude: request.geolocation.longitude
-    };
+    if (request.geolocation !== null) {
+        this.geolocation = {
+            countryCode: request.geolocation.countryCode,
+            latitude: request.geolocation.latitude,
+            longitude: request.geolocation.longitude
+        };
+    }
 }
 
 module.exports = Request;

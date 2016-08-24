@@ -221,6 +221,8 @@ function Product(args) {
 
     this.id = dwProduct.ID;
     this.name = dwProduct.name;
+    this.shortDescription = dwProduct.shortDescription;
+    this.longDescription = dwProduct.longDescription;
     this.isOnline = dwProduct.online;
     this.isSearchable = dwProduct.searchable;
     this.minOrderQuantity = dwProduct.minOrderQuantity.value || 1;

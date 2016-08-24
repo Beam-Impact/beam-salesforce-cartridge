@@ -117,21 +117,17 @@ function updateAvailability(response) {
  */
 function parseJsonResponse(response) {
     // Update Item No.
-    $('#product_id').text(response.product.id);
+    $('.product-id').text(response.product.id);
 
     updateAttrs(response.product.attributes);
 
-    // REMOVEME (After RAP-5073 is completed): Just for dev testing to see JSON response object in
-    //     page
-    $('#response_object').text(JSON.stringify(response.product, null, 4));
-
     // Enable "Add to Cart" button if all required attributes have been selected
-    $('#btn_add_to_cart').attr('disabled', !response.product.hasRequiredAttrsSelected);
+    $('button.add-to-cart').attr('disabled', !response.product.hasRequiredAttrsSelected);
 
     // Update primary images
     var primaryImageUrls = response.product.images;
     primaryImageUrls.large.forEach(function (imageUrl, idx) {
-        $('#primary_images').find('img').eq(idx)
+        $('.primary-images').find('img').eq(idx)
             .attr('src', imageUrl.url);
     });
 
@@ -151,7 +147,7 @@ function handlePostCartAdd(response) {
  * Retrieves the value associated with the Quantity pull-down menu
  */
 function getQuantitySelected() {
-    return $('select[name="quantity"]').val();
+    return $('select.quantity').val();
 }
 
 /**
@@ -169,7 +165,7 @@ function appendQuantityToUrl(url) {
 }
 
 module.exports = function () {
-    $('select[name*="select_"]').on('change', function (e) {
+    $('select[class^="select-"]').on('change', function (e) {
         var selectedValueUrl = e.currentTarget.value;
         selectedValueUrl = appendQuantityToUrl(selectedValueUrl);
 
@@ -179,7 +175,6 @@ module.exports = function () {
             success: parseJsonResponse
         });
     });
-
 
     $('[data-attr="color"] a').on('click', function (e) {
         var selectedValueUrl;
@@ -194,8 +189,8 @@ module.exports = function () {
         });
     });
 
-    $('#btn_add_to_cart').on('click', function () {
-        var pid = $('#product_id').text();
+    $('button.add-to-cart').on('click', function () {
+        var pid = $('.product-id').text();
         var quantity = getQuantitySelected();
         var queryParams = ['pid=' + pid, 'quantity=' + quantity].join('&');
         var addToCartUrl = $('input[name="addToCartUrl"]').val() + '?' + queryParams;

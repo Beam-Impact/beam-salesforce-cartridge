@@ -1,0 +1,69 @@
+<iscomment>
+
+Template Notes:
+
+- This template is intended to be referenced from an <isinclude> tag within an <isloop> in another
+  source template.  The <isloop> is expected to have a "status" attribute, named "attributeStatus".
+- ${attributeStatus.last} is checked to see whether a particular attribute row should include the
+  Quantity drop-down menu
+
+</iscomment>
+
+<div data-attr="${attr.attributeID}" class="swatch">
+    <div class="attribute">
+        <!-- Select <Attribute> Label -->
+        <label class="${attr.attributeID}">
+            ${Resource.msg('label.select', 'common', null)} ${attr.displayName}
+        </label>
+
+        <isif condition="${attr.isSwatchable}">
+            <!-- Circular Swatch Image Attribute Values -->
+            <isloop items="${attr.values}" var="attrValue">
+                <a href="${attrValue.url}">
+                    <span data-attr-value="${attrValue.value}"
+                              data-selected="${attrValue.isSelected}"
+                              class="${attr.attributeID}-value swatch-circle swatch-value"
+                              style="background-image: url(${attrValue.images['swatch'][0].url})"
+                              <isif condition="${attrValue.isSelectable}">
+                                  selectable
+                              <iselse>
+                                  unselectable
+                              </isif>
+                    >
+                    </span>
+                </a>
+            </isloop>
+
+            <isif condition="${attributeStatus.last}">
+                <!-- Quantity Drop Down Menu -->
+                <div class="quantity col-sm-6">
+                    <isinclude template="/product/quantity" />
+                </div>
+            </isif>
+
+        <iselse>
+            <!-- Attribute Values Drop Down Menu -->
+            <select class="select-${attr.attributeID}">
+                <option value="null">
+                    ${Resource.msg('label.select', 'common', null)} ${attr.displayName}
+                </option>
+                <isloop items="${attr.values}" var="attrValue">
+                    <option value="${attrValue.url}" data-attr-value="${attrValue.value}"
+                        <isif condition="${!attrValue.isSelectable}">disabled</isif>
+                        <isif condition="${attrValue.isSelected}">selected</isif>
+                    >
+                        ${attrValue.displayValue}
+                    </option>
+                </isloop>
+            </select>
+
+            <isif condition="${attributeStatus.last}">
+                <!-- Quantity Drop Down Menu -->
+                <div class="quantity col-sm-6">
+                    <isinclude template="/product/quantity" />
+                </div>
+            </isif>
+
+        </isif>
+    </div>
+</div>
