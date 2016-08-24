@@ -82,7 +82,10 @@
                         <div class="col-sm-12">
                             <input type="hidden" name="addToCartUrl" value="${pdict.addToCartUrl}">
                             <button class="add-to-cart btn btn-success button button-primary"
-                                    id="btn_add_to_cart" disabled="${!pdict.product.hasRequiredAttrsSelected || !pdict.product.isAvailable}">
+                                <isif condition="${!pdict.product.hasRequiredAttrsSelected || !pdict.product.isAvailable}">
+                                    disabled
+                                </isif>
+                            >
                                 <i class="fa fa-shopping-bag"></i>
                                 ${Resource.msg('button.addtocart', 'common', null)}
                             </button>
