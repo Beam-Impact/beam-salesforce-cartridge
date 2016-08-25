@@ -21,8 +21,8 @@ function calculateCart(basket) {
 
 server.get('MiniCart', server.middleware.include, function (req, res, next) {
     var currentBasket = BasketMgr.getCurrentOrNewBasket();
-    var basket = new Cart(currentBasket);
-    res.render('/components/header/minicart', basket);
+    var quantityTotal = Cart.getTotalQuantity(currentBasket.allProductLineItems);
+    res.render('/components/header/minicart', { quantityTotal: quantityTotal });
     next();
 });
 

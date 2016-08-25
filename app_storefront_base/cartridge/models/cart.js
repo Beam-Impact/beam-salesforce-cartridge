@@ -168,4 +168,6 @@ function cart(basket, shipmentShippingModel) {
     }
 }
 
+cart.getTotalQuantity = getTotalQuantity;
+
 module.exports = cart;
