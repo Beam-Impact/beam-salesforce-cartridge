@@ -51,8 +51,48 @@ function concat() {
     return result;
 }
 
+/**
+ * reduce method for dw.util.Collection subclass instances
+ * @param {dw.util.Collection} collection - Collection subclass instance to reduce
+ * @param {Function} callback - Function to execute on each value in the array
+ * @return {Object} result of the execution of callback function on all items
+ */
+function reduce(collection, callback) {
+    if (typeof callback !== 'function') {
+        throw new TypeError(callback + ' is not a function');
+    }
+
+    var value;
+    var index = 1;
+    var iterator = collection.iterator();
+
+    if (arguments.length === 3) {
+        value = arguments[2];
+        index = 0;
+    } else if (iterator.hasNext() && (collection.getLength() !== 1 && !value)) {
+        value = iterator.next();
+    }
+
+    if (collection.getLength() === 0 && !value) {
+        throw new TypeError('Reduce of empty array with no initial value');
+    }
+
+    if ((collection.getLength() === 1 && !value) || (collection.getLength() === 0 && value)) {
+        return collection.getLength() === 1 ? iterator.next() : value;
+    }
+
+    while (iterator.hasNext()) {
+        var item = iterator.next();
+        value = callback(value, item, index, collection);
+        index++;
+    }
+
+    return value;
+}
+
 module.exports = {
     map: map,
     forEach: forEach,
-    concat: concat
+    concat: concat,
+    reduce: reduce
 };
