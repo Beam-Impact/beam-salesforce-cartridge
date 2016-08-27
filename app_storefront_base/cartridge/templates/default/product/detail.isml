@@ -113,18 +113,18 @@
         <div class="description-and-detail">
             <div class="row description">
                 <h2 class="col-sm-12 col-md-4 col-lg-3">Description</h2>
-                <p class="col-sm-12 col-md-8 col-lg-9">
-                    ${pdict.product.shortDescription}
-                </p>
+                <div class="col-sm-12 col-md-8 col-lg-9 value">
+                    <isprint value="${pdict.product.shortDescription}" encoding="off" />
+                </div>
             </div>
 
             <hr class="hidden-sm-up">
 
             <div class="row details">
                 <h2 class="col-sm-12 col-md-4 col-lg-3">Details</h2>
-                <p class="col-sm-12 col-md-8 col-lg-9">
-                    ${pdict.product.longDescription}
-                </p>
+                <div class="col-sm-12 col-md-8 col-lg-9 value">
+                    <isprint value="${pdict.product.longDescription}" encoding="off" />
+                </div>
             </div>
         </div>
     </div>
