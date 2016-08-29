@@ -84,10 +84,10 @@ server.post('AddProduct', function (req, res, next) {
 });
 
 server.get('Show', locale, function (req, res, next) {
-    var currentBasket = BasketMgr.getCurrentOrNewBasket();
+    var currentBasket = BasketMgr.getCurrentBasket();
 
     Transaction.wrap(function () {
-        if (!currentBasket.defaultShipment.shippingMethod) {
+        if (currentBasket && !currentBasket.defaultShipment.shippingMethod) {
             selectShippingMethod(currentBasket.defaultShipment);
         }
         var productLineItem = currentBasket.createProductLineItem(
@@ -110,14 +110,21 @@ server.get('Show', locale, function (req, res, next) {
         );
 
         productLineItem.setQuantityValue(1);
-        calculateCart(currentBasket);
+         // no-iron-textured-dress-shirt/25604455.html?lang=en_US
+        if (currentBasket) {
+            calculateCart(currentBasket);
+        }
     });
 
     var removeProductLineItemUrl = URLUtils.url('Cart-RemoveProductLineItem').toString();
     var updateQuantityUrl = URLUtils.url('Cart-UpdateQuantity').toString();
     var selectShippingUrl = URLUtils.url('Cart-SelectShippingMethod').toString();
 
-    var shipmentShippingModel = ShippingMgr.getShipmentShippingModel(currentBasket.defaultShipment);
+    if (currentBasket) {
+        var shipmentShippingModel = ShippingMgr.getShipmentShippingModel(
+            currentBasket.defaultShipment
+        );
+    }
 
     var basket = new Cart(
         currentBasket,

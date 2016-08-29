@@ -16,6 +16,9 @@ function appendToUrl(url, params) {
 }
 
 function updateCartTotals(data) {
+    $('.number-of-items').empty();
+    $('.number-of-items').append(data.resources.number_of_items);
+
     $('.shipping-cost').empty();
     $('.shipping-cost').append(data.totals.totalShippingCost);
 
@@ -76,8 +79,14 @@ module.exports = function () {
             dataType: 'json',
             success: function (data) {
                 if (data.items.length === 0) {
-                    $('.cart').remove();
-                    // TODO display empty cart message here
+                    $('.cart').empty();
+                    $('.number-of-items').empty();
+                    $('.cart').append('<div class="row"> ' +
+                        '<div class="col-xs-12 text-xs-center"> ' +
+                        '<h1>' + data.resources.empty_cart_msg + '</h1> ' +
+                        '</div> ' +
+                        '</div>');
+                    $('.number-of-items').append(data.resources.number_of_items);
                 } else {
                     // TODO update total num of items in cart
                     $('.uuid-' + uuid).remove();

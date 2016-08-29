@@ -7,19 +7,21 @@
 
     <div class="container cart-header">
         <div class="row">
-            <div class="col-sm-3">
-                <a class="continue-shopping-link" href="{"#"}" title="Go to My Account">${Resource.msg('link.continue.shopping','cart',null)}</a>
+            <!-- <div class="col-xs-6 col-md-12">
+                <p>Your Cart</p>
+            </div> -->
+            <div class="col-sm-3 hidden-xs-down">
+                <a class="continue-shopping-link" href="${"#"}" title="Go to My Account">${Resource.msg('link.continue.shopping','cart',null)}</a>
             </div>
-            <div class="col-xs-12 col-sm-6 text-xs-center">
-                ${pdict.numItems}
+            <div class="col-xs-6 col-sm-6 text-xs-center">
+                <span class="number-of-items">${Resource.msgf('label.number.items.in.cart','cart', null, pdict.numItems)}</span>
             </div>
-            <div class="col-sm-3 text-xs-right">
+            <div class="col-sm-3 text-xs-right hidden-xs-down">
                 <span>${Resource.msg('info.need.help','cart',null)}</span> <span class="help-phone-number">${Resource.msg('info.phone.number','cart',null)}</span>
             </div>
         </div>
         <hr class="no-margin-top">
     </div>
-
 
     <isif condition="${pdict.items.length === 0}">
         <div class="container cart-empty">
@@ -47,14 +49,6 @@
                         <div class="col-xs-12">
                             <button class="btn btn-block checkout-btn" type="submit" name="submit" value="submit">
                                 ${Resource.msg('button.checkout','cart',null)}
-                            </button>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <button class="btn btn-block" type="submit" name="submit" value="submit">
-                                Apple Pay
                             </button>
                         </div>
                     </div>

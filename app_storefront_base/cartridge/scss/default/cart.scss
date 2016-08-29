@@ -98,7 +98,7 @@
 
 .promo-code-form {
     display: none;
-    @include media-breakpoint-up(md) {
+    @include media-breakpoint-up(sm) {
         display: block
     }
 }

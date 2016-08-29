@@ -6,6 +6,7 @@ var PricingModel = require('./product/productPricingModel');
 var URLUtils = require('dw/web/URLUtils');
 var formatMoney = require('dw/util/StringUtils').formatMoney;
 var money = require('dw/value/Money');
+var Resource = require('dw/web/Resource');
 
 /**
  * Sets the max number to display in the quantity drop down.
@@ -193,6 +194,10 @@ function cart(basket,
         this.items = [];
         this.numItems = 0;
     }
+    this.resources = {
+        number_of_items: Resource.msgf('label.number.items.in.cart', 'cart', null, this.numItems),
+        empty_cart_msg: Resource.msg('info.cart.empty.msg', 'cart', null)
+    };
 }
 
 cart.getTotalQuantity = getTotalQuantity;
