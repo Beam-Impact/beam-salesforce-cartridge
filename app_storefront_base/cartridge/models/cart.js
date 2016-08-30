@@ -9,11 +9,11 @@ var money = require('dw/value/Money');
 var Resource = require('dw/web/Resource');
 
 /**
- * Sets the max number to display in the quantity drop down.
+ * get the min and max numbers to display in the quantity drop down.
  * @param {dw.order.ProductLineItem} productLineItem - a line item of the basket.
- * @returns {Number} The max number to display in the quantity drop down.
+ * @returns {Object} The minOrderQuantity and maxOrderQuantity to display in the quantity drop down.
  */
-function getQuantityOptions(productLineItem) {
+function getMinMaxQuantityOptions(productLineItem) {
     var quantity = productLineItem.quantity.value;
     var availableToSell = productLineItem.product.availabilityModel.inventoryRecord.ATS.value;
 
@@ -63,7 +63,7 @@ function createProductLineItemsObject(allLineItems) {
                 ).toString(),
             variationAttributes: getSelectedVariationAttributes(item.product),
             quantity: item.quantity.value,
-            quantityOptions: getQuantityOptions(item),
+            quantityOptions: getMinMaxQuantityOptions(item),
             priceModelPricing: new PricingModel(item.product, []),
             priceTotal: formatMoney(money(
                 item.adjustedPrice.value,
@@ -117,27 +117,10 @@ function getTotalQuantity(productLineItems) {
 }
 
 /**
- * Creates an array of objects containing the information of applicable shipping methods
- * @param {dw.order.ShipmentShippingModel} shipmentModel - Instance of the shipping model
+ * Creates an object containing the order totals
+ * @param {dw.order.Basket} basket - The current users's basket
  * @returns {Array} an array of objects containing the information of applicable shipping methods
  */
-function getApplicableShippingMethods(shipmentModel) {
-    var shippingMedthods = shipmentModel.applicableShippingMethods;
-    return helper.map(shippingMedthods, function (shippingMethod) {
-        var shippingCost = shipmentModel.getShippingCost(shippingMethod);
-        return {
-            description: shippingMethod.description,
-            displayName: shippingMethod.displayName,
-            ID: shippingMethod.ID,
-            shippingCost: formatMoney(money(
-                shippingCost.amount.value,
-                shippingCost.amount.currencyCode
-            )),
-            estimatedArrivalTime: shippingMethod.custom.estimatedArrivalTime
-        };
-    });
-}
-
 function getTotals(basket) {
     var totals = {};
 
@@ -167,26 +150,31 @@ function getTotals(basket) {
 /**
  * Cart class that represents collection of line items
  * @param {dw.order.Basket} basket Current users's basket
- * @param {dw.order.ShipmentShippingModel} shipmentShippingModel - Instance of the shipping model
+ * @param {Object} shippingModel - Instance of the shipping model
+ * @param {Object} actionUrls - An object of endpoints
+ * @param {string} actionUrls.removeProductLineItemUrl - removeProductLineItemUrl endpoint
+ * @param {string} actionUrls.updateQuantityUrl - updateQuantityUrl endpoint
+ * @param {string} actionUrls.selectShippingUrl - selectShippingUrl endpoint
  * @constructor
  */
-function cart(basket,
-              shipmentShippingModel,
-              removeProductLineItemUrl,
-              updateQuantityUrl,
-              selectShippingUrl
-    ) {
+function cart(basket, shippingModel, actionUrls) {
     if (basket !== null) {
         this.items = createProductLineItemsObject(basket.allProductLineItems);
         this.numItems = getTotalQuantity(basket.allProductLineItems);
         this.numOfShipments = basket.shipments.length;
-        if (shipmentShippingModel) {
-            this.shippingMethods = getApplicableShippingMethods(shipmentShippingModel);
+
+        if (shippingModel) {
+            this.shippingMethods = shippingModel.applicableShippingMethods;
         }
+
         this.totals = getTotals(basket);
-        this.removeProductLineItemUrl = removeProductLineItemUrl;
-        this.updateQuantityUrl = updateQuantityUrl;
-        this.selectShippingUrl = selectShippingUrl;
+
+        if (actionUrls) {
+            this.removeProductLineItemUrl = actionUrls.removeProductLineItemUrl;
+            this.updateQuantityUrl = actionUrls.updateQuantityUrl;
+            this.selectShippingUrl = actionUrls.selectShippingUrl;
+        }
+
         if (basket.defaultShipment.shippingMethod) {
             this.selectedShippingMethod = basket.defaultShipment.shippingMethod.ID;
         }

@@ -6,7 +6,7 @@
                 <span>${lineItem.name}</span>
             </div>
             <div class="col-xs-2 remove-line-item hidden-lg-up">
-                <button type="button" class="remove-btn" data-toggle="modal"
+                <button type="button" class="remove-btn remove-product" data-toggle="modal"
                         data-target="#myModal" data-pid="${lineItem.productID}"
                         data-name="${lineItem.name}"
                         data-actionUrl="${pdict.removeProductLineItemUrl}"
@@ -16,7 +16,7 @@
                 </button>
             </div>
             <div class="hidden-md-down">
-                <button type="button" class="remove-btn-lg" data-toggle="modal"
+                <button type="button" class="remove-btn-lg remove-product" data-toggle="modal"
                         data-target="#myModal" data-pid="${lineItem.productID}"
                         data-name="${lineItem.name}"
                         data-actionUrl="${pdict.removeProductLineItemUrl}"
@@ -40,14 +40,14 @@
                         <isloop items="${lineItem.variationAttributes}" var="attribute">
                             <p class="line-item-attributes">${attribute.displayName}: ${attribute.displayValue}</p>
                         </isloop>
-                        <div class="row hidden-sm-down edit-add-to-wishlist">
-                            <div class="col-md-4">
-                                <a href="${"#"}" title="Go to My Account">${Resource.msg('link.edit.item','cart',null)}</a>
-                            </div>
-                            <div class="col-md-8">
-                                <a href="$"{#"}" title="Go to My Account">${Resource.msg('link.add.to.wishlist','cart',null)}</a>
-                            </div>
-                        </div>
+                        <!--<div class="row hidden-sm-down edit-add-to-wishlist">-->
+                            <!--<div class="col-md-4">-->
+                                <!--<a href="${"#"}" title="Go to My Account">${Resource.msg('link.edit.item','cart',null)}</a>-->
+                            <!--</div>-->
+                            <!--<div class="col-md-8">-->
+                                <!--<a href="$"{#"}" title="Go to My Account">${Resource.msg('link.add.to.wishlist','cart',null)}</a>-->
+                            <!--</div>-->
+                        <!--</div>-->
                     </div>
                 </div>
             </div>
@@ -107,6 +107,14 @@
                     </div>
                     <div class="col-lg-1 hidden-md-down remove-line-item-lg"></div>
                 </div>
+            </div>
+        </div>
+        <div class="row hidden-xs-down edit-add-to-wishlist">
+            <div class="offset-sm-4 col-sm-2 offset-md-4 col-md-2 offset-lg-2 col-lg-2">
+                <a href="${"#"}" title="Go to My Account">${Resource.msg('link.edit.item','cart',null)}</a>
+            </div>
+            <div class="col-sm-5 col-md-4">
+                <a href="$"{#"}" title="Go to My Account">${Resource.msg('link.add.to.wishlist','cart',null)}</a>
             </div>
         </div>
     </div>

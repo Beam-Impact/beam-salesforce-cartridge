@@ -15,45 +15,45 @@ function appendToUrl(url, params) {
     return newUrl;
 }
 
+/**
+ * re-renders the order totals and the number of items in the cart
+ * @param {object} data
+ */
 function updateCartTotals(data) {
-    $('.number-of-items').empty();
-    $('.number-of-items').append(data.resources.number_of_items);
+    var $numberOfItems = $('.number-of-items');
+    var $shippingCost = $('.shipping-cost');
+    var $subTotal = $('.sub-total');
+    var $taxTotal = $('.tax-total');
 
-    $('.shipping-cost').empty();
-    $('.shipping-cost').append(data.totals.totalShippingCost);
+    $numberOfItems.empty();
+    $numberOfItems.append(data.resources.number_of_items);
 
-    $('.tax-total').empty();
-    $('.tax-total').append(data.totals.totalTax);
+    $shippingCost.empty();
+    $shippingCost.append(data.totals.totalShippingCost);
 
-    $('.sub-total').empty();
-    $('.sub-total').append(data.totals.grandTotal);
+    $taxTotal.empty();
+    $taxTotal.append(data.totals.totalTax);
+
+    $subTotal.empty();
+    $subTotal.append(data.totals.grandTotal);
 }
 
 module.exports = function () {
-    $('.remove-btn').click(function (e) {
+    $('.remove-product').click(function (e) {
         e.preventDefault();
         var actionUrl = $(this).attr('data-actionUrl');
         var productID = $(this).attr('data-pid');
         var productName = $(this).attr('data-name');
         var uuid = $(this).attr('data-uuid');
-        $('.delete-confirmation-btn').attr('data-pid', productID);
-        $('.delete-confirmation-btn').attr('data-actionUrl', actionUrl);
-        $('.delete-confirmation-btn').attr('data-uuid', uuid);
-        $('.product-to-remove').empty();
-        $('.product-to-remove').append(productName);
-    });
 
-    $('.remove-btn-lg').click(function (e) {
-        e.preventDefault();
-        var actionUrl = $(this).attr('data-actionUrl');
-        var productID = $(this).attr('data-pid');
-        var productName = $(this).attr('data-name');
-        var uuid = $(this).attr('data-uuid');
-        $('.delete-confirmation-btn').attr('data-pid', productID);
-        $('.delete-confirmation-btn').attr('data-actionUrl', actionUrl);
-        $('.delete-confirmation-btn').attr('data-uuid', uuid);
-        $('.product-to-remove').empty();
-        $('.product-to-remove').append(productName);
+        var $deleteConfirmBtn = $('.delete-confirmation-btn');
+        var $productToRemoveSpan = $('.product-to-remove');
+
+        $deleteConfirmBtn.attr('data-pid', productID);
+        $deleteConfirmBtn.attr('data-actionUrl', actionUrl);
+        $deleteConfirmBtn.attr('data-uuid', uuid);
+        $productToRemoveSpan.empty();
+        $productToRemoveSpan.append(productName);
     });
 
     $('.optional-promo').click(function (e) {
@@ -78,17 +78,18 @@ module.exports = function () {
             type: 'get',
             dataType: 'json',
             success: function (data) {
+                var $cartDiv = $('.cart');
+                var $numberOfItems = $('.number-of-items');
                 if (data.items.length === 0) {
-                    $('.cart').empty();
-                    $('.number-of-items').empty();
-                    $('.cart').append('<div class="row"> ' +
+                    $cartDiv.empty();
+                    $numberOfItems.empty();
+                    $cartDiv.append('<div class="row"> ' +
                         '<div class="col-xs-12 text-xs-center"> ' +
                         '<h1>' + data.resources.empty_cart_msg + '</h1> ' +
                         '</div> ' +
                         '</div>');
-                    $('.number-of-items').append(data.resources.number_of_items);
+                    $numberOfItems.append(data.resources.number_of_items);
                 } else {
-                    // TODO update total num of items in cart
                     $('.uuid-' + uuid).remove();
                     updateCartTotals(data);
                 }

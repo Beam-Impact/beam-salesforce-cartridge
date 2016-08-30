@@ -7,6 +7,7 @@ var Cart = require('~/cartridge/models/cart');
 var HookMgr = require('dw/system/HookMgr');
 var locale = require('~/cartridge/scripts/middleware/locale');
 var ProductMgr = require('dw/catalog/ProductMgr');
+var ShippingModel = require('~/cartridge/models/shipping');
 var ShippingMgr = require('dw/order/ShippingMgr');
 var Transaction = require('dw/system/Transaction');
 var URLUtils = require('dw/web/URLUtils');
@@ -20,40 +21,16 @@ function calculateCart(basket) {
     HookMgr.callHook('dw.ocapi.shop.basket.calculate', 'calculate', basket);
 }
 
-function selectShippingMethod(defaultShipment, shippingMethodID, shippingMethods) {
-    var applicableShippingMethods;
-    var defaultShippingMethod = ShippingMgr.getDefaultShippingMethod();
-    var isShipmentSet = false;
-
-    if (shippingMethods) {
-        applicableShippingMethods = shippingMethods;
-    } else {
-        var shipmentModel = ShippingMgr.getShipmentShippingModel(defaultShipment);
-        // what if there is an address, this can narrow down the list of shipping methods
-        applicableShippingMethods = shipmentModel.applicableShippingMethods;
-    }
-
-    if (shippingMethodID) {
-        // loop through the shipping methods to get shipping method
-        for (var i = 0; i < applicableShippingMethods.length; i++) {
-            var shippingMethod = applicableShippingMethods[i];
-            if (shippingMethod.ID === shippingMethodID) {
-                defaultShipment.setShippingMethod(shippingMethod);
-                isShipmentSet = true;
-                break;
-            }
-        }
-    }
-
-    if (!isShipmentSet) {
-        if (applicableShippingMethods.contains(defaultShippingMethod)) {
-            defaultShipment.setShippingMethod(defaultShippingMethod);
-        } else if (applicableShippingMethods.length > 0) {
-            defaultShipment.setShippingMethod(applicableShippingMethods.iterator().next());
-        } else {
-            defaultShipment.setShippingMethod(null);
-        }
-    }
+/**
+ * Generates an object of URLs
+ * @returns {Object} an object of URLs in string format
+ */
+function getCartActionUrls() {
+    return {
+        removeProductLineItemUrl: URLUtils.url('Cart-RemoveProductLineItem').toString(),
+        updateQuantityUrl: URLUtils.url('Cart-UpdateQuantity').toString(),
+        selectShippingUrl: URLUtils.url('Cart-SelectShippingMethod').toString()
+    };
 }
 
 server.get('MiniCart', server.middleware.include, function (req, res, next) {
@@ -84,67 +61,42 @@ server.post('AddProduct', function (req, res, next) {
 });
 
 server.get('Show', locale, function (req, res, next) {
+    var actionUrls = getCartActionUrls();
     var currentBasket = BasketMgr.getCurrentBasket();
+    var shippingModel;
+    var shipmentShippingModel;
 
     Transaction.wrap(function () {
         if (currentBasket && !currentBasket.defaultShipment.shippingMethod) {
-            selectShippingMethod(currentBasket.defaultShipment);
+            ShippingModel.selectShippingMethod(currentBasket.defaultShipment);
         }
-        var productLineItem = currentBasket.createProductLineItem(
-            '701642823940',
-            currentBasket.defaultShipment
-        );
-
-        productLineItem.setQuantityValue(1);
-
-        productLineItem = currentBasket.createProductLineItem(
-            '701642811503',
-            currentBasket.defaultShipment
-        );
-
-        productLineItem.setQuantityValue(1);
-
-        productLineItem = currentBasket.createProductLineItem(
-            '708141677289',
-            currentBasket.defaultShipment
-        );
-
-        productLineItem.setQuantityValue(1);
-         // no-iron-textured-dress-shirt/25604455.html?lang=en_US
         if (currentBasket) {
             calculateCart(currentBasket);
         }
     });
 
-    var removeProductLineItemUrl = URLUtils.url('Cart-RemoveProductLineItem').toString();
-    var updateQuantityUrl = URLUtils.url('Cart-UpdateQuantity').toString();
-    var selectShippingUrl = URLUtils.url('Cart-SelectShippingMethod').toString();
-
     if (currentBasket) {
-        var shipmentShippingModel = ShippingMgr.getShipmentShippingModel(
+        shipmentShippingModel = ShippingMgr.getShipmentShippingModel(
             currentBasket.defaultShipment
         );
+        shippingModel = new ShippingModel(shipmentShippingModel);
     }
 
     var basket = new Cart(
         currentBasket,
-        shipmentShippingModel,
-        removeProductLineItemUrl,
-        updateQuantityUrl,
-        selectShippingUrl
+        shippingModel,
+        actionUrls
     );
 
     res.render('cart/cart', basket);
     next();
 });
 
-server.get('RemoveProductLineItem', categories, locale, function (req, res, next) {
+server.get('RemoveProductLineItem', locale, function (req, res, next) {
+    var actionUrls = getCartActionUrls();
     var currentBasket = BasketMgr.getCurrentBasket();
-    var removeProductLineItemUrl = URLUtils.url('Cart-RemoveProductLineItem').toString();
-    var updateQuantityUrl = URLUtils.url('Cart-UpdateQuantity').toString();
-    var selectShippingUrl = URLUtils.url('Cart-SelectShippingMethod').toString();
-
     var shipmentShippingModel = ShippingMgr.getShipmentShippingModel(currentBasket.defaultShipment);
+    var shippingModel = new ShippingModel(shipmentShippingModel);
 
     Transaction.wrap(function () {
         if (req.querystring.pid && req.querystring.uuid) {
@@ -162,23 +114,19 @@ server.get('RemoveProductLineItem', categories, locale, function (req, res, next
 
     var basket = new Cart(
         currentBasket,
-        shipmentShippingModel,
-        removeProductLineItemUrl,
-        updateQuantityUrl,
-        selectShippingUrl
+        shippingModel,
+        actionUrls
     );
 
     res.json(basket);
     next();
 });
 
-server.get('UpdateQuantity', categories, locale, function (req, res, next) {
+server.get('UpdateQuantity', locale, function (req, res, next) {
+    var actionUrls = getCartActionUrls();
     var currentBasket = BasketMgr.getCurrentBasket();
-    var removeProductLineItemUrl = URLUtils.url('Cart-RemoveProductLineItem').toString();
-    var updateQuantityUrl = URLUtils.url('Cart-UpdateQuantity').toString();
-    var selectShippingUrl = URLUtils.url('Cart-SelectShippingMethod').toString();
-
     var shipmentShippingModel = ShippingMgr.getShipmentShippingModel(currentBasket.defaultShipment);
+    var shippingModel = new ShippingModel(shipmentShippingModel);
 
     Transaction.wrap(function () {
         if (req.querystring.pid && req.querystring.uuid) {
@@ -197,37 +145,34 @@ server.get('UpdateQuantity', categories, locale, function (req, res, next) {
 
     var basket = new Cart(
         currentBasket,
-        shipmentShippingModel,
-        removeProductLineItemUrl,
-        updateQuantityUrl,
-        selectShippingUrl
+        shippingModel,
+        actionUrls
     );
 
     res.json(basket);
     next();
 });
 
-server.get('SelectShippingMethod', categories, locale, function (req, res, next) {
+server.get('SelectShippingMethod', locale, function (req, res, next) {
+    var actionUrls = getCartActionUrls();
     var currentBasket = BasketMgr.getCurrentBasket();
-    var removeProductLineItemUrl = URLUtils.url('Cart-RemoveProductLineItem').toString();
-    var updateQuantityUrl = URLUtils.url('Cart-UpdateQuantity').toString();
-    var selectShippingUrl = URLUtils.url('Cart-SelectShippingMethod').toString();
-
     var shipmentShippingModel = ShippingMgr.getShipmentShippingModel(currentBasket.defaultShipment);
+    var shippingModel = new ShippingModel(shipmentShippingModel);
 
     if (req.querystring.methodID) {
         Transaction.wrap(function () {
-            selectShippingMethod(currentBasket.defaultShipment, req.querystring.methodID);
+            ShippingModel.selectShippingMethod(
+                currentBasket.defaultShipment,
+                req.querystring.methodID
+            );
             calculateCart(currentBasket);
         });
     }
 
     var basket = new Cart(
         currentBasket,
-        shipmentShippingModel,
-        removeProductLineItemUrl,
-        updateQuantityUrl,
-        selectShippingUrl
+        shippingModel,
+        actionUrls
     );
 
     res.json(basket);
