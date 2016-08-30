@@ -22,7 +22,9 @@ module.exports = function (array) {
         };
     };
 
-    this.length = items.length;
+    this.getLength = function () {
+        return items.length;
+    };
 
     this.toArray = function () {
         return items;

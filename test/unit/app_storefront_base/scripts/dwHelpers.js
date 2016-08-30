@@ -13,63 +13,129 @@ describe('dwHelpers', function () {
         });
     });
 
-    it('should map collection to an array', function () {
-        var collection = new ArrayList([1, 2, 3]);
-        var result = helpers.map(collection, function (item) {
-            return item + 10;
+    describe('map', function () {
+        it('should map collection to an array', function () {
+            var collection = new ArrayList([1, 2, 3]);
+            var result = helpers.map(collection, function (item) {
+                return item + 10;
+            });
+
+            assert.deepEqual(result, [11, 12, 13]);
         });
 
-        assert.deepEqual(result, [11, 12, 13]);
+        it('should map empty collection to an empty array', function () {
+            var collection = new ArrayList();
+            var result = helpers.map(collection, function (item) {
+                return item + 10;
+            });
+
+            assert.deepEqual(result, []);
+        });
     });
 
-    it('should map empty collection to an empty array', function () {
-        var collection = new ArrayList();
-        var result = helpers.map(collection, function (item) {
-            return item + 10;
+    describe('forEach', function () {
+        it('should correctly iterate over collection', function () {
+            var collection = new ArrayList([1, 2, 3]);
+            var result = [];
+
+            helpers.forEach(collection, function (item) {
+                result.push(item);
+            });
+
+            assert.deepEqual(result, [1, 2, 3]);
         });
 
-        assert.deepEqual(result, []);
+        it('should never call iterator function for empty collection', function () {
+            var collection = new ArrayList();
+            var called = false;
+
+            helpers.forEach(collection, function () {
+                called = true;
+            });
+
+            assert.isFalse(called);
+        });
     });
 
-    it('should correctly iterate over collection', function () {
-        var collection = new ArrayList([1, 2, 3]);
-        var result = [];
+    describe('concat', function () {
+        it('should concatinate multiple collection into one', function () {
+            var collection1 = new ArrayList([1, 2, 3]);
+            var collection2 = new ArrayList([4, 5, 6]);
+            var collection3 = new ArrayList([7, 8, 9]);
 
-        helpers.forEach(collection, function (item) {
-            result.push(item);
+            var result = helpers.concat(collection1, collection2, collection3);
+
+            assert.isFalse(Array.isArray(result));
+            assert.deepEqual(result.toArray(), [1, 2, 3, 4, 5, 6, 7, 8, 9]);
         });
 
-        assert.deepEqual(result, [1, 2, 3]);
+        it('should not concatinate empty collections', function () {
+            var collection1 = new ArrayList([1, 2, 3]);
+            var collection2 = new ArrayList();
+
+            var result = helpers.concat(collection1, collection2);
+
+            assert.deepEqual(result.toArray(), [1, 2, 3]);
+        });
     });
 
-    it('should never call iterator function for empty collection', function () {
-        var collection = new ArrayList();
-        var called = false;
+    describe('reduce', function () {
+        it('should add all numbers in collection', function () {
+            var collection = new ArrayList([1, 2, 3, 4, 5]);
 
-        helpers.forEach(collection, function () {
-            called = true;
+            var result = helpers.reduce(collection, function (prev, current) { return current + prev; });
+
+            assert.equal(result, 15);
         });
 
-        assert.isFalse(called);
-    });
+        it('should add all numbers in collection with different initialValue', function () {
+            var collection = new ArrayList([1, 2, 3, 4, 5]);
 
-    it('should concatinate multiple collection into one', function () {
-        var collection1 = new ArrayList([1, 2, 3]);
-        var collection2 = new ArrayList([4, 5, 6]);
-        var collection3 = new ArrayList([7, 8, 9]);
+            var result = helpers.reduce(collection, function (prev, current) { return current + prev; }, 10);
 
-        var result = helpers.concat(collection1, collection2, collection3);
+            assert.equal(result, 25);
+        });
 
-        assert.isFalse(Array.isArray(result));
-        assert.deepEqual(result.toArray(), [1, 2, 3, 4, 5, 6, 7, 8, 9]);
-    });
+        it('should return initialValue', function () {
+            var collection = new ArrayList([]);
 
-    it('should not concatinate empty collections', function () {
-        var collection1 = new ArrayList([1, 2, 3]);
-        var collection2 = new ArrayList();
+            var result = helpers.reduce(collection, function (prev, current) { return current + prev; }, 10);
 
-        var result = helpers.concat(collection1, collection2);
+            assert.equal(result, 10);
+        });
 
-        assert.deepEqual(result.toArray(), [1, 2, 3]);
+        it('should return unmodified first item', function () {
+            var collection = new ArrayList(['hello']);
+
+            var result = helpers.reduce(collection, function () { return 'goodbuy'; });
+
+            assert.equal(result, 'hello');
+        });
+
+        it('should return modified first item', function () {
+            var collection = new ArrayList(['hello']);
+
+            var result = helpers.reduce(collection, function () { return 'goodbuy'; }, 'a');
+
+            assert.equal(result, 'goodbuy');
+        });
+
+        it('should throw an exception if no collection is provided', function () {
+            var collection = new ArrayList([]);
+
+            try {
+                helpers.reduce(collection, function (prev, current) { return current + prev; });
+            } catch (e) {
+                assert.isTrue(e instanceof TypeError);
+            }
+        });
+
+        it('should throw if no reducer provided', function () {
+            try {
+                helpers.reduce(null, null);
+            } catch (e) {
+                assert.isTrue(e instanceof TypeError);
+            }
+        });
     });
 });
