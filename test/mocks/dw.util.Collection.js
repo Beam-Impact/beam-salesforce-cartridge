@@ -33,4 +33,11 @@ module.exports = function (array) {
     this.addAll = function (collection) {
         items = items.concat(collection.toArray());
     };
+
+    this.contains = function (item) {
+        for (var i = 0; i < array.length; i++) {
+            if (array[i] === item) return true;
+        }
+        return false;
+    };
 };

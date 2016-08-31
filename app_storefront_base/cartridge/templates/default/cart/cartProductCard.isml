@@ -28,10 +28,10 @@
         </div>
         <!---now split up details and price--->
         <div class="row">
-            <!--product info-->
+            <!---product info--->
             <div class="col-lg-6">
                 <div class="row">
-                    <!--product image-->
+                    <!---product image--->
                     <div class="col-xs-4">
                         <img src="${lineItem.image.src}" alt="${lineItem.image.alt}" title="${lineItem.image.title}">
                     </div>
@@ -40,22 +40,14 @@
                         <isloop items="${lineItem.variationAttributes}" var="attribute">
                             <p class="line-item-attributes">${attribute.displayName}: ${attribute.displayValue}</p>
                         </isloop>
-                        <!--<div class="row hidden-sm-down edit-add-to-wishlist">-->
-                            <!--<div class="col-md-4">-->
-                                <!--<a href="${"#"}" title="Go to My Account">${Resource.msg('link.edit.item','cart',null)}</a>-->
-                            <!--</div>-->
-                            <!--<div class="col-md-8">-->
-                                <!--<a href="$"{#"}" title="Go to My Account">${Resource.msg('link.add.to.wishlist','cart',null)}</a>-->
-                            <!--</div>-->
-                        <!--</div>-->
                     </div>
                 </div>
             </div>
-            <!--product price-->
+            <!---product price--->
             <div class="col-lg-6">
                 <hr class="hidden-lg-up line-item-divider">
                 <div class="row text-xs-center">
-                    <!--item price-->
+                    <!---item price--->
                     <div class="col-xs-4">
                         <div class="row">
                             <div class="col-xs-12">
@@ -68,7 +60,7 @@
                             </div>
                         </div>
                     </div>
-                    <!--quantity-->
+                    <!---quantity--->
                     <div class="col-xs-4 col-md-3">
                         <form action="" method="get">
                             <div class="form-group quantity-form">
@@ -92,7 +84,7 @@
                             </div>
                         </form>
                     </div>
-                    <!--line item total price-->
+                    <!---line item total price--->
                     <div class="col-xs-4">
                         <div class="row">
                             <div class="col-xs-12">
@@ -110,11 +102,13 @@
             </div>
         </div>
         <div class="row hidden-xs-down edit-add-to-wishlist">
-            <div class="offset-sm-4 col-sm-2 offset-md-4 col-md-2 offset-lg-2 col-lg-2">
-                <a href="${"#"}" title="Go to My Account">${Resource.msg('link.edit.item','cart',null)}</a>
-            </div>
-            <div class="col-sm-5 col-md-4">
-                <a href="$"{#"}" title="Go to My Account">${Resource.msg('link.add.to.wishlist','cart',null)}</a>
+            <div class="col-md-12 col-lg-6">
+                <div class="offset-sm-4 col-sm-2">
+                    <a href="${"#"}" title="${Resource.msg('link.edit.item','cart',null)}">${Resource.msg('link.edit.item','cart',null)}</a>
+                </div>
+                <div class="col-sm-6">
+                    <a href="${"#"}" title="${Resource.msg('link.add.to.wishlist','cart',null)}">${Resource.msg('link.add.to.wishlist','cart',null)}</a>
+                </div>
             </div>
         </div>
     </div>

@@ -3,7 +3,7 @@
         <p class="optional-promo">${Resource.msg('action.enter.promo.code','cart',null)}</p>
     </div>
 </div>
-<div class="row promo-code-form"> <!-- hidden-sm-down -->
+<div class="row promo-code-form">
     <div class="col-xs-12">
         <form>
             <div class="form-group">

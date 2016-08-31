@@ -29,8 +29,9 @@ function selectShippingMethod(defaultShipment, shippingMethodID, shippingMethods
 
     if (shippingMethodID) {
         // loop through the shipping methods to get shipping method
-        for (var i = 0; i < applicableShippingMethods.length; i++) {
-            var shippingMethod = applicableShippingMethods[i];
+        var iterator = applicableShippingMethods.iterator();
+        while (iterator.hasNext()) {
+            var shippingMethod = iterator.next();
             if (shippingMethod.ID === shippingMethodID) {
                 defaultShipment.setShippingMethod(shippingMethod);
                 isShipmentSet = true;
@@ -42,8 +43,6 @@ function selectShippingMethod(defaultShipment, shippingMethodID, shippingMethods
     if (!isShipmentSet) {
         if (applicableShippingMethods.contains(defaultShippingMethod)) {
             defaultShipment.setShippingMethod(defaultShippingMethod);
-        } else if (applicableShippingMethods.length > 0) {
-            defaultShipment.setShippingMethod(applicableShippingMethods.iterator().next());
         } else {
             defaultShipment.setShippingMethod(null);
         }

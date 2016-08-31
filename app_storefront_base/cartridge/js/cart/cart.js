@@ -24,6 +24,7 @@ function updateCartTotals(data) {
     var $shippingCost = $('.shipping-cost');
     var $subTotal = $('.sub-total');
     var $taxTotal = $('.tax-total');
+    var $minCartItemTotal = $('.minicart-quantity');
 
     $numberOfItems.empty();
     $numberOfItems.append(data.resources.number_of_items);
@@ -36,6 +37,9 @@ function updateCartTotals(data) {
 
     $subTotal.empty();
     $subTotal.append(data.totals.grandTotal);
+
+    $minCartItemTotal.empty();
+    $minCartItemTotal.append(data.numItems);
 }
 
 module.exports = function () {
@@ -80,6 +84,7 @@ module.exports = function () {
             success: function (data) {
                 var $cartDiv = $('.cart');
                 var $numberOfItems = $('.number-of-items');
+                var $minCartItemTotal = $('.minicart-quantity');
                 if (data.items.length === 0) {
                     $cartDiv.empty();
                     $numberOfItems.empty();
@@ -89,6 +94,8 @@ module.exports = function () {
                         '</div> ' +
                         '</div>');
                     $numberOfItems.append(data.resources.number_of_items);
+                    $minCartItemTotal.empty();
+                    $minCartItemTotal.append(data.numItems);
                 } else {
                     $('.uuid-' + uuid).remove();
                     updateCartTotals(data);
