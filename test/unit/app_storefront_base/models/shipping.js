@@ -2,6 +2,7 @@
 
 var assert = require('chai').assert;
 var proxyquire = require('proxyquire').noCallThru().noPreserveCache();
+var sinon = require('sinon');
 
 var Collection = require('../../../mocks/dw.util.Collection');
 var getMockMoney = require('../../../mocks/dw.value.Money');
@@ -37,9 +38,20 @@ var createShipmentShippingModel = function () {
     };
 };
 
+var defaultShippingMethod = new Collection([
+    {
+        description: 'Order received within 7-10 business days',
+        displayName: 'Ground',
+        ID: '001',
+        custom: {
+            estimatedArrivalTime: '7-10 Business Days'
+        }
+    }
+]);
+
 var defaultShipment = {
-    setShippingMethod: function () {
-        return 'something';
+    setShippingMethod: function (shippingMethod) {
+        return shippingMethod;
     }
 };
 
@@ -58,16 +70,7 @@ describe('Shipping', function () {
         'dw/value/Money': getMockMoney,
         'dw/order/ShippingMgr': {
             getDefaultShippingMethod: function () {
-                return new Collection([
-                    {
-                        description: 'Order received within 7-10 business days',
-                        displayName: 'Ground',
-                        ID: '001',
-                        custom: {
-                            estimatedArrivalTime: '7-10 Business Days'
-                        }
-                    }
-                ]);
+                return defaultShippingMethod;
             },
             getShipmentShippingModel: function () {
                 return createShipmentShippingModel();
@@ -93,13 +96,22 @@ describe('Shipping', function () {
 
     it('should set default shipping method when shippingMethodID is supplied', function () {
         var shippingMethodID = '002';
+        var spy = sinon.spy(defaultShipment, 'setShippingMethod');
 
         ShippingModel.selectShippingMethod(defaultShipment, shippingMethodID);
+
+        assert.isTrue(spy.calledOnce);
+        defaultShipment.setShippingMethod.restore();
     });
 
     it('should set default shipping method when shippingMethodID is not supplied', function () {
         var shippingMethodID = null;
+        var spy = sinon.spy(defaultShipment, 'setShippingMethod');
+
         ShippingModel.selectShippingMethod(defaultShipment, shippingMethodID);
+
+        assert.isTrue(spy.calledOnce);
+        defaultShipment.setShippingMethod.restore();
     });
 
     it('should set default shipping method when shippingMethods are supplied', function () {
@@ -114,7 +126,12 @@ describe('Shipping', function () {
                 }
             }
         ]);
+        var spy = sinon.spy(defaultShipment, 'setShippingMethod');
+
         ShippingModel.selectShippingMethod(defaultShipment, shippingMethodID, shippingMethods);
+
+        assert.isTrue(spy.calledOnce);
+        defaultShipment.setShippingMethod.restore();
     });
 });
 
