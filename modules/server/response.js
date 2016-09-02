@@ -85,6 +85,15 @@ Response.prototype = {
     },
 
     /**
+     * Set status code of the response
+     * @param {int} code - Valid HTTP return code
+     * @returns {void}
+     */
+    setStatusCode: function setStatusCode(code) {
+        this.base.setStatus(code);
+    },
+
+    /**
      * Print a message directly to the output
      * @param {string} message - Message to be printed
      * @returns {void}
