@@ -1,0 +1,14 @@
+<isdecorate template="common/layout/page">
+    <div class="container">
+    	<!--- to display Product IDs --->
+        <isloop items="${pdict.productIds}" var="productId" status="loopStatus">
+        	<isprint value="${productId}"/>
+        </isloop>
+        
+        <!--- to display relevant Refinement Definition Names --->
+        <isloop items="${pdict.refinementNames}" var="refinementName" status="loopStatus">
+        	<isprint value="${refinementName}"/>
+        </isloop>
+        
+    </div>
+</isdecorate>

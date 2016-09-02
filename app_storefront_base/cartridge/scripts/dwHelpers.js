@@ -90,9 +90,26 @@ function reduce(collection, callback) {
     return value;
 }
 
+/**
+ * Pluck method for dw.util.Collection subclass instance
+ * @param {dw.util.Collection} collection - Collection subclass instance to pluck from
+ * @param {String} property - Object property to pluck
+ * @returns {Array} Array of results of plucked properties
+ */
+function pluck(collection, property){
+	var result = [];
+	var iterator = collection.iterator();
+	while(iterator.hasNext()){
+		var temp = iterator.next();
+		result.push(temp[property]);
+	}
+	return result;
+}
+
 module.exports = {
     map: map,
     forEach: forEach,
     concat: concat,
-    reduce: reduce
+    reduce: reduce,
+    pluck: pluck
 };
