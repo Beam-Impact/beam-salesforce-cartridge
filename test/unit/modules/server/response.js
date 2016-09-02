@@ -70,6 +70,12 @@ describe('response', function () {
         });
         response.setContentType('text/html');
     });
+    it('should set status code', function (done) {
+        var response = new Response({
+            setStatus: function (code) { assert.equal(code, 500); done(); }
+        });
+        response.setStatusCode(500);
+    });
     it('should set cache expiration for the page', function (done) {
         var currentDate = new Date(Date.now());
         currentDate.setHours(currentDate.getHours() + 6);
