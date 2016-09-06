@@ -96,14 +96,14 @@ function reduce(collection, callback) {
  * @param {String} property - Object property to pluck
  * @returns {Array} Array of results of plucked properties
  */
-function pluck(collection, property){
-	var result = [];
-	var iterator = collection.iterator();
-	while(iterator.hasNext()){
-		var temp = iterator.next();
-		result.push(temp[property]);
-	}
-	return result;
+function pluck(collection, property) {
+    var result = [];
+    var iterator = collection.iterator();
+    while (iterator.hasNext()) {
+        var temp = iterator.next();
+        result.push(temp[property]);
+    }
+    return result;
 }
 
 module.exports = {

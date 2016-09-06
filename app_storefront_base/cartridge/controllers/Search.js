@@ -3,23 +3,23 @@
 var server = require('server');
 var locale = require('~/cartridge/scripts/middleware/locale');
 var ProductSearchModel = require('dw/catalog/ProductSearchModel');
-var SearchModel = require('dw/catalog/SearchModel');
-var Iterator = require('dw/util/Iterator');
+
+/**
+ * Creates a plain object of the product search model
+ * @param {Object} req - local instance of request object
+ * @returns {Object} a plain object of the product search model
+ */
+function getModel(req) {
+    var SearchModel = require('~/cartridge/models/search');
+    var productSearchModel = new ProductSearchModel();
+    return new SearchModel(productSearchModel, req);
+}
 
 server.get('Show', locale, function (req, res, next) {
-	res.render('search/searchresult', getModel(req));
+    res.render('search/searchresult', getModel(req));
     next();
 });
 
-function getModel(req){
-	
-	var SearchModel = require('~/cartridge/models/search');
-	
-	var productSearchModel = new ProductSearchModel();
-	
-	return new SearchModel(productSearchModel, req);
-}
-
-//separate function for formatting refinements from querystring HERE!
+// FIX ME: separate function for formatting refinements from querystring HERE!
 
 module.exports = server.exports();
