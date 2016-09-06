@@ -7,10 +7,10 @@ var Cart = require('~/cartridge/models/cart');
 var HookMgr = require('dw/system/HookMgr');
 var locale = require('~/cartridge/scripts/middleware/locale');
 var ProductMgr = require('dw/catalog/ProductMgr');
+var Resource = require('dw/web/Resource');
 var ShippingModel = require('~/cartridge/models/shipping');
 var ShippingMgr = require('dw/order/ShippingMgr');
 var Transaction = require('dw/system/Transaction');
-var URLUtils = require('dw/web/URLUtils');
 
 /**
  * performs cart calculation
@@ -19,18 +19,6 @@ var URLUtils = require('dw/web/URLUtils');
  */
 function calculateCart(basket) {
     HookMgr.callHook('dw.ocapi.shop.basket.calculate', 'calculate', basket);
-}
-
-/**
- * Generates an object of URLs
- * @returns {Object} an object of URLs in string format
- */
-function getCartActionUrls() {
-    return {
-        removeProductLineItemUrl: URLUtils.url('Cart-RemoveProductLineItem').toString(),
-        updateQuantityUrl: URLUtils.url('Cart-UpdateQuantity').toString(),
-        selectShippingUrl: URLUtils.url('Cart-SelectShippingMethod').toString()
-    };
 }
 
 server.get('MiniCart', server.middleware.include, function (req, res, next) {
@@ -61,7 +49,6 @@ server.post('AddProduct', function (req, res, next) {
 });
 
 server.get('Show', locale, function (req, res, next) {
-    var actionUrls = getCartActionUrls();
     var currentBasket = BasketMgr.getCurrentBasket();
     var shippingModel;
     var shipmentShippingModel;
@@ -82,21 +69,17 @@ server.get('Show', locale, function (req, res, next) {
         shippingModel = new ShippingModel(shipmentShippingModel);
     }
 
-    var basket = new Cart(
-        currentBasket,
-        shippingModel,
-        actionUrls
-    );
+    var basket = new Cart(currentBasket, shippingModel);
 
     res.render('cart/cart', basket);
     next();
 });
 
 server.get('RemoveProductLineItem', locale, function (req, res, next) {
-    var actionUrls = getCartActionUrls();
     var currentBasket = BasketMgr.getCurrentBasket();
     var shipmentShippingModel = ShippingMgr.getShipmentShippingModel(currentBasket.defaultShipment);
     var shippingModel = new ShippingModel(shipmentShippingModel);
+    var isProductLineItemFound = false;
 
     Transaction.wrap(function () {
         if (req.querystring.pid && req.querystring.uuid) {
@@ -105,6 +88,7 @@ server.get('RemoveProductLineItem', locale, function (req, res, next) {
                 var item = productLineItems[i];
                 if ((item.UUID === req.querystring.uuid)) {
                     currentBasket.removeProductLineItem(item);
+                    isProductLineItemFound = true;
                     break;
                 }
             }
@@ -112,21 +96,24 @@ server.get('RemoveProductLineItem', locale, function (req, res, next) {
         }
     });
 
-    var basket = new Cart(
-        currentBasket,
-        shippingModel,
-        actionUrls
-    );
+    if (isProductLineItemFound) {
+        var basket = new Cart(currentBasket, shippingModel);
 
-    res.json(basket);
-    next();
+        res.json(basket);
+        next();
+    } else {
+        res.setStatusCode(500);
+        res.json({ errorMessage: Resource.msg('error.cannot.remove.product', 'cart', null) });
+        next();
+    }
 });
 
 server.get('UpdateQuantity', locale, function (req, res, next) {
-    var actionUrls = getCartActionUrls();
     var currentBasket = BasketMgr.getCurrentBasket();
     var shipmentShippingModel = ShippingMgr.getShipmentShippingModel(currentBasket.defaultShipment);
     var shippingModel = new ShippingModel(shipmentShippingModel);
+    var isProductLineItemFound = false;
+    var error = false;
 
     Transaction.wrap(function () {
         if (req.querystring.pid && req.querystring.uuid) {
@@ -135,27 +122,40 @@ server.get('UpdateQuantity', locale, function (req, res, next) {
                 var item = productLineItems[i];
                 if ((req.querystring.quantity && item.UUID === req.querystring.uuid)) {
                     var updatedQuantity = parseInt(req.querystring.quantity, 10);
-                    item.setQuantityValue(updatedQuantity);
-                    break;
+
+                    if (updatedQuantity >= item.product.minOrderQuantity.value &&
+                        updatedQuantity < item.product.availabilityModel.inventoryRecord.ATS.value
+                    ) {
+                        item.setQuantityValue(updatedQuantity);
+                        isProductLineItemFound = true;
+                        break;
+                    } else {
+                        error = true;
+                        return;
+                    }
                 }
             }
             calculateCart(currentBasket);
         }
     });
 
-    var basket = new Cart(
-        currentBasket,
-        shippingModel,
-        actionUrls
-    );
+    if (isProductLineItemFound && !error) {
+        var basket = new Cart(currentBasket, shippingModel);
 
-    res.json(basket);
-    next();
+        res.json(basket);
+        next();
+    } else {
+        res.setStatusCode(500);
+        res.json({
+            errorMessage: Resource.msg('error.cannot.update.product.quantity', 'cart', null)
+        });
+        next();
+    }
 });
 
 server.get('SelectShippingMethod', locale, function (req, res, next) {
-    var actionUrls = getCartActionUrls();
     var currentBasket = BasketMgr.getCurrentBasket();
+    var error = false;
     var shipmentShippingModel = ShippingMgr.getShipmentShippingModel(currentBasket.defaultShipment);
     var shippingModel = new ShippingModel(shipmentShippingModel);
 
@@ -165,18 +165,28 @@ server.get('SelectShippingMethod', locale, function (req, res, next) {
                 currentBasket.defaultShipment,
                 req.querystring.methodID
             );
+
+            if (currentBasket && !currentBasket.defaultShipment.shippingMethod) {
+                error = true;
+                return;
+            }
+
             calculateCart(currentBasket);
         });
     }
 
-    var basket = new Cart(
-        currentBasket,
-        shippingModel,
-        actionUrls
-    );
+    if (!error) {
+        var basket = new Cart(currentBasket, shippingModel);
 
-    res.json(basket);
-    next();
+        res.json(basket);
+        next();
+    } else {
+        res.setStatusCode(500);
+        res.json({
+            errorMessage: Resource.msg('error.cannot.select.shipping.method', 'cart', null)
+        });
+        next();
+    }
 });
 
 

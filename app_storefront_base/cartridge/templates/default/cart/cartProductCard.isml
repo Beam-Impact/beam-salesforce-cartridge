@@ -9,7 +9,7 @@
                 <button type="button" class="remove-btn remove-product" data-toggle="modal"
                         data-target="#myModal" data-pid="${lineItem.productID}"
                         data-name="${lineItem.name}"
-                        data-actionUrl="${pdict.removeProductLineItemUrl}"
+                        data-action="${pdict.actionUrls.removeProductLineItemUrl}"
                         data-uuid="${lineItem.UUID}"
                         aria-label="remove">
                     <span aria-hidden="true">&times;</span>
@@ -19,7 +19,7 @@
                 <button type="button" class="remove-btn-lg remove-product" data-toggle="modal"
                         data-target="#myModal" data-pid="${lineItem.productID}"
                         data-name="${lineItem.name}"
-                        data-actionUrl="${pdict.removeProductLineItemUrl}"
+                        data-action="${pdict.actionUrls.removeProductLineItemUrl}"
                         data-uuid="${lineItem.UUID}"
                         aria-label="remove">
                     <span aria-hidden="true">&times;</span>
@@ -68,7 +68,7 @@
                                 <select class="form-control quantity"
                                         data-uuid="${lineItem.UUID}"
                                         data-pid="${lineItem.productID}"
-                                        data-actionUrl="${pdict.updateQuantityUrl}"
+                                        data-action="${pdict.actionUrls.updateQuantityUrl}"
                                         id="quantity"
                                         name="quantity">
                                     <isloop begin="${lineItem.quantityOptions.minOrderQuantity}"

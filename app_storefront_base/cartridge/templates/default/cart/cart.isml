@@ -6,16 +6,18 @@
     </isscript>
 
     <div class="container">
-        <div class="row cart-header">
-            <div class="col-xs-6 col-sm-12">
+        <div class="row">
+            <div class="col-sm-12">
                 <h1>${Resource.msg('title.cart','cart',null)}</h1>
             </div>
+        </div>
+        <div class="row cart-header">
             <div class="col-sm-4 hidden-xs-down">
                 <a class="continue-shopping-link" href="${URLUtils.url('Home-Show')}" title="${Resource.msg('link.continue.shopping','cart',null)}">
                     ${Resource.msg('link.continue.shopping','cart',null)}
                 </a>
             </div>
-            <div class="col-xs-6 col-sm-3 text-xs-right">
+            <div class="col-sm-3 text-xs-right">
                 <h5 class="number-of-items">${Resource.msgf('label.number.items.in.cart','cart', null, pdict.numItems)}</h5>
             </div>
             <div class="col-sm-5 text-xs-right hidden-xs-down">

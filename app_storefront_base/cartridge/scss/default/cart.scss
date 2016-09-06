@@ -2,6 +2,9 @@
 @import "bootstrap/scss/variables";
 @import "bootstrap/scss/mixins/breakpoints";
 
+$spacer: 0.625em;
+$negative-spacer: -0.625rem;
+
 .checkout-continue {
     position: fixed;
     bottom: 0;
@@ -11,7 +14,7 @@
 
     @include media-breakpoint-down(xs) {
         div {
-            padding: 0.625em;
+            padding: $spacer;
             background-color: $white;
         }
     }
@@ -23,13 +26,8 @@
     }
 }
 
-.continue-shopping-link {
-    color: $brand-color;
-}
-
 .edit-add-to-wishlist {
     a {
-        color: $brand-color;
         font-size: 0.813em;
     }
 
@@ -48,18 +46,14 @@
     }
 }
 
-.help-phone-number {
-    color: $brand-color;
-}
-
 .line-item-attributes {
     font-size: 0.813em;
     margin: 0;
 }
 
 .line-item-divider {
-    margin-top: 0.625em;
-    margin-bottom: 0.625em;
+    margin-top: $spacer;
+    margin-bottom: $spacer;
 }
 
 .line-item-name {
@@ -69,7 +63,7 @@
     font-size: 1em;
     color: $darker-gray;
     font-weight: bold;
-    margin-bottom: 0.625em;
+    margin-bottom: $spacer;
 }
 
 .line-item-price {
@@ -101,7 +95,7 @@
 
 .product-info {
     margin-bottom: 0.313em;
-    padding: 0.625em;
+    padding: $spacer;
 
     @include media-breakpoint-up(md) {
         height: auto;
@@ -130,7 +124,7 @@
     font-size: 1.625em;
     padding: 0;
     position: absolute;
-    top: -0.625rem;
+    top: $negative-spacer;
     right: 1.25rem;
     border: none;
     background-color: $white;
@@ -138,9 +132,9 @@
     @include media-breakpoint-up(lg) {
         top: 0;
         bottom: 0;
-        right: -0.625rem;
-        margin-top: -0.625rem;
-        margin-bottom: -0.625rem;
+        right: $negative-spacer;
+        margin-top: $negative-spacer;
+        margin-bottom: $negative-spacer;
     }
 }
 

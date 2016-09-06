@@ -7,5 +7,8 @@ module.exports = {
     },
     staticURL: function () {
         return 'some url';
+    },
+    url: function () {
+        return 'someUrl';
     }
 };

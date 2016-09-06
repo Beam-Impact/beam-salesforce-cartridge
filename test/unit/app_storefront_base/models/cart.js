@@ -1,7 +1,7 @@
 'use strict';
 
 var assert = require('chai').assert;
-var Collection = require('../../../mocks/dw.util.Collection');
+var ArrayList = require('../../../mocks/dw.util.Collection');
 var proxyquire = require('proxyquire').noCallThru().noPreserveCache();
 
 var commonHelpers = require('../../../mocks/helpers/common');
@@ -13,7 +13,7 @@ var getMockProductPriceTable = require('../../../mocks/dw.catalog.ProductPriceTa
 var urlUtilsMock = require('../../../mocks/dw.web.URLUtils');
 
 var createApiProductLineItem = function (product) {
-    return new Collection([{ // Product Line Items
+    return new ArrayList([{ // Product Line Items
         product: {
             bundle: product.isBundle,
             master: product.isMaster,
@@ -25,7 +25,7 @@ var createApiProductLineItem = function (product) {
                 }
             },
             variationModel: {
-                productVariationAttributes: new Collection([
+                productVariationAttributes: new ArrayList([
                     {
                         displayName: 'Color'
                     },
@@ -157,7 +157,7 @@ var createApiBasket = function (product, isAvailable) {
 
     basket.allProductLineItems = createApiProductLineItem(product);
 
-    basket.shipments = new Collection([{}]);
+    basket.shipments = new ArrayList([{}]);
 
     return basket;
 };
@@ -201,7 +201,7 @@ var simpleProduct = {
 describe('cart', function () {
     var Cart = null;
     var helper = proxyquire('../../../../app_storefront_base/cartridge/scripts/dwHelpers', {
-        'dw/util/ArrayList': Collection
+        'dw/util/ArrayList': ArrayList
     });
     var mockProductPricingModel = proxyquire('../../../../app_storefront_base/cartridge/models/product/productPricingModel', {
         'dw/value/Money': commonHelpers.returnObject,

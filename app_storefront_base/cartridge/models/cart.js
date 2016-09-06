@@ -148,16 +148,24 @@ function getTotals(basket) {
 }
 
 /**
+ * Generates an object of URLs
+ * @returns {Object} an object of URLs in string format
+ */
+function getCartActionUrls() {
+    return {
+        removeProductLineItemUrl: URLUtils.url('Cart-RemoveProductLineItem').toString(),
+        updateQuantityUrl: URLUtils.url('Cart-UpdateQuantity').toString(),
+        selectShippingUrl: URLUtils.url('Cart-SelectShippingMethod').toString()
+    };
+}
+
+/**
  * Cart class that represents collection of line items
  * @param {dw.order.Basket} basket Current users's basket
  * @param {Object} shippingModel - Instance of the shipping model
- * @param {Object} actionUrls - An object of endpoints
- * @param {string} actionUrls.removeProductLineItemUrl - removeProductLineItemUrl endpoint
- * @param {string} actionUrls.updateQuantityUrl - updateQuantityUrl endpoint
- * @param {string} actionUrls.selectShippingUrl - selectShippingUrl endpoint
  * @constructor
  */
-function cart(basket, shippingModel, actionUrls) {
+function cart(basket, shippingModel) {
     if (basket !== null) {
         this.items = createProductLineItemsObject(basket.allProductLineItems);
         this.numItems = getTotalQuantity(basket.allProductLineItems);
@@ -169,11 +177,7 @@ function cart(basket, shippingModel, actionUrls) {
 
         this.totals = getTotals(basket);
 
-        if (actionUrls) {
-            this.removeProductLineItemUrl = actionUrls.removeProductLineItemUrl;
-            this.updateQuantityUrl = actionUrls.updateQuantityUrl;
-            this.selectShippingUrl = actionUrls.selectShippingUrl;
-        }
+        this.actionUrls = getCartActionUrls();
 
         if (basket.defaultShipment.shippingMethod) {
             this.selectedShippingMethod = basket.defaultShipment.shippingMethod.ID;
@@ -183,8 +187,8 @@ function cart(basket, shippingModel, actionUrls) {
         this.numItems = 0;
     }
     this.resources = {
-        number_of_items: Resource.msgf('label.number.items.in.cart', 'cart', null, this.numItems),
-        empty_cart_msg: Resource.msg('info.cart.empty.msg', 'cart', null)
+        numberOfItems: Resource.msgf('label.number.items.in.cart', 'cart', null, this.numItems),
+        emptyCartMsg: Resource.msg('info.cart.empty.msg', 'cart', null)
     };
 }
 

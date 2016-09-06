@@ -4,7 +4,7 @@
             <label for="shippingMethods">${Resource.msg('field.selectshippingmethod','cart',null)}</label>
             <select class="form-control shippingMethods"
                     id="shippingMethods" name="shippingMethods"
-                    data-actionUrl="${pdict.selectShippingUrl}">
+                    data-actionUrl="${pdict.actionUrls.selectShippingUrl}">
                 <isloop items="${pdict.shippingMethods}" var="option" status="loopstate">
                     <isif condition="${pdict.selectedShippingMethod === option.ID}">
                         <option selected data-shipping-id="${option.ID}">${option.displayName} ( ${option.estimatedArrivalTime} )</option>

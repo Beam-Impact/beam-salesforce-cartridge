@@ -4,12 +4,12 @@ var assert = require('chai').assert;
 var proxyquire = require('proxyquire').noCallThru().noPreserveCache();
 var sinon = require('sinon');
 
-var Collection = require('../../../mocks/dw.util.Collection');
+var ArrayList = require('../../../mocks/dw.util.Collection');
 var getMockMoney = require('../../../mocks/dw.value.Money');
 
 var createShipmentShippingModel = function () {
     return {
-        applicableShippingMethods: new Collection([
+        applicableShippingMethods: new ArrayList([
             {
                 description: 'Order received within 7-10 business days',
                 displayName: 'Ground',
@@ -38,7 +38,7 @@ var createShipmentShippingModel = function () {
     };
 };
 
-var defaultShippingMethod = new Collection([
+var defaultShippingMethod = new ArrayList([
     {
         description: 'Order received within 7-10 business days',
         displayName: 'Ground',
@@ -58,7 +58,7 @@ var defaultShipment = {
 describe('Shipping', function () {
     var ShippingModel = null;
     var helper = proxyquire('../../../../app_storefront_base/cartridge/scripts/dwHelpers', {
-        'dw/util/ArrayList': Collection
+        'dw/util/ArrayList': ArrayList
     });
     ShippingModel = proxyquire('../../../../app_storefront_base/cartridge/models/shipping', {
         '~/cartridge/scripts/dwHelpers': helper,
@@ -129,7 +129,7 @@ describe('Shipping', function () {
 
     it('should set default shipping method when shippingMethods are supplied', function () {
         var shippingMethodID = '001';
-        var shippingMethods = new Collection([
+        var shippingMethods = new ArrayList([
             {
                 description: 'Order received within 7-10 business days',
                 displayName: 'Ground',
