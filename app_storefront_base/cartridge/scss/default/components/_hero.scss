@@ -22,16 +22,18 @@
     }
 
     h1.page-title {
-        position: absolute;
         top: 50%;
-        margin-top: -1em;
+        margin: -1em 0 0 0;
     }
 }
 
 h1.page-title {
+    position: relative;
     color: white;
     padding: 5px 10px 5px $grid-gutter-width / 2;
     background-color: $brand-color;
+    display: inline-block;
+    margin: 0.9375em 0;
 
     &::before {
         content: "";
