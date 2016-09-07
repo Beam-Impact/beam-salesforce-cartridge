@@ -6,7 +6,7 @@
                 data-actionUrl="${pdict.actionUrls.selectShippingUrl}">
             <isloop items="${pdict.shippingMethods}" var="option" status="loopstate">
                 <isif condition="${pdict.selectedShippingMethod === option.ID}">
-                    <option selected data-shipping-id="${option.ID}">${option.displayName} ( ${option.estimatedArrivalTime} )</option>
+                    <option selected data-shipping-id="${option.ID}">${option.displayName} <isif condition="${option.estimatedArrivalTime}">( ${option.estimatedArrivalTime} )</isif></option>
                     <iselse/>
                     <option data-shipping-id="${option.ID}">${option.displayName} ( ${option.estimatedArrivalTime} )</option>
                 </isif>
