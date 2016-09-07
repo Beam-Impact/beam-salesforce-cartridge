@@ -12,7 +12,10 @@ var ProductSearchModel = require('dw/catalog/ProductSearchModel');
 function getModel(req) {
     var SearchModel = require('~/cartridge/models/search');
     var productSearchModel = new ProductSearchModel();
-    return new SearchModel(productSearchModel, req);
+    var dataForSearch = {
+        searchPhrase: req.querystring.q
+    };
+    return new SearchModel(productSearchModel, dataForSearch);
 }
 
 server.get('Show', locale, function (req, res, next) {

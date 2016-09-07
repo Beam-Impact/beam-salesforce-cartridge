@@ -101,7 +101,9 @@ function pluck(collection, property) {
     var iterator = collection.iterator();
     while (iterator.hasNext()) {
         var temp = iterator.next();
-        result.push(temp[property]);
+        if (temp[property]) {
+            result.push(temp[property]);
+        }
     }
     return result;
 }

@@ -138,4 +138,24 @@ describe('dwHelpers', function () {
             }
         });
     });
+
+    describe('pluck', function () {
+        it('should correctly pluck the property of an object from collection', function () {
+            var collection = new ArrayList([{ ID: 111, name: 'abc' }, { ID: 'def', name: 'ghi' }]);
+            var result = helpers.pluck(collection, 'ID');
+            assert.sameMembers(result, [111, 'def']);
+        });
+
+        it('should return empty list if property does not exist in any object in collection', function () {
+            var collection = new ArrayList([{ ID: 111, name: 'abc' }, { ID: 'def', name: 'ghi' }]);
+            var result = helpers.pluck(collection, 'address');
+            assert.sameMembers(result, []);
+        });
+
+        it('should return empty list if collection is empty', function () {
+            var collection = new ArrayList([]);
+            var result = helpers.pluck(collection, 'address');
+            assert.sameMembers(result, []);
+        });
+    });
 });

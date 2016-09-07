@@ -8,10 +8,8 @@ var helper = require('~/cartridge/scripts/dwHelpers');
  * @param {Object} req - local instance of request object
  * @constructor
  */
-function search(productSearchModel, req) {
-    var searchPhrase = req.querystring.q;
-
-    productSearchModel.setSearchPhrase(searchPhrase);
+function search(productSearchModel, dataForSearch) {
+    productSearchModel.setSearchPhrase(dataForSearch.searchPhrase);
     productSearchModel.search();
 
     this.products = productSearchModel.getProducts().asList();
