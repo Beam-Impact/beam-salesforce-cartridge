@@ -35,9 +35,6 @@ module.exports = function (array) {
     };
 
     this.contains = function (item) {
-        for (var i = 0; i < array.length; i++) {
-            if (array[i] === item) return true;
-        }
-        return false;
+        return array.indexOf(item) >= 0;
     };
 };

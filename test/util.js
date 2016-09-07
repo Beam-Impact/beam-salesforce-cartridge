@@ -19,13 +19,7 @@ module.exports = {
             toArray: function () {
                 return array;
             },
-            length: array.length,
-            contains: function (item) {
-                for (var i = 0; i < array.length; i++) {
-                    if (array[i] === item) return true;
-                }
-                return false;
-            }
+            length: array.length
         };
     }
 };
