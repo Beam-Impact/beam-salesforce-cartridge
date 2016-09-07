@@ -47,7 +47,7 @@ function Request(request) {
     this.https = request.isHttpSecure();
     this.locale = request.locale;
     this.includeRequest = request.includeRequest;
-    if (request.geolocation !== null) {
+    if (request.geolocation) {
         this.geolocation = {
             countryCode: request.geolocation.countryCode,
             latitude: request.geolocation.latitude,

@@ -1,0 +1,157 @@
+@import "variables";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins/breakpoints";
+
+$spacer: 0.625em;
+$negative-spacer: -0.625rem;
+
+.checkout-continue {
+    position: fixed;
+    bottom: 0;
+    z-index: 1;
+    padding-right: 0;
+    padding-left: 0;
+
+    @include media-breakpoint-down(xs) {
+        div {
+            padding: $spacer;
+            background-color: $white;
+        }
+    }
+
+    @include media-breakpoint-up(sm) {
+        position: static;
+        padding-right: 0.938em;
+        padding-left: 0.938em;
+    }
+}
+
+.edit-add-to-wishlist {
+    padding-bottom: 0.438em;
+    position: absolute;
+    width: 100%;
+
+    a {
+        font-size: 0.813em;
+    }
+
+    @include media-breakpoint-down(md) {
+        bottom: 5.313em;
+    }
+
+    @include media-breakpoint-up(lg) {
+        bottom: 0;
+    }
+}
+
+.line-item-attributes {
+    font-size: 0.813em;
+    margin: 0;
+}
+
+.line-item-divider {
+    margin-top: $spacer;
+    margin-bottom: $spacer;
+}
+
+.line-item-name {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    font-size: 1em;
+    color: $darker-gray;
+    font-weight: bold;
+    margin-bottom: $spacer;
+}
+
+.line-item-price {
+    font-size: 1em;
+    color: $darker-gray;
+    font-weight: bold;
+}
+
+.line-item-price-info {
+    font-size: 0.75em;
+    margin-bottom: 0.5rem;
+}
+
+.no-margin-top {
+    margin-top: 0;
+}
+
+.number-of-items {
+    margin-top: 1rem;
+
+    @include media-breakpoint-up(sm) {
+        margin-top: 0;
+    }
+}
+
+.optional-promo {
+    color: $brand-color;
+}
+
+.product-info {
+    margin-bottom: 0.313em;
+    padding: $spacer;
+
+    @include media-breakpoint-up(md) {
+        height: auto;
+    }
+}
+
+.promo-code-form {
+    display: none;
+
+    @include media-breakpoint-up(sm) {
+        display: block;
+    }
+}
+
+.promo-code-submit {
+    padding-left: 0;
+}
+
+.quantity-form {
+    margin-bottom: 0;
+    margin-top: -0.313em;
+}
+
+.remove-btn {
+    color: $slightly-darker-gray;
+    font-size: 1.625em;
+    padding: 0;
+    position: absolute;
+    top: $negative-spacer;
+    right: 1.25rem;
+    border: none;
+    background-color: $white;
+
+    @include media-breakpoint-up(lg) {
+        top: 0;
+        bottom: 0;
+        right: $negative-spacer;
+        margin-top: $negative-spacer;
+        margin-bottom: $negative-spacer;
+    }
+}
+
+.remove-btn-lg {
+    color: $slightly-darker-gray;
+    font-size: 1.625em;
+    background-color: $light-gray;
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    right: 0;
+    border: none;
+    z-index: 1;
+}
+
+.remove-line-item {
+    position: relative;
+}
+
+.sub-total {
+    font-weight: bold;
+}

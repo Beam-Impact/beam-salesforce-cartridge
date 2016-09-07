@@ -1,7 +1,7 @@
 'use strict';
 
 var assert = require('chai').assert;
-var ArrayList = require('../../../mocks/dw.util.Collection.js');
+var ArrayList = require('../../../mocks/dw.util.Collection');
 var proxyquire = require('proxyquire').noCallThru().noPreserveCache();
 var util = require('../../../util');
 

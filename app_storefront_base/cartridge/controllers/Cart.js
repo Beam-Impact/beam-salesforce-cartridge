@@ -7,6 +7,8 @@ var Cart = require('~/cartridge/models/cart');
 var HookMgr = require('dw/system/HookMgr');
 var locale = require('~/cartridge/scripts/middleware/locale');
 var ProductMgr = require('dw/catalog/ProductMgr');
+var Resource = require('dw/web/Resource');
+var ShippingModel = require('~/cartridge/models/shipping');
 var ShippingMgr = require('dw/order/ShippingMgr');
 var Transaction = require('dw/system/Transaction');
 
@@ -47,16 +49,145 @@ server.post('AddProduct', function (req, res, next) {
 });
 
 server.get('Show', locale, function (req, res, next) {
-    var currentBasket = BasketMgr.getCurrentOrNewBasket();
+    var currentBasket = BasketMgr.getCurrentBasket();
+    var shippingModel;
+    var shipmentShippingModel;
 
     Transaction.wrap(function () {
-        calculateCart(currentBasket);
+        if (currentBasket && !currentBasket.defaultShipment.shippingMethod) {
+            ShippingModel.selectShippingMethod(currentBasket.defaultShipment);
+        }
+        if (currentBasket) {
+            calculateCart(currentBasket);
+        }
     });
 
-    var shipmentShippingModel = ShippingMgr.getShipmentShippingModel(currentBasket.defaultShipment);
-    var basket = new Cart(currentBasket, shipmentShippingModel);
-    res.render('cart', basket);
+    if (currentBasket) {
+        shipmentShippingModel = ShippingMgr.getShipmentShippingModel(
+            currentBasket.defaultShipment
+        );
+        shippingModel = new ShippingModel(shipmentShippingModel);
+    }
+
+    var basket = new Cart(currentBasket, shippingModel);
+
+    res.render('cart/cart', basket);
     next();
 });
+
+server.get('RemoveProductLineItem', locale, function (req, res, next) {
+    var currentBasket = BasketMgr.getCurrentBasket();
+    var shipmentShippingModel = ShippingMgr.getShipmentShippingModel(currentBasket.defaultShipment);
+    var shippingModel = new ShippingModel(shipmentShippingModel);
+    var isProductLineItemFound = false;
+
+    Transaction.wrap(function () {
+        if (req.querystring.pid && req.querystring.uuid) {
+            var productLineItems = currentBasket.getAllProductLineItems(req.querystring.pid);
+            for (var i = 0; i < productLineItems.length; i++) {
+                var item = productLineItems[i];
+                if ((item.UUID === req.querystring.uuid)) {
+                    currentBasket.removeProductLineItem(item);
+                    isProductLineItemFound = true;
+                    break;
+                }
+            }
+            calculateCart(currentBasket);
+        }
+    });
+
+    if (isProductLineItemFound) {
+        var basket = new Cart(currentBasket, shippingModel);
+
+        res.json(basket);
+        next();
+    } else {
+        res.setStatusCode(500);
+        res.json({ errorMessage: Resource.msg('error.cannot.remove.product', 'cart', null) });
+        next();
+    }
+});
+
+server.get('UpdateQuantity', locale, function (req, res, next) {
+    var currentBasket = BasketMgr.getCurrentBasket();
+    var shipmentShippingModel = ShippingMgr.getShipmentShippingModel(currentBasket.defaultShipment);
+    var shippingModel = new ShippingModel(shipmentShippingModel);
+    var isProductLineItemFound = false;
+    var error = false;
+
+    Transaction.wrap(function () {
+        if (req.querystring.pid && req.querystring.uuid) {
+            var productLineItems = currentBasket.getAllProductLineItems(req.querystring.pid);
+            for (var i = 0; i < productLineItems.length; i++) {
+                var item = productLineItems[i];
+                if ((req.querystring.quantity && item.UUID === req.querystring.uuid)) {
+                    var updatedQuantity = parseInt(req.querystring.quantity, 10);
+
+                    if (updatedQuantity >= item.product.minOrderQuantity.value &&
+                        updatedQuantity < item.product.availabilityModel.inventoryRecord.ATS.value
+                    ) {
+                        item.setQuantityValue(updatedQuantity);
+                        isProductLineItemFound = true;
+                        break;
+                    } else {
+                        error = true;
+                        return;
+                    }
+                }
+            }
+            calculateCart(currentBasket);
+        }
+    });
+
+    if (isProductLineItemFound && !error) {
+        var basket = new Cart(currentBasket, shippingModel);
+
+        res.json(basket);
+        next();
+    } else {
+        res.setStatusCode(500);
+        res.json({
+            errorMessage: Resource.msg('error.cannot.update.product.quantity', 'cart', null)
+        });
+        next();
+    }
+});
+
+server.get('SelectShippingMethod', locale, function (req, res, next) {
+    var currentBasket = BasketMgr.getCurrentBasket();
+    var error = false;
+    var shipmentShippingModel = ShippingMgr.getShipmentShippingModel(currentBasket.defaultShipment);
+    var shippingModel = new ShippingModel(shipmentShippingModel);
+
+    if (req.querystring.methodID) {
+        Transaction.wrap(function () {
+            ShippingModel.selectShippingMethod(
+                currentBasket.defaultShipment,
+                req.querystring.methodID
+            );
+
+            if (currentBasket && !currentBasket.defaultShipment.shippingMethod) {
+                error = true;
+                return;
+            }
+
+            calculateCart(currentBasket);
+        });
+    }
+
+    if (!error) {
+        var basket = new Cart(currentBasket, shippingModel);
+
+        res.json(basket);
+        next();
+    } else {
+        res.setStatusCode(500);
+        res.json({
+            errorMessage: Resource.msg('error.cannot.select.shipping.method', 'cart', null)
+        });
+        next();
+    }
+});
+
 
 module.exports = server.exports();

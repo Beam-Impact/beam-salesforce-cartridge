@@ -1,0 +1,66 @@
+<isdecorate template="common/layout/page">
+    <isscript>
+        var assets = require('~/cartridge/scripts/assets.js');
+        assets.addJs('/js/cart.js');
+        assets.addCss('/css/cart.css');
+    </isscript>
+
+    <div class="container">
+        <h1 class="page-title">${Resource.msg('title.cart','cart',null)}</h1>
+        <div class="row cart-header">
+            <div class="col-sm-4 hidden-xs-down">
+                <a class="continue-shopping-link" href="${URLUtils.url('Home-Show')}" title="${Resource.msg('link.continue.shopping','cart',null)}">
+                    ${Resource.msg('link.continue.shopping','cart',null)}
+                </a>
+            </div>
+            <div class="col-sm-3 text-xs-right">
+                <h5 class="number-of-items">${Resource.msgf('label.number.items.in.cart','cart', null, pdict.numItems)}</h5>
+            </div>
+            <div class="col-sm-5 text-xs-right hidden-xs-down">
+                <div>
+                    <span>${Resource.msg('info.need.help','cart',null)}</span>
+                    <span><a class="help-phone-number" href="tel:${Resource.msg('info.phone.number','cart',null)}">${Resource.msg('info.phone.number','cart',null)}</a></span>
+                </div>
+            </div>
+        </div>
+        <hr class="no-margin-top">
+    </div>
+
+    <isif condition="${pdict.items.length === 0}">
+        <div class="container cart-empty">
+            <div class="row">
+                <div class="col-xs-12 text-xs-center">
+                    <h1>${Resource.msg('info.cart.empty.msg','cart',null)}</h1>
+                </div>
+            </div>
+        </div>
+    <iselse/>
+        <div class="container cart">
+            <div class="row">
+                <!---product cards--->
+                <div class="col-sm-7 col-md-8">
+                    <isinclude template="cart/cartProductCard" />
+                </div>
+                <!---totals, and checkout actions--->
+                <div class="col-sm-5 col-md-4">
+                    <isinclude template="cart/cartPromoCode" />
+                    <div class="row">
+                        <isinclude template="cart/cartShippingMethodSelection" />
+                    </div>
+                    <isinclude template="cart/cartTotals" />
+                    <div class="row">
+                        <div class="col-xs-12 checkout-continue">
+                            <div>
+                                <button class="btn btn-primary btn-block checkout-btn" type="submit" name="submit" value="submit">
+                                    ${Resource.msg('button.checkout','cart',null)}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+            </div>
+        </div>
+        <isinclude template="cart/cartRemoveProductModal"/>
+    </isif>
+</isdecorate>

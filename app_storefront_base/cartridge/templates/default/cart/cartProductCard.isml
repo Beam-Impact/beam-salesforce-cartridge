@@ -1,0 +1,115 @@
+<isloop items="${pdict.items}" var="lineItem">
+    <div class="card product-info uuid-${lineItem.UUID}">
+        <!--product name-->
+        <div class="row">
+            <div class="line-item-name col-xs-10">
+                <span>${lineItem.name}</span>
+            </div>
+            <div class="col-xs-2 remove-line-item hidden-lg-up">
+                <button type="button" class="remove-btn remove-product" data-toggle="modal"
+                        data-target="#myModal" data-pid="${lineItem.productID}"
+                        data-name="${lineItem.name}"
+                        data-action="${pdict.actionUrls.removeProductLineItemUrl}"
+                        data-uuid="${lineItem.UUID}"
+                        aria-label="remove">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="hidden-md-down">
+                <button type="button" class="remove-btn-lg remove-product" data-toggle="modal"
+                        data-target="#myModal" data-pid="${lineItem.productID}"
+                        data-name="${lineItem.name}"
+                        data-action="${pdict.actionUrls.removeProductLineItemUrl}"
+                        data-uuid="${lineItem.UUID}"
+                        aria-label="remove">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+        <!---now split up details and price--->
+        <div class="row">
+            <!---product info--->
+            <div class="col-lg-6">
+                <div class="row">
+                    <!---product image--->
+                    <div class="col-xs-4">
+                        <img src="${lineItem.image.src}" alt="${lineItem.image.alt}" title="${lineItem.image.title}">
+                    </div>
+                    <!--product details-->
+                    <div class="col-xs-8" >
+                        <isloop items="${lineItem.variationAttributes}" var="attribute">
+                            <p class="line-item-attributes">${attribute.displayName}: ${attribute.displayValue}</p>
+                        </isloop>
+                    </div>
+                </div>
+            </div>
+            <!---product price--->
+            <div class="col-lg-6">
+                <hr class="hidden-lg-up line-item-divider">
+                <div class="row text-xs-center">
+                    <!---item price--->
+                    <div class="col-xs-4">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <p class="line-item-price-info">${Resource.msg('label.each.item.price','cart',null)}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <span class="line-item-price">${lineItem.priceModelPricing.formatted}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!---quantity--->
+                    <div class="col-xs-4 col-lg-3">
+                        <form action="" method="get">
+                            <div class="form-group quantity-form">
+                                <label class="line-item-price-info" for="quantity">${Resource.msg('field.selectquantity','cart',null)}</label>
+                                <select class="form-control quantity"
+                                        data-uuid="${lineItem.UUID}"
+                                        data-pid="${lineItem.productID}"
+                                        data-action="${pdict.actionUrls.updateQuantityUrl}"
+                                        id="quantity"
+                                        name="quantity">
+                                    <isloop begin="${lineItem.quantityOptions.minOrderQuantity}"
+                                            end="${lineItem.quantityOptions.maxOrderQuantity}"
+                                            status="status">
+                                        <isif condition="${lineItem.quantity === status.index}">
+                                            <option selected>${status.index}</option>
+                                            <iselse/>
+                                            <option>${status.index}</option>
+                                        </isif>
+                                    </isloop>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <!---line item total price--->
+                    <div class="col-xs-4">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <p class="line-item-price-info">${Resource.msg('label.total.price','cart',null)}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <span class="line-item-price item-total-${lineItem.UUID}">${lineItem.priceTotal}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-1 hidden-md-down remove-line-item-lg"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row hidden-xs-down edit-add-to-wishlist">
+            <div class="col-md-12 col-lg-6">
+                <div class="offset-sm-4 col-sm-2">
+                    <a href="${"#"}" title="${Resource.msg('link.edit.item','cart',null)}">${Resource.msg('link.edit.item','cart',null)}</a>
+                </div>
+                <div class="col-sm-6">
+                    <a href="${"#"}" title="${Resource.msg('link.add.to.wishlist','cart',null)}">${Resource.msg('link.add.to.wishlist','cart',null)}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</isloop>

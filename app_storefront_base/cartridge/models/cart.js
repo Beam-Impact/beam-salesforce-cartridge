@@ -6,11 +6,28 @@ var PricingModel = require('./product/productPricingModel');
 var URLUtils = require('dw/web/URLUtils');
 var formatMoney = require('dw/util/StringUtils').formatMoney;
 var money = require('dw/value/Money');
+var Resource = require('dw/web/Resource');
+
+/**
+ * get the min and max numbers to display in the quantity drop down.
+ * @param {dw.order.ProductLineItem} productLineItem - a line item of the basket.
+ * @returns {Object} The minOrderQuantity and maxOrderQuantity to display in the quantity drop down.
+ */
+function getMinMaxQuantityOptions(productLineItem) {
+    var quantity = productLineItem.quantity.value;
+    var availableToSell = productLineItem.product.availabilityModel.inventoryRecord.ATS.value;
+    var max = Math.max(Math.min(availableToSell, 10), quantity);
+
+    return {
+        minOrderQuantity: productLineItem.product.minOrderQuantity.value || 1,
+        maxOrderQuantity: max
+    };
+}
 
 /**
  * Creates an array of objects containing a product line item's selected variants
  * @param {dw.catalog.Product} product - the product that the line item represents
- * @returns {Object[]} an array of objects containing a product line item's selected variants
+ * @returns {Array} an array of objects containing a product line item's selected variants
  */
 function getSelectedVariationAttributes(product) {
     var variationAttributes = product.variationModel.productVariationAttributes;
@@ -22,20 +39,6 @@ function getSelectedVariationAttributes(product) {
     });
 
     return selectedAttributes;
-}
-
-/**
- * Sets the max number to display in the quantity drop down.
- * @param {dw.order.ProductLineItem} productLineItem - a line item of the basket.
- * @returns {Number} The max number to display in the quantity drop down.
- */
-function getQuantityOptions(productLineItem) {
-    var quantity = productLineItem.quantity.value;
-    var availableToSell = productLineItem.product.availabilityModel.inventoryRecord.ATS.value;
-
-    var min = Math.min(availableToSell, 10);
-    var max = Math.max(min, quantity);
-    return max;
 }
 
 /**
@@ -59,7 +62,7 @@ function createProductLineItemsObject(allLineItems) {
                 ).toString(),
             variationAttributes: getSelectedVariationAttributes(item.product),
             quantity: item.quantity.value,
-            quantityOptions: getQuantityOptions(item),
+            quantityOptions: getMinMaxQuantityOptions(item),
             priceModelPricing: new PricingModel(item.product, []),
             priceTotal: formatMoney(money(
                 item.adjustedPrice.value,
@@ -72,7 +75,9 @@ function createProductLineItemsObject(allLineItems) {
             isVariant: item.product.variant,
             isBonusProductLineItem: item.bonusProductLineItem,
             isGift: item.gift,
-            isOrderable: item.product.availabilityModel.isOrderable(item.quantity.value)
+            isOrderable: item.product.availabilityModel.isOrderable(item.quantity.value),
+            productID: item.productID,
+            UUID: item.UUID
         };
 
         if (item.product.getImage('small', 0)) {
@@ -111,61 +116,79 @@ function getTotalQuantity(productLineItems) {
 }
 
 /**
- * Creates an array of objects containing the information of applicable shipping methods
- * @param {dw.order.ShipmentShippingModel} shipmentModel - Instance of the shipping model
+ * Creates an object containing the order totals
+ * @param {dw.order.Basket} basket - The current users's basket
  * @returns {Array} an array of objects containing the information of applicable shipping methods
  */
-function getApplicableShippingMethods(shipmentModel) {
-    var shippingMethods = shipmentModel.applicableShippingMethods;
-    return helper.map(shippingMethods, function (shippingMethod) {
-        var shippingCost = shipmentModel.getShippingCost(shippingMethod);
-        return {
-            description: shippingMethod.description,
-            displayName: shippingMethod.displayName,
-            ID: shippingMethod.ID,
-            shippingCost: formatMoney(money(
-                shippingCost.amount.value,
-                shippingCost.amount.currencyCode
-            )),
-            estimatedArrivalTime: shippingMethod.custom.estimatedArrivalTime
-        };
-    });
+function getTotals(basket) {
+    var totals = {};
+
+    totals.subTotal = !basket.adjustedMerchandizeTotalPrice.available ? '-' : formatMoney(money(
+        basket.adjustedMerchandizeTotalPrice.value,
+        basket.adjustedMerchandizeTotalPrice.currencyCode
+    ));
+
+    totals.grandTotal = !basket.totalGrossPrice.available ? totals.subTotal : formatMoney(money(
+        basket.totalGrossPrice.value,
+        basket.totalGrossPrice.currencyCode
+    ));
+
+    totals.totalTax = !basket.totalTax.available ? '-' : formatMoney(money(
+        basket.totalTax.value,
+        basket.totalTax.currencyCode
+    ));
+
+    totals.totalShippingCost = !basket.shippingTotalPrice.available ? '-' : formatMoney(money(
+        basket.shippingTotalPrice.value,
+        basket.shippingTotalPrice.currencyCode
+    ));
+
+    return totals;
+}
+
+/**
+ * Generates an object of URLs
+ * @returns {Object} an object of URLs in string format
+ */
+function getCartActionUrls() {
+    return {
+        removeProductLineItemUrl: URLUtils.url('Cart-RemoveProductLineItem').toString(),
+        updateQuantityUrl: URLUtils.url('Cart-UpdateQuantity').toString(),
+        selectShippingUrl: URLUtils.url('Cart-SelectShippingMethod').toString()
+    };
 }
 
 /**
  * Cart class that represents collection of line items
  * @param {dw.order.Basket} basket Current users's basket
- * @param {dw.order.ShipmentShippingModel} shipmentShippingModel - Instance of the shipping model
+ * @param {Object} shippingModel - Instance of the shipping model
  * @constructor
  */
-function cart(basket, shipmentShippingModel) {
+function cart(basket, shippingModel) {
     if (basket !== null) {
         this.items = createProductLineItemsObject(basket.allProductLineItems);
         this.numItems = getTotalQuantity(basket.allProductLineItems);
         this.numOfShipments = basket.shipments.length;
-        if (shipmentShippingModel) {
-            this.shippingMethods = getApplicableShippingMethods(shipmentShippingModel);
+
+        if (shippingModel) {
+            this.shippingMethods = shippingModel.applicableShippingMethods;
         }
-        this.grandTotal = formatMoney(money(
-            basket.totalGrossPrice.value,
-            basket.totalGrossPrice.currencyCode
-        ));
-        this.subTotal = formatMoney(money(
-            basket.adjustedMerchandizeTotalPrice.value,
-            basket.adjustedMerchandizeTotalPrice.currencyCode
-        ));
-        this.totalTax = formatMoney(money(
-            basket.totalTax.value,
-            basket.totalTax.currencyCode
-        ));
-        this.totalShippingCost = formatMoney(money(
-            basket.shippingTotalPrice.value,
-            basket.shippingTotalPrice.currencyCode
-        ));
+
+        this.totals = getTotals(basket);
+
+        this.actionUrls = getCartActionUrls();
+
+        if (basket.defaultShipment.shippingMethod) {
+            this.selectedShippingMethod = basket.defaultShipment.shippingMethod.ID;
+        }
     } else {
         this.items = [];
         this.numItems = 0;
     }
+    this.resources = {
+        numberOfItems: Resource.msgf('label.number.items.in.cart', 'cart', null, this.numItems),
+        emptyCartMsg: Resource.msg('info.cart.empty.msg', 'cart', null)
+    };
 }
 
 cart.getTotalQuantity = getTotalQuantity;

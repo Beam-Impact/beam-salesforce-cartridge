@@ -5,6 +5,7 @@ $fa-font-path: "../fonts";
 $flag-icon-css-path: "../fonts/flags/";
 
 $light-gray: #f9f9f9;
+$slightly-darker-gray: #aaa;
 $dark-gray: #545758;
 $darker-gray: #333;
 $brand-color: #59ba00;
@@ -39,3 +40,9 @@ $hr-border-color: #cbcbcb;
 
 // Buttons
 $btn-border-radius: 0;
+
+$state-danger-text: #fff;
+$alert-danger-bg: #c00;
+
+$alert-success-text: #fff;
+$alert-success-bg: #59ba00;

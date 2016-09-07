@@ -1,9 +1,8 @@
 'use strict';
 
 var assert = require('chai').assert;
-var Collection = require('../../../mocks/dw.util.Collection');
+var ArrayList = require('../../../mocks/dw.util.Collection');
 var proxyquire = require('proxyquire').noCallThru().noPreserveCache();
-var util = require('../../../util');
 
 var commonHelpers = require('../../../mocks/helpers/common');
 var getMockMoney = require('../../../mocks/dw.value.Money');
@@ -13,30 +12,8 @@ var getMockProductPriceTable = require('../../../mocks/dw.catalog.ProductPriceTa
 
 var urlUtilsMock = require('../../../mocks/dw.web.URLUtils');
 
-var createShipmentShippingModel = function () {
-    return {
-        applicableShippingMethods: util.toArrayList([
-            {
-                description: 'Order received within 7-10 business days',
-                displayName: 'Ground',
-                ID: '001',
-                custom: {
-                    estimatedArrivalTime: '7-10 Business Days'
-                }
-            }
-        ]),
-        getShippingCost: function () {
-            return {
-                amount: {
-                    valueOrNull: 7.99
-                }
-            };
-        }
-    };
-};
-
 var createApiProductLineItem = function (product) {
-    return util.toArrayList([{ // Product Line Items
+    return new ArrayList([{ // Product Line Items
         product: {
             bundle: product.isBundle,
             master: product.isMaster,
@@ -48,7 +25,7 @@ var createApiProductLineItem = function (product) {
                 }
             },
             variationModel: {
-                productVariationAttributes: util.toArrayList([
+                productVariationAttributes: new ArrayList([
                     {
                         displayName: 'Color'
                     },
@@ -130,6 +107,9 @@ var createApiProductLineItem = function (product) {
                     result = null;
                 }
                 return result;
+            },
+            minOrderQuantity: {
+                value: 100
             }
         },
         quantity: {
@@ -146,37 +126,82 @@ var createApiProductLineItem = function (product) {
     }]);
 };
 
-var createApiBasket = function (product) {
+var createApiBasket = function (product, isAvailable) {
     var basket = {
         totalGrossPrice: {
             value: 302.32,
-            currencyCode: 'USD'
+            currencyCode: 'USD',
+            available: isAvailable
         },
         totalTax: {
             value: 14.40,
-            currencyCode: 'USD'
+            currencyCode: 'USD',
+            available: isAvailable
         },
         shippingTotalPrice: {
             value: 9.99,
-            currencyCode: 'USD'
+            currencyCode: 'USD',
+            available: isAvailable
         },
         adjustedMerchandizeTotalPrice: {
             value: 9.99,
-            currencyCode: 'USD'
+            currencyCode: 'USD',
+            available: isAvailable
+        },
+        defaultShipment: {
+            shippingMethod: {
+                ID: '005'
+            }
         }
     };
 
     basket.allProductLineItems = createApiProductLineItem(product);
 
-    basket.shipments = util.toArrayList([{}]);
+    basket.shipments = new ArrayList([{}]);
 
     return basket;
+};
+
+var createShipmentShippingModel = function () {
+    return {
+        applicableShippingMethods: [{
+            description: 'Order received within 7-10 business days',
+            displayName: 'Ground',
+            ID: '001',
+            shippingCost: '$0.00',
+            estimatedArrivalTime: '7-10 Business Days'
+        }]
+    };
+};
+
+var actionUrls = {
+    removeProductLineItemUrl: 'removeProductUrl',
+    updateQuantityUrl: 'updateQuantityUrl',
+    selectShippingUrl: 'selectShippingUrl'
+};
+
+var simpleProduct = {
+    unitPrice: 28.99,
+    productVariationAttributes: ['Color, Size'],
+    selectedValue: ['Grey Heather', 'XL'],
+    isBundle: false,
+    isMaster: false,
+    isProductSet: false,
+    isVariant: true,
+    isBonusProductLineItem: false,
+    isGift: false,
+    quantity: 2,
+    adjustedPrice: 57.98,
+    productName: 'Long Sleeve Embellished Boat Neck Top',
+    productID: '701642823940',
+    categoryID: 'something',
+    hasImage: true
 };
 
 describe('cart', function () {
     var Cart = null;
     var helper = proxyquire('../../../../app_storefront_base/cartridge/scripts/dwHelpers', {
-        'dw/util/ArrayList': Collection
+        'dw/util/ArrayList': ArrayList
     });
     var mockProductPricingModel = proxyquire('../../../../app_storefront_base/cartridge/models/product/productPricingModel', {
         'dw/value/Money': commonHelpers.returnObject,
@@ -198,7 +223,15 @@ describe('cart', function () {
                 return 'formattedMoney';
             }
         },
-        'dw/value/Money': getMockMoney
+        'dw/value/Money': getMockMoney,
+        'dw/web/Resource': {
+            msg: function () {
+                return 'someString';
+            },
+            msgf: function () {
+                return 'someString';
+            }
+        }
     });
 
     it('should accept/process a null Basket object', function () {
@@ -209,25 +242,7 @@ describe('cart', function () {
     });
 
     it('should convert ProductLineItems to a plain object', function () {
-        var simpleProduct = {
-            unitPrice: 28.99,
-            productVariationAttributes: ['Color, Size'],
-            selectedValue: ['Grey Heather', 'XL'],
-            isBundle: false,
-            isMaster: false,
-            isProductSet: false,
-            isVariant: true,
-            isBonusProductLineItem: false,
-            isGift: false,
-            quantity: 2,
-            adjustedPrice: 57.98,
-            productName: 'Long Sleeve Embellished Boat Neck Top',
-            productID: '701642823940',
-            categoryID: 'something',
-            hasImage: true
-        };
-
-        var result = new Cart(createApiBasket(simpleProduct));
+        var result = new Cart(createApiBasket(simpleProduct, true), null, actionUrls);
         assert.equal(result.items.length, 1);
         assert.equal(result.items[0].quantity, 2);
         assert.equal(result.items[0].priceModelPricing.value, 28.99);
@@ -272,26 +287,11 @@ describe('cart', function () {
             productID: 'P0150'
         };
 
-        var result = new Cart(createApiBasket(productNoImage));
-        assert.equal(result.items.length, 1);
-        assert.equal(result.items[0].quantity, 1);
-        assert.equal(result.items[0].priceModelPricing.value, 99.99);
+        var result = new Cart(createApiBasket(productNoImage, true));
         assert.equal(
-            result.items[0].name,
-            'Upright Case (33L - 3.7Kg)'
+            result.items[0].image.src,
+            'some url'
         );
-        assert.isFalse(result.items[0].isBundle);
-        assert.isFalse(result.items[0].isMaster);
-        assert.isFalse(result.items[0].isProductSet);
-        assert.isFalse(result.items[0].isBonusProductLineItem);
-        assert.isFalse(result.items[0].isGift);
-        assert.isFalse(result.items[0].isVariant);
-        assert.equal(result.items[0].type, 'Product');
-        assert.equal(result.items[0].variationAttributes.length, 2);
-        assert.equal(result.items[0].variationAttributes[0].displayName, 'Color');
-        assert.equal(result.items[0].variationAttributes[0].displayValue, 'Grey Heather');
-        assert.equal(result.items[0].variationAttributes[1].displayName, 'Size');
-        assert.equal(result.items[0].variationAttributes[1].displayValue, 'XL');
         assert.equal(
             result.items[0].image.alt,
             'Upright Case (33L - 3.7Kg)'
@@ -303,33 +303,21 @@ describe('cart', function () {
     });
 
     it('should get shippingMethods and convert to a plain object', function () {
-        var simpleProduct = {
-            unitPrice: 28.99,
-            productVariationAttributes: ['Color, Size'],
-            selectedValue: ['Grey Heather', 'XL'],
-            isAvailable: 1,
-            isBundle: false,
-            isMaster: false,
-            isProductSet: false,
-            isVariant: true,
-            isBonusProductLineItem: false,
-            isGift: false,
-            quantity: 2,
-            adjustedPrice: 57.98,
-            productName: 'Long Sleeve Embellished Boat Neck Top',
-            productID: '701642823940',
-            categoryID: 'something',
-            hasImage: true
-        };
-
-        var result = new Cart(createApiBasket(simpleProduct), createShipmentShippingModel());
-        assert.equal(result.shippingMethods.length, 1);
-        assert.equal(
-            result.shippingMethods[0].description,
-            'Order received within 7-10 business days'
+        var result = new Cart(createApiBasket(simpleProduct, true), createShipmentShippingModel());
+        assert.equal(result.shippingMethods[0].description, 'Order received within 7-10 ' +
+            'business days'
         );
         assert.equal(result.shippingMethods[0].displayName, 'Ground');
         assert.equal(result.shippingMethods[0].ID, '001');
+        assert.equal(result.shippingMethods[0].shippingCost, '$0.00');
         assert.equal(result.shippingMethods[0].estimatedArrivalTime, '7-10 Business Days');
+    });
+
+    it('should set cart totals to "-" if cart totals are unavailable', function () {
+        var result = new Cart(createApiBasket(simpleProduct, false));
+        assert.equal(result.totals.subTotal, '-');
+        assert.equal(result.totals.grandTotal, result.totals.subTotal);
+        assert.equal(result.totals.totalTax, '-');
+        assert.equal(result.totals.totalShippingCost, '-');
     });
 });
