@@ -40,9 +40,9 @@ server.post('AddProduct', function (req, res, next) {
         .setQuantityValue(quantity);
     Transaction.commit();
 
-    var basket = new Cart(dwBasket);
+    var quantityTotal = Cart.getTotalQuantity(dwBasket.allProductLineItems);
 
-    res.render('/components/header/minicart', basket);
+    res.json({ quantityTotal: quantityTotal });
     next();
 });
 

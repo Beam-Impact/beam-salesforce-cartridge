@@ -17,15 +17,12 @@ $menu-item-margin: 10px;
     position: absolute;
     width: 100%;
     min-width: 18.75em; /* 300/16 */
+    height: 100%;
 
     .navbar-brand {
         float: none;
         display: block;
-
-        img {
-            margin-right: auto;
-            margin-left: auto;
-        }
+        text-align: center;
     }
 }
 
