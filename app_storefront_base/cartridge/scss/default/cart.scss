@@ -27,6 +27,9 @@ $negative-spacer: -0.625rem;
 }
 
 .edit-add-to-wishlist {
+    width: 100%;
+    padding-bottom: 0.438em;
+
     a {
         font-size: 0.813em;
     }
@@ -34,15 +37,11 @@ $negative-spacer: -0.625rem;
     @include media-breakpoint-down(md) {
         position: absolute;
         bottom: 5.313em;
-        width: 100%;
-        padding-bottom: 0.438em;
     }
 
     @include media-breakpoint-up(lg) {
         position: absolute;
         bottom: 0;
-        width: 100%;
-        padding-bottom: 0.438em;
     }
 }
 
