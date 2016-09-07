@@ -16,9 +16,8 @@ var Resource = require('dw/web/Resource');
 function getMinMaxQuantityOptions(productLineItem) {
     var quantity = productLineItem.quantity.value;
     var availableToSell = productLineItem.product.availabilityModel.inventoryRecord.ATS.value;
+    var max = Math.max(Math.min(availableToSell, 10), quantity);
 
-    var min = Math.min(availableToSell, 10);
-    var max = Math.max(min, quantity);
     return {
         minOrderQuantity: productLineItem.product.minOrderQuantity.value || 1,
         maxOrderQuantity: max
