@@ -11,12 +11,14 @@
     <nav role="navigation">
         <div class="header container">
             <div class="navbar-header brand row">
-                <a class="navbar-brand" href="${URLUtils.url('Home-Show')}" title="${ Resource.msgf('global.homepage.tooltip', 'common', null, Resource.msg('global.storename', 'common', null), Resource.msg('global.home', 'common', null)) }">
-                    <img src="${URLUtils.staticURL('/images/logo.svg')}" alt="${Resource.msg('global.storename', 'common', null)}" />
-                </a>
+                <div class="navbar-brand col-xs-12">
+                    <a href="${URLUtils.url('Home-Show')}" title="${ Resource.msgf('global.homepage.tooltip', 'common', null, Resource.msg('global.storename', 'common', null), Resource.msg('global.home', 'common', null)) }">
+                        <img src="${URLUtils.staticURL('/images/logo.svg')}" alt="${Resource.msg('global.storename', 'common', null)}" />
+                    </a>
+                </div>
             </div>
             <div class="navbar-header row">
-                <div class="header-menu">
+                <div class="header-menu col-xs-12">
                     <div class="pull-left">
                         <button class="navbar-toggler hidden-md-up" type="button" data-toggle="collapse" data-target="#sg-navbar-collapse" aria-controls="sg-navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
                           &#9776; <span class="hidden-xs-down">Menu</span>

@@ -140,7 +140,7 @@ function parseJsonResponse(response) {
  * @param {String} response
  */
 function handlePostCartAdd(response) {
-    $('.mini-cart').empty().html(response);
+    $('.mini-cart').trigger('count:update', response);
 }
 
 /**
