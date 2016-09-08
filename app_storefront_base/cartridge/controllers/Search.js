@@ -7,7 +7,7 @@ var ProductSearchModel = require('dw/catalog/ProductSearchModel');
 /**
  * Creates a plain object of parsed refinements from querystring
  * @param {Object} querystring - querystring from the local request object
- * @returns {Object} a plain object of the refinements
+ * @returns {Array} an array of objects of refinements
  */
 function parseRefinements(querystring) {
     var refinements = {};
