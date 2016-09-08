@@ -1,4 +1,3 @@
-$alignment: left, center, right;
 $pull: left, right;
 
 @mixin media($size) {
@@ -19,12 +18,6 @@ $pull: left, right;
 @each $size in map-keys($grid-breakpoints) {
 
     @include media($size) {
-
-        @each $align in $alignment {
-            .text-#{$align}-#{$size} {
-                text-align: center;
-            }
-        }
 
         @each $side in $pull {
             .pull-#{$side}-#{$size} {
