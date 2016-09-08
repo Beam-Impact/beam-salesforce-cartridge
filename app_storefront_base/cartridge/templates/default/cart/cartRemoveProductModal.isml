@@ -1,9 +1,9 @@
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="removeProductModal" tabindex="-1" role="dialog" aria-labelledby="removeProductLineItemModal">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header delete-confirmation-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">${Resource.msg('heading.remove.product.confirmation.modal','cart',null)}</h4>
+                <h4 class="modal-title" id="removeProductLineItemModal">${Resource.msg('heading.remove.product.confirmation.modal','cart',null)}</h4>
             </div>
             <div class="modal-body delete-confirmation-body">
                 ${Resource.msg('msg.remove.product.confirmation.modal','cart',null)}

@@ -7,7 +7,7 @@
             </div>
             <div class="col-xs-2 remove-line-item hidden-lg-up">
                 <button type="button" class="remove-btn remove-product" data-toggle="modal"
-                        data-target="#myModal" data-pid="${lineItem.productID}"
+                        data-target="#removeProductModal" data-pid="${lineItem.productID}"
                         data-name="${lineItem.name}"
                         data-action="${pdict.actionUrls.removeProductLineItemUrl}"
                         data-uuid="${lineItem.UUID}"
@@ -17,7 +17,7 @@
             </div>
             <div class="hidden-md-down">
                 <button type="button" class="remove-btn-lg remove-product" data-toggle="modal"
-                        data-target="#myModal" data-pid="${lineItem.productID}"
+                        data-target="#removeProductModal" data-pid="${lineItem.productID}"
                         data-name="${lineItem.name}"
                         data-action="${pdict.actionUrls.removeProductLineItemUrl}"
                         data-uuid="${lineItem.UUID}"
