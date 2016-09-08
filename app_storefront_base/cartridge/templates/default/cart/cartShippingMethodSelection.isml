@@ -8,7 +8,7 @@
                 <isif condition="${pdict.selectedShippingMethod === option.ID}">
                     <option selected data-shipping-id="${option.ID}">${option.displayName} <isif condition="${option.estimatedArrivalTime}">( ${option.estimatedArrivalTime} )</isif></option>
                     <iselse/>
-                    <option data-shipping-id="${option.ID}">${option.displayName} ( ${option.estimatedArrivalTime} )</option>
+                    <option data-shipping-id="${option.ID}">${option.displayName} <isif condition="${option.estimatedArrivalTime}">( ${option.estimatedArrivalTime} )</isif></option>
                 </isif>
             </isloop>
         </select>

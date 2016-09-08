@@ -100,6 +100,10 @@ $negative-spacer: -0.625rem;
     }
 }
 
+.product-to-remove {
+    font-weight: bold;
+}
+
 .promo-code-form {
     display: none;
 
@@ -137,14 +141,16 @@ $negative-spacer: -0.625rem;
 }
 
 .remove-btn-lg {
+    background-color: $light-gray;
+    border: none;
+    bottom: 0;
     color: $slightly-darker-gray;
     font-size: 1.625em;
-    background-color: $light-gray;
+    padding-left: 0.3125rem;
+    padding-right: 0.3125rem;
     position: absolute;
-    bottom: 0;
-    top: 0;
     right: 0;
-    border: none;
+    top: 0;
     z-index: 1;
 }
 
