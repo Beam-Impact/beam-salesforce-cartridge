@@ -7,10 +7,17 @@ Storefront Reference Architecture supplies an [plugin_applepay](https://github.c
 
 Your feedback on the ease-of-use and limitations of this new architecture is invaluable during the developer preview. Particularly, feedback on any issues you encounter or workarounds you develop for efficiently customizing the base cartridge without editing it directly.
 
-
 # The latest version
 
 The latest version of SFRA is 6.3.0
+
+# Beam Setup Instructions
+
+1. Generate an access key for your user in [B2C Account Manager](https://zyoi-001.dx.commercecloud.salesforce.com/on/demandware.store/Sites-Site/default/ViewAccount-Show) by clicking the user avatar at the top right, choosing "Manage Access Keys" and generate a `WebDAV File Access and UX Studio` scoped key.
+
+2. If you don't have NVM or some other Node version manager, that'd be highly recommended to install. This repository works well with Node `v12.22.12`, but does not work with `v18` and is untested in other versions. `nvm install v12.22.12` will install the Node version used to generate the initial B2C cartridges.
+
+3. Run `cp dw.json.example dw.json`, change the username in `dw.json` to your Beam email (or the email you use for Account Manager), add your access key from step #1 as `password`, and leave `version` as "1" for now.
 
 # Getting Started
 
@@ -21,6 +28,7 @@ The latest version of SFRA is 6.3.0
 3. Run `npm run compile:js` from the command line that would compile all client-side JS files. Run `npm run compile:scss` and `npm run compile:fonts` that would do the same for css and fonts.
 
 4. Create `dw.json` file in the root of the project. Providing a [WebDAV access key from BM](https://documentation.b2c.commercecloud.salesforce.com/DOC1/index.jsp?topic=%2Fcom.demandware.dochelp%2Fcontent%2Fb2c_commerce%2Ftopics%2Fadmin%2Fb2c_access_keys_for_business_manager.html) in the `password` field is optional, as you will be prompted if it is not provided.
+
 ```json
 {
     "hostname": "your-sandbox-hostname.demandware.net",
@@ -34,20 +42,21 @@ The latest version of SFRA is 6.3.0
 
 6. Use https://github.com/SalesforceCommerceCloud/storefrontdata to zip and import site data on your sandbox.
 
-7. Add the `app_storefront_base` cartridge to your cartridge path in _Administration >  Sites >  Manage Sites > RefArch - Settings_ (Note: This should already be populated by the sample data in Step 6).
+7. Add the `app_storefront_base` cartridge to your cartridge path in _Administration > Sites > Manage Sites > RefArch - Settings_ (Note: This should already be populated by the sample data in Step 6).
 
 8. You should now be ready to navigate to and use your site.
 
 # NPM scripts
+
 Use the provided NPM scripts to compile and upload changes to your Sandbox.
 
 ## Compiling your application
 
-* `npm run compile:scss` - Compiles all .scss files into CSS.
-* `npm run compile:js` - Compiles all .js files and aggregates them.
-* `npm run compile:fonts` - Copies all needed font files. Usually, this only has to be run once.
+-   `npm run compile:scss` - Compiles all .scss files into CSS.
+-   `npm run compile:js` - Compiles all .js files and aggregates them.
+-   `npm run compile:fonts` - Copies all needed font files. Usually, this only has to be run once.
 
- If you are having an issue compiling scss files, try running 'npm rebuild node-sass' from within your local repo.
+If you are having an issue compiling scss files, try running 'npm rebuild node-sass' from within your local repo.
 
 ## Linting your code
 
@@ -64,17 +73,20 @@ Use the provided NPM scripts to compile and upload changes to your Sandbox.
 `npm run upload <filepath>` - Will upload a given file to the server. Requires a valid `dw.json` file.
 
 # Testing
+
 ## Running unit tests
 
 You can run `npm test` to execute all unit tests in the project. Run `npm run cover` to get coverage information. Coverage will be available in `coverage` folder under root directory.
 
-* UNIT test code coverage:
+-   UNIT test code coverage:
+
 1. Open a terminal and navigate to the root directory of the mfsg repository.
 2. Enter the command: `npm run cover`.
 3. Examine the report that is generated. For example: `Writing coverage reports at [/Users/yourusername/SCC/sfra/coverage]`
-3. Navigate to this directory on your local machine, open up the index.html file. This file contains a detailed report.
+4. Navigate to this directory on your local machine, open up the index.html file. This file contains a detailed report.
 
 ## Running integration tests
+
 Integration tests are located in the `storefront-reference-architecture/test/integration` directory.
 
 To run integration tests you can use the following command:
@@ -86,7 +98,7 @@ npm run test:integration
 **Note:** Please note that short form of this command will try to locate URL of your sandbox by reading `dw.json` file in the root directory of your project. If you don't have `dw.json` file, integration tests will fail.
 sample `dw.json` file (this file needs to be in the root of your project)
 {
-    "hostname": "devxx-sitegenesis-dw.demandware.net"
+"hostname": "devxx-sitegenesis-dw.demandware.net"
 }
 
 You can also supply URL of the sandbox on the command line:
@@ -98,4 +110,5 @@ npm run test:integration -- --baseUrl devxx-sitegenesis-dw.demandware.net
 # [Contributing to SFRA](./CONTRIBUTING.md)
 
 # Page Designer Components for Storefront Reference Architecture
+
 See: [Page Designer Components](./page-designer-components.md)
