@@ -10,7 +10,7 @@
     email="${pdict.order.orderEmail}"
     carttotal="${parseFloat(pdict.order.totals.subTotal.replace(/[^0-9.]/g, ''))}"
     countrycode="${pdict.order.billing.billingAddress.address.countryCode.value}"
-    currencycode="${pdict.order.currencyCode}"
+    currencycode="${pdict.order.currencyCode || 'USD'}"
     orderid="${pdict.order.orderNumber}"
     postalcode="${pdict.order.billing.billingAddress.address.postalCode}"
     cart='
