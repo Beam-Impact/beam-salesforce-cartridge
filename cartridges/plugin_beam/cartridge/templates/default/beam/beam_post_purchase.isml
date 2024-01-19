@@ -10,7 +10,7 @@
     email="${pdict.order.orderEmail}"
     carttotal="${parseFloat(pdict.order.totals.subTotal.replace('$', ''))}"
     countrycode="${pdict.order.billing.billingAddress.address.countryCode.value}"
-    currencycode="USD"
+    currencycode="${pdict.order.currencyCode}"
     orderid="${pdict.order.orderNumber}"
     postalcode="${pdict.order.billing.billingAddress.address.postalCode}">
 </beam-post-purchase>
