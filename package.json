@@ -33,7 +33,7 @@
     "build:isml": "./node_modules/.bin/isml-linter --build",
     "fix:isml": "./node_modules/.bin/isml-linter --autofix",
     "upload": "sgmf-scripts --upload",
-    "uploadCartridge": "sgmf-scripts --uploadCartridge app_storefront_base && sgmf-scripts --uploadCartridge modules && sgmf-scripts --uploadCartridge bm_app_storefront_base",
+    "uploadCartridge": "sgmf-scripts --uploadCartridge app_storefront_base && sgmf-scripts --uploadCartridge modules && sgmf-scripts --uploadCartridge bm_app_storefront_base && sgmf-scripts --uploadCartridge plugin_beam && sgmf-scripts --uploadCartridge app_storefront_overrides",
     "watch": "sgmf-scripts --watch",
     "watch:static": "sgmf-scripts --watch static",
     "release": "node bin/Makefile release --"
@@ -125,5 +125,10 @@
       "pre-commit": "npm run lint",
       "pre-push": "npm run test"
     }
+  },
+  "paths": {
+    "base": "cartridges/app_storefront_base/",
+    "overrides": "cartridges/app_storefront_overrides/",
+    "beam": "cartridges/plugin_beam/"
   }
 }
