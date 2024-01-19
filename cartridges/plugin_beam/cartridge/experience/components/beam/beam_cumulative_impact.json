@@ -1,0 +1,7 @@
+{
+    "name": "Beam Cumulative Impact Widget",
+    "description": "Shows total impact for all nonprofits supported by the store",
+    "group": "Beam",
+    "attribute_definition_groups": [],
+    "region_definitions": []
+}
