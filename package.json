@@ -104,6 +104,7 @@
     "xml2js": "^0.4.22"
   },
   "dependencies": {
+    "@beamimpact/web-sdk": "^1.36.4",
     "bootstrap": "^4.6.1",
     "cleave.js": "^1.5.3",
     "flag-icon-css": "^2.9.0",

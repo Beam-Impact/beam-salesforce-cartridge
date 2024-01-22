@@ -8,7 +8,7 @@
     storeid="${sitePref.beamStoreId}"
     lang="${sitePref.beamLang}"
     email="${pdict.order.orderEmail}"
-    carttotal="${parseFloat(pdict.order.totals.subTotal.replace('$', ''))}"
+    carttotal="${parseFloat(pdict.order.totals.subTotal.replace(/[^0-9.]/g, ''))}"
     countrycode="${pdict.order.billing.billingAddress.address.countryCode.value}"
     currencycode="${pdict.order.currencyCode}"
     orderid="${pdict.order.orderNumber}"
