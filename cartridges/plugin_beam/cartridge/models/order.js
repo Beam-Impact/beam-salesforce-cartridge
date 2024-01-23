@@ -1,48 +1,48 @@
-"use strict";
+'use strict';
 
-var Resource = require("dw/web/Resource");
+var Resource = require('dw/web/Resource');
 
-var AddressModel = require("*/cartridge/models/address");
-var BillingModel = require("*/cartridge/models/billing");
-var PaymentModel = require("*/cartridge/models/payment");
-var ProductLineItemsModel = require("*/cartridge/models/productLineItems");
-var TotalsModel = require("*/cartridge/models/totals");
-var COHelper = require("*/cartridge/scripts/checkout/checkoutHelpers");
+var AddressModel = require('*/cartridge/models/address');
+var BillingModel = require('*/cartridge/models/billing');
+var PaymentModel = require('*/cartridge/models/payment');
+var ProductLineItemsModel = require('*/cartridge/models/productLineItems');
+var TotalsModel = require('*/cartridge/models/totals');
+var COHelper = require('*/cartridge/scripts/checkout/checkoutHelpers');
 
-var ShippingHelpers = require("*/cartridge/scripts/checkout/shippingHelpers");
+var ShippingHelpers = require('*/cartridge/scripts/checkout/shippingHelpers');
 
 var DEFAULT_MODEL_CONFIG = {
-    numberOfLineItems: "*",
+    numberOfLineItems: '*'
 };
 
 var RESOURCES = {
     noSelectedPaymentMethod: Resource.msg(
-        "error.no.selected.payment.method",
-        "creditCard",
+        'error.no.selected.payment.method',
+        'creditCard',
         null
     ),
-    cardType: Resource.msg("msg.payment.type.credit", "confirmation", null),
-    cardEnding: Resource.msg("msg.card.type.ending", "confirmation", null),
-    shippingMethod: Resource.msg("Shipping Method", "checkout", null),
-    items: Resource.msg("msg.items", "checkout", null),
-    item: Resource.msg("msg.item", "checkout", null),
-    addNewAddress: Resource.msg("msg.new.address", "checkout", null),
-    newAddress: Resource.msg("msg.new.address", "checkout", null),
-    shipToAddress: Resource.msg("msg.ship.to.address", "checkout", null),
-    shippingAddresses: Resource.msg("msg.shipping.addresses", "checkout", null),
-    accountAddresses: Resource.msg("msg.account.addresses", "checkout", null),
-    shippingTo: Resource.msg("msg.shipping.to", "checkout", null),
+    cardType: Resource.msg('msg.payment.type.credit', 'confirmation', null),
+    cardEnding: Resource.msg('msg.card.type.ending', 'confirmation', null),
+    shippingMethod: Resource.msg('Shipping Method', 'checkout', null),
+    items: Resource.msg('msg.items', 'checkout', null),
+    item: Resource.msg('msg.item', 'checkout', null),
+    addNewAddress: Resource.msg('msg.new.address', 'checkout', null),
+    newAddress: Resource.msg('msg.new.address', 'checkout', null),
+    shipToAddress: Resource.msg('msg.ship.to.address', 'checkout', null),
+    shippingAddresses: Resource.msg('msg.shipping.addresses', 'checkout', null),
+    accountAddresses: Resource.msg('msg.account.addresses', 'checkout', null),
+    shippingTo: Resource.msg('msg.shipping.to', 'checkout', null),
     shippingAddress: Resource.msg(
-        "label.order.shipping.address",
-        "confirmation",
+        'label.order.shipping.address',
+        'confirmation',
         null
     ),
     addressIncomplete: Resource.msg(
-        "heading.address.incomplete",
-        "checkout",
+        'heading.address.incomplete',
+        'checkout',
         null
     ),
-    giftMessage: Resource.msg("heading.gift.message", "checkout", null),
+    giftMessage: Resource.msg('heading.gift.message', 'checkout', null)
 };
 
 /**
@@ -54,7 +54,7 @@ function getCheckoutStepInformation(lineItemContainer) {
     var shippingAddress = COHelper.ensureValidShipments(lineItemContainer);
     return {
         shipping: { iscompleted: !!shippingAddress },
-        billing: { iscompleted: !!lineItemContainer.billingAddress },
+        billing: { iscompleted: !!lineItemContainer.billingAddress }
     };
 }
 
@@ -69,7 +69,7 @@ function getFirstProductLineItem(productLineItemsModel) {
         return {
             imageURL: firstItemImage.url,
             alt: firstItemImage.alt,
-            title: firstItemImage.title,
+            title: firstItemImage.title
         };
     }
     return null;
@@ -189,21 +189,21 @@ function OrderModel(lineItemContainer, options) {
         this.usingMultiShipping = usingMultiShipping;
         this.orderNumber = Object.hasOwnProperty.call(
             lineItemContainer,
-            "orderNo"
+            'orderNo'
         )
             ? lineItemContainer.orderNo
             : null;
         this.priceTotal = totalsModel ? totalsModel.grandTotal : null;
         this.creationDate = Object.hasOwnProperty.call(
             lineItemContainer,
-            "creationDate"
+            'creationDate'
         )
             ? lineItemContainer.creationDate
             : null;
         this.orderEmail = lineItemContainer.customerEmail;
         this.orderStatus = Object.hasOwnProperty.call(
             lineItemContainer,
-            "status"
+            'status'
         )
             ? lineItemContainer.status
             : null;
@@ -211,7 +211,7 @@ function OrderModel(lineItemContainer, options) {
             ? lineItemContainer.productQuantityTotal
             : null;
 
-        if (modelConfig.numberOfLineItems === "*") {
+        if (modelConfig.numberOfLineItems === '*') {
             this.totals = totalsModel;
             this.lineItemTotal = productLineItemsModel
                 ? productLineItemsModel.length
@@ -223,14 +223,14 @@ function OrderModel(lineItemContainer, options) {
             this.billing = billingModel;
             this.shipping = shippingModels;
         } else if (
-            modelConfig.numberOfLineItems === "single" &&
+            modelConfig.numberOfLineItems === 'single' &&
             shippingModels[0].shippingAddress
         ) {
             this.firstLineItem = getFirstProductLineItem(productLineItemsModel);
             this.shippedToFirstName =
-                shippingModels[0].shippingAddress.firstName || "";
+                shippingModels[0].shippingAddress.firstName || '';
             this.shippedToLastName =
-                shippingModels[0].shippingAddress.lastName || "";
+                shippingModels[0].shippingAddress.lastName || '';
         }
     }
 }

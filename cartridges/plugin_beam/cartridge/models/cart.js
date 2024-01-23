@@ -1,16 +1,16 @@
-"use strict";
+'use strict';
 
-var formatMoney = require("dw/util/StringUtils").formatMoney;
-var collections = require("*/cartridge/scripts/util/collections");
+var formatMoney = require('dw/util/StringUtils').formatMoney;
+var collections = require('*/cartridge/scripts/util/collections');
 
-var URLUtils = require("dw/web/URLUtils");
-var Resource = require("dw/web/Resource");
-var PromotionMgr = require("dw/campaign/PromotionMgr");
+var URLUtils = require('dw/web/URLUtils');
+var Resource = require('dw/web/Resource');
+var PromotionMgr = require('dw/campaign/PromotionMgr');
 
-var TotalsModel = require("*/cartridge/models/totals");
-var ProductLineItemsModel = require("*/cartridge/models/productLineItems");
+var TotalsModel = require('*/cartridge/models/totals');
+var ProductLineItemsModel = require('*/cartridge/models/productLineItems');
 
-var ShippingHelpers = require("*/cartridge/scripts/checkout/shippingHelpers");
+var ShippingHelpers = require('*/cartridge/scripts/checkout/shippingHelpers');
 
 /**
  * Generates an object of approaching discounts
@@ -38,8 +38,8 @@ function getApproachingDiscounts(basket, discountPlan) {
             function (approachingOrderDiscount) {
                 return {
                     discountMsg: Resource.msgf(
-                        "msg.approachingpromo",
-                        "cart",
+                        'msg.approachingpromo',
+                        'cart',
                         null,
                         formatMoney(
                             approachingOrderDiscount.getDistanceFromConditionThreshold()
@@ -48,7 +48,7 @@ function getApproachingDiscounts(basket, discountPlan) {
                             .getDiscount()
                             .getPromotion()
                             .getCalloutMsg()
-                    ),
+                    )
                 };
             }
         );
@@ -58,8 +58,8 @@ function getApproachingDiscounts(basket, discountPlan) {
             function (approachingShippingDiscount) {
                 return {
                     discountMsg: Resource.msgf(
-                        "msg.approachingpromo",
-                        "cart",
+                        'msg.approachingpromo',
+                        'cart',
                         null,
                         formatMoney(
                             approachingShippingDiscount.getDistanceFromConditionThreshold()
@@ -68,7 +68,7 @@ function getApproachingDiscounts(basket, discountPlan) {
                             .getDiscount()
                             .getPromotion()
                             .getCalloutMsg()
-                    ),
+                    )
                 };
             }
         );
@@ -84,14 +84,14 @@ function getApproachingDiscounts(basket, discountPlan) {
 function getCartActionUrls() {
     return {
         removeProductLineItemUrl: URLUtils.url(
-            "Cart-RemoveProductLineItem"
+            'Cart-RemoveProductLineItem'
         ).toString(),
-        updateQuantityUrl: URLUtils.url("Cart-UpdateQuantity").toString(),
-        selectShippingUrl: URLUtils.url("Cart-SelectShippingMethod").toString(),
-        submitCouponCodeUrl: URLUtils.url("Cart-AddCoupon").toString(),
+        updateQuantityUrl: URLUtils.url('Cart-UpdateQuantity').toString(),
+        selectShippingUrl: URLUtils.url('Cart-SelectShippingMethod').toString(),
+        submitCouponCodeUrl: URLUtils.url('Cart-AddCoupon').toString(),
         removeCouponLineItem: URLUtils.url(
-            "Cart-RemoveCouponLineItem"
-        ).toString(),
+            'Cart-RemoveCouponLineItem'
+        ).toString()
     };
 }
 
@@ -103,17 +103,17 @@ function getCartActionUrls() {
  * @param {dw.campaign.DiscountPlan} discountPlan - set of applicable discounts
  */
 function CartModel(basket) {
-    var hooksHelper = require("*/cartridge/scripts/helpers/hooks");
+    var hooksHelper = require('*/cartridge/scripts/helpers/hooks');
 
     if (basket !== null) {
         var shippingModels = ShippingHelpers.getShippingModels(
             basket,
             null,
-            "basket"
+            'basket'
         );
         var productLineItemsModel = new ProductLineItemsModel(
             basket.productLineItems,
-            "basket"
+            'basket'
         );
         var totalsModel = new TotalsModel(basket);
         this.hasBonusProduct = Boolean(
@@ -135,10 +135,10 @@ function CartModel(basket) {
                         return {
                             remoteProductIdentifier: lineItem.productID,
                             localAmount:
-                                lineItem.adjustedGrossPrice.valueOrNull,
+                                lineItem.adjustedGrossPrice.valueOrNull
                         };
-                    }),
-            },
+                    })
+            }
         };
 
         if (shippingModels) {
@@ -164,36 +164,36 @@ function CartModel(basket) {
         this.items = productLineItemsModel.items;
         this.numItems = productLineItemsModel.totalQuantity;
         this.valid = hooksHelper(
-            "app.validate.basket",
-            "validateBasket",
+            'app.validate.basket',
+            'validateBasket',
             basket,
             false,
-            require("*/cartridge/scripts/hooks/validateBasket").validateBasket
+            require('*/cartridge/scripts/hooks/validateBasket').validateBasket
         );
     } else {
         this.items = [];
         this.numItems = 0;
         this.beamCart = {
-            currencyCode: "",
+            currencyCode: '',
             subtotal: 0,
-            itemCount: 0,
+            itemCount: 0
         };
     }
 
     this.resources = {
         numberOfItems: Resource.msgf(
-            "label.number.items.in.cart",
-            "cart",
+            'label.number.items.in.cart',
+            'cart',
             null,
             this.numItems
         ),
         minicartCountOfItems: Resource.msgf(
-            "minicart.count",
-            "common",
+            'minicart.count',
+            'common',
             null,
             this.numItems
         ),
-        emptyCartMsg: Resource.msg("info.cart.empty.msg", "cart", null),
+        emptyCartMsg: Resource.msg('info.cart.empty.msg', 'cart', null)
     };
 }
 
