@@ -134,8 +134,7 @@ function CartModel(basket) {
                     basket.productLineItems.toArray().map(function (lineItem) {
                         return {
                             remoteProductIdentifier: lineItem.productID,
-                            localAmount:
-                                lineItem.adjustedGrossPrice.valueOrNull
+                            localAmount: lineItem.adjustedPrice.valueOrNull
                         };
                     })
             }
