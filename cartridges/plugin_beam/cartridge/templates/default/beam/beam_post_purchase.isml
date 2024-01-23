@@ -12,5 +12,25 @@
     countrycode="${pdict.order.billing.billingAddress.address.countryCode.value}"
     currencycode="${pdict.order.currencyCode}"
     orderid="${pdict.order.orderNumber}"
-    postalcode="${pdict.order.billing.billingAddress.address.postalCode}">
+    postalcode="${pdict.order.billing.billingAddress.address.postalCode}"
+    cart='
+        <isscript>
+            out.print(
+                JSON.stringify({
+                    "schema": {
+                        "source": "generic"
+                    },
+                    "content": {
+                        "items": pdict.order.items.items.map(item => {
+                            return {
+                                localAmount: parseFloat(item.priceTotal.price.replace(/[^0-9.]/g, '')),
+                                remoteProductIdentifier: item.id
+                            }
+                        })
+                    }
+                })
+            )
+        </isscript>
+    '
+>
 </beam-post-purchase>
