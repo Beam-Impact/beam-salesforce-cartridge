@@ -128,7 +128,7 @@ See: [Page Designer Components](./page-designer-components.md)
     ```
 4. Update the **`uploadCartridge`** script in **`package.json`**:
     ```json
-    "uploadCartridge": "... && sgmf-scripts --uploadCartridge plugin_beam && sgmf-scripts --uploadCartridge app_storefront_overrides",
+    "uploadCartridge": "... && sgmf-scripts --uploadCartridge plugin_beam",
     ```
 5. Navigate to Administration > Sites > Manage Sites > RefArch - Settings
 6. Under cartridges, add **`plugin_beam`** before the override cartridge
