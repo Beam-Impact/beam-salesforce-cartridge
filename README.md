@@ -243,7 +243,8 @@ Page Designer allows Merchandising and Marketing teams to take charge of updates
 4. **Drag and Drop:**
 
     - Simply drag your selected widget onto the page
-      <img src="documentation/assets/beam_page_designer.png" width="180">
+      </br>
+      <img src="documentation/assets/beam_page_designer.png" width="240">
 
 5. **Add a Textbox Component Above the Community Impact Widget That States:**
 
@@ -258,8 +259,7 @@ Page Designer allows Merchandising and Marketing teams to take charge of updates
 
 ### - Method 2: Content Assets
 
-1. **How to find assets list → Merchant Tools →
-   →  Content →  Content**
+1. **How to find assets list → Merchant Tools →  Content →  Content**
 2. **Find the page you’d like to add the widgets to**
 3. **Click ‘Lock’ under the page header**
 4. **Navigate to body and add the following:**
