@@ -238,7 +238,7 @@ Page Designer allows Merchandising and Marketing teams to take charge of updates
 
     - Simply drag your selected widget onto the page
       </br>
-      <img src="documentation/assets/beam_page_designer.png" width="240">
+      <img src="documentation/assets/beam_page_designer.png" width="280">
 
 5. **Add a Textbox Component Above the Community Impact Widget That States:**
 
