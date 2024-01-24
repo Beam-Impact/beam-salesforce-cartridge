@@ -242,7 +242,7 @@ Page Designer allows Merchandising and Marketing teams to take charge of updates
     - Look for the 'Beam' section and select 'Community Impact' or/and 'Cumulative Impact'
 4. **Drag and Drop:**
     - Simply drag your selected widget onto the page
-      ![Page Designer](documentation/assets/beam_page_designer.png){: width="70%"}
+      ![Page Designer](documentation/assets/beam_pageDesigner.png)
 5. **Add a Textbox Component Above the Community Impact Widget That States:**
 
     ```markup
