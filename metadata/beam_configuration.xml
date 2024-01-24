@@ -37,8 +37,8 @@
                 <externally-managed-flag>false</externally-managed-flag>
                 <min-length>0</min-length>
             </attribute-definition>
-            <attribute-definition attribute-id="beamBaseUrl">
-                <display-name xml:lang="x-default">Beam Base URL</display-name>
+            <attribute-definition attribute-id="beamVersion">
+                <display-name xml:lang="x-default">Beam Version</display-name>
                 <type>string</type>
                 <mandatory-flag>true</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
@@ -65,15 +65,31 @@
                 <externally-managed-flag>false</externally-managed-flag>
                 <min-length>0</min-length>
             </attribute-definition>
+            <attribute-definition attribute-id="beamStatsigApiKey">
+                <display-name xml:lang="x-default">Beam StatSig API Key</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="beamDomain">
+                <display-name xml:lang="x-default">Top Level Domain (optional unless store has subdomains)</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
         </custom-attribute-definitions>
         <group-definitions>
             <attribute-group group-id="Beam Credentials">
                 <display-name xml:lang="x-default">Beam Impact Widget Credentials</display-name>
                 <attribute attribute-id="beamStoreId"/>
                 <attribute attribute-id="beamLang"/>
-                <attribute attribute-id="beamBaseUrl"/>
+                <attribute attribute-id="beamVersion"/>
                 <attribute attribute-id="beamApiKey"/>
                 <attribute attribute-id="beamChainId"/>
+                <attribute attribute-id="beamStatsigApiKey"/>
+                <attribute attribute-id="beamDomain"/>
             </attribute-group>
         </group-definitions>
     </type-extension>

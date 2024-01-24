@@ -1,71 +1,65 @@
 <isset value="${dw.system.Site.current.preferences.custom}" name="sitePref" scope="page"/>
 
-<script type="module" src="${sitePref.beamBaseUrl}/components/select-nonprofit.js"></script>
+<script type="module" src="https://sdk.beamimpact.com/web-sdk/${sitePref.beamVersion}/dist/components/select-nonprofit.js"></script>
 
 <script type="module">
-        import {
-            /** @type {typeof import('@beamimpact/web-sdk/dist/integrations/beam').init} */
-                init
-        } from 'https://sdk.beamimpact.com/web-sdk/${sitePref.version}/dist/integrations/beam.js';
-        import {
-            /** @type {typeof import('@beamimpact/web-sdk/dist/integrations/cart').updateCart} */
-                updateCart
-        } from 'https://sdk.beamimpact.com/web-sdk/${sitePref.version}/dist/integrations/cart.js';
-        import {
-            /** @type {typeof import('@beamimpact/web-sdk/dist/utils').initNetworkListeners} */
-                initNetworkListeners,
-            /** @type {typeof import('@beamimpact/web-sdk/dist/utils').events} */
-                events,
-        } from 'https://sdk.beamimpact.com/web-sdk/${sitePref.version}/dist/utils/index.js';
+    import {
+        /** @type {typeof import('@beamimpact/web-sdk/dist/integrations/beam').getConfig} */
+            getConfig
+    } from 'https://sdk.beamimpact.com/web-sdk/${sitePref.beamVersion}/dist/integrations/beam.js';
+    import {
+        /** @type {typeof import('@beamimpact/web-sdk/dist/integrations/cart').updateCart} */
+            updateCart
+    } from 'https://sdk.beamimpact.com/web-sdk/${sitePref.beamVersion}/dist/integrations/cart.js';
+    import {
+        /** @type {typeof import('@beamimpact/web-sdk/dist/utils').initNetworkListeners} */
+            initNetworkListeners,
+        /** @type {typeof import('@beamimpact/web-sdk/dist/utils').events} */
+            events,
+    } from 'https://sdk.beamimpact.com/web-sdk/${sitePref.beamVersion}/dist/utils/index.js';
 
-        var beamConfig = await init({
-            apiKey: '${sitePref.beamApiKey}',
-            storeId: Number(${sitePref.beamStoreId})
-        });
+    var beamConfig = getConfig();
 
-        // 1. Initial page load - get Beam cart from page data
-        var beamCart =
-            <isscript>
-                out.print( JSON.stringify(pdict.beamCart) );
-            </isscript>;
+    await beamConfig.readyPromise;
+    // 1. Initial page load - get Beam cart from page data
+    var beamCart =
+        <isscript>
+            out.print( JSON.stringify(pdict.beamCart) );
+        </isscript>;
 
-        updateCart(beamConfig, beamCart);
+    updateCart(beamConfig, beamCart);
 
-        // 2. Listen for changes to cart via API
+    // 2. Listen for changes to cart via API
 
-        initNetworkListeners(); // Will emit Beam network call events whenever the site makes an AJAX call
+    initNetworkListeners(); // Will emit Beam network call events whenever the site makes an AJAX call
 
-        window.addEventListener(events.BeamNetworkCallEvent.eventName, async (event) => {
-            const cartActionPaths =
-                Object.values(
-                    <isscript>
-                        out.print( JSON.stringify(pdict.actionUrls) );
-                    </isscript>
-                ) || [];
-
-            const requestUrlStr = event.detail.type === 'xhr' ? event.detail.xhr.responseURL : event.detail.response.url;
-            const url = new URL(requestUrlStr);
-            if (!cartActionPaths.some(path => url.pathname.includes(path))) {
-                return;
-            }
-            const responseBody = event.detail.type === 'xhr'
-                ? JSON.parse(event.detail?.xhr?.response ||  '{}')
-                : await event.detail?.response?.json();
-            const beamCart = responseBody?.beamCart;
-            if (beamCart) {
-                console.log(beamCart);
-                window.dispatchEvent(new events.BeamCartChangeEvent({
-                    schema: {
-                        source: "generic"
-                    },
-                    ...beamCart
-                })); // Notify widgets to reload
-                await updateCart(beamConfig, beamCart); // Send data to Beam to update expiration time, etc.
-            }
-        });
-
-
-    </script>
+    window.addEventListener(events.BeamNetworkCallEvent.eventName, async (event) => {
+        const cartActionPaths =
+            Object.values(
+                <isscript>
+                    out.print( JSON.stringify(pdict.actionUrls) );
+                </isscript>
+            ) || [];
+        const requestUrlStr = event.detail.type === 'xhr' ? event.detail.xhr.responseURL : event.detail.response.url;
+        const url = new URL(requestUrlStr);
+        if (!cartActionPaths.some(path => url.pathname.includes(path))) {
+            return;
+        };
+        const responseBody = event.detail.type === 'xhr'
+            ? JSON.parse(event.detail?.xhr?.response ||  '{}')
+            : await event.detail?.response?.json();
+        const beamCart = responseBody?.beamCart;
+        if (beamCart) {
+            window.dispatchEvent(new events.BeamCartChangeEvent({
+                schema: {
+                    source: "generic"
+                },
+                ...beamCart
+            })); // Notify widgets to reload
+            await updateCart(beamConfig, beamCart); // Send data to Beam to update expiration time, etc.
+        }
+    });
+</script>
 
 <beam-select-nonprofit
     apikey="${sitePref.beamApiKey}"

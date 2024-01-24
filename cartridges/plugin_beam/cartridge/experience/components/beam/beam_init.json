@@ -1,0 +1,7 @@
+{
+    "name": "Beam Init",
+    "description": "Beam configuration",
+    "group": "Beam",
+    "attribute_definition_groups": [],
+    "region_definitions": []
+}

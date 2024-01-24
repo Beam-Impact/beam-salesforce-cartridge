@@ -34,6 +34,7 @@
     "fix:isml": "./node_modules/.bin/isml-linter --autofix",
     "upload": "sgmf-scripts --upload",
     "uploadCartridge": "sgmf-scripts --uploadCartridge app_storefront_base && sgmf-scripts --uploadCartridge modules && sgmf-scripts --uploadCartridge bm_app_storefront_base && sgmf-scripts --uploadCartridge plugin_beam && sgmf-scripts --uploadCartridge app_storefront_overrides",
+    "uploadBeamCartridge": "sgmf-scripts --uploadCartridge plugin_beam && sgmf-scripts --uploadCartridge app_storefront_overrides",
     "watch": "sgmf-scripts --watch",
     "watch:static": "sgmf-scripts --watch static",
     "release": "node bin/Makefile release --"

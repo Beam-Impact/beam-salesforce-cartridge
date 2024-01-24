@@ -1,0 +1,25 @@
+<isset value="${dw.system.Site.current.preferences.custom}" name="sitePref" scope="page"/>
+
+<script type="module">
+    import {
+        init
+    } from 'https://sdk.beamimpact.com/web-sdk/${sitePref.beamVersion}/dist/integrations/beam.js';
+    import {
+        StatsigPlugin
+    } from 'https://sdk.beamimpact.com/web-sdk/${sitePref.beamVersion}/dist/integrations/statsig.js';
+
+    const plugins = [];
+    const beamStatsigApiKey = "${sitePref.beamStatsigApiKey || '' }";
+
+    if (beamStatsigApiKey) {
+        plugins.push(new StatsigPlugin({ statsigApiKey: beamStatsigApiKey }));
+    };
+
+    const beam = await init({
+        apiKey: "${sitePref.beamApiKey}",
+        chainId: ${sitePref.beamChainId},
+        storeId: ${sitePref.beamStoreId || ''} || undefined,
+        domain: "${sitePref.beamDomain || ''}" || undefined,
+        plugins
+    });
+</script>
