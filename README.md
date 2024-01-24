@@ -2,23 +2,26 @@
 
 Beam provides a cartridge to integrate with Salesforce Commerce Cloud (SFCC). This cartridge enables a SFCC storefront to use the Beam Impact widgets.
 
-## Set Up:
+## Set Up
+
+Cartridge structure:
+
+-   `app_storefront_base` The Salesforce Reference Architecture base cartridge. Your app should have a copy of this already.
+-   `app_storefront_overrides` Example cartridge for a customized storefront.
+-   `plugin_beam` Contains template files for including in customized storefronts.
+    Other:
+-   `metadata` Includes XML files defining configuration variables for Beam.
 
 ### Download `plugin_beam` Cartridge
 
 1. Navigate to the following [Github Repo](https://github.com/Beam-Impact/beam-b2c-sfra)
 2. Download the **`plugin_beam`** folder and add it to your **`/cartridges`** folder
-3. Run the following commands in the **`plugin_beam`** directory:
-    ```bash
-    npm install
-    npm run build
-    ```
-4. Update the **`uploadCartridge`** script in **`package.json`**:
+3. Update the **`uploadCartridge`** script in **`package.json`**:
     ```json
     "uploadCartridge": "... && sgmf-scripts --uploadCartridge plugin_beam",
     ```
-5. Navigate to Administration → Sites → Manage Sites → RefArch - Settings
-6. Under cartridges, add **`plugin_beam`** before the override cartridge
+4. Navigate to Administration → Sites → Manage Sites → RefArch - Settings
+5. Under cartridges, add **`plugin_beam`** before the override cartridge
    ![RefArch - Settings](documentation/assets/beam_refArch_settings.png)
 
 ## Configure
@@ -62,7 +65,7 @@ Metadata files contain information about the structure, formatting, and characte
 ### Beam Global Configuration
 
 1. Open the htmlHead template file **`cartridge/templates/default/common/htmlHead.isml`**
-2. Include the **`beam/beam_init`** before the **`htmlHead`** hook in the file. Add the following line:
+2. To include this template, add the following line before the **`htmlHead`** hook:
     ```jsx
     <isinclude template="beam/beam_init" />
     ```
@@ -70,7 +73,7 @@ Metadata files contain information about the structure, formatting, and characte
 ### Select Nonprofit Widget
 
 1. Open the cart template file **`cartridge/templates/default/cart/cart.isml`**
-2. Include the **`beam/beam_select_nonprofit`** where you see fit in the file. Add the following line:
+2. To include this template, add the following line:
 
     ```jsx
     <isinclude template="beam/beam_select_nonprofit" />
@@ -79,7 +82,7 @@ Metadata files contain information about the structure, formatting, and characte
 ### Post-Purchase Widget
 
 1.  Open the confirmationDetails template file **cartridge/templates/default/checkout/confirmation/confirmationDetails.isml**
-2.  Include the **`beam/beam_post_purchase`** where you see fit in the file. Add the following line:
+2.  To include this template, add the following line:
 
     ```jsx
     <isinclude template="beam/beam_post_purchase" />
@@ -106,10 +109,10 @@ Page Designer allows Merchandising and Marketing teams to take charge of updates
 5. **Add a Textbox Component Above the Community Impact Widget That States:**
 
     ```jsx
-    <h3>The [INSERT NAME HERE]'s Impact</h3>
+    <h3>The [YOUR BRAND NAME HERE]'s Impact</h3>
     <p>
-        1% of every [INSERT NAME HERE] purchase is donated to a nonprofit of
-        your choice. Check out the impact the [INSERT NAME HERE] community is
+        1% of every [YOUR BRAND NAME HERE] purchase is donated to a nonprofit of
+        your choice. Check out the impact the [YOUR BRAND NAME HERE] community is
         making below.
     </p>
     ```
@@ -135,11 +138,11 @@ Page Designer allows Merchandising and Marketing teams to take charge of updates
 
     <!-- Community Impact Widget -->
     <h3 style="text-align: center;font-family: inherit; font-weight: 500;">
-        The [INSERT NAME HERE]'s Impact
+        The [YOUR BRAND NAME HERE]'s Impact
     </h3>
     <p style="font-weight: 300;font-size: 16px;max-width: 640px; margin:5px auto 15px;text-align: center;">
-        1% of every [INSERT NAME HERE] purchase is donated to a nonprofit of your choice.
-        <br/> Check out the impact the [INSERT NAME HERE] community is making below.
+        1% of every [YOUR BRAND NAME HERE] purchase is donated to a nonprofit of your choice.
+        <br/> Check out the impact the [YOUR BRAND NAME HERE] community is making below.
     </p>
     <beam-community-impact
         apikey="API KEY"
@@ -159,9 +162,9 @@ Page Designer allows Merchandising and Marketing teams to take charge of updates
     <isinclude template="beam/beam_cumulative_impact"/>
 
     <!-- Community Impact Widget -->
-    <h3>The [INSERT NAME HERE]s Impact</h3>
-    <p>1% of every [INSERT NAME HERE] purchase is donated to a nonprofit of your choice.
-    Check out the impact the [INSERT NAME HERE] community is making below.</p>
+    <h3>The [YOUR BRAND NAME HERE]'s Impact</h3>
+    <p>1% of every [YOUR BRAND NAME HERE] purchase is donated to a nonprofit of your choice.
+    Check out the impact the [YOUR BRAND NAME HERE] community is making below.</p>
 
     <isinclude template="beam/beam_community_impact"/>
     ```
