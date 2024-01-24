@@ -160,22 +160,22 @@ See: [Page Designer Components](./page-designer-components.md)
 
 ### Metadata
 
-Metadata files contain information about the structure, formatting, and characteristics of the associated data. The `beam.xml` holds credentials for the Beam widgets.
+Metadata files contain information about the structure, formatting, and characteristics of the associated data. The `beam_configuration.xml` holds credentials for the Beam widgets.
 
-### Step 1: Downloading `beam.xml`
+### Step 1: Downloading `beam_configuration.xml`
 
 1. After downloading the `plugin_beam` cartridge source, navigate to the `metadata` > `meta` folder in the following [Github Repo](https://github.com/Beam-Impact/beam-b2c-sfra)
 2. Download `beam_configuration.xml`
 
-### Step 2: Uploading `beam.xml`
+### Step 2: Uploading `beam_configuration.xml`
 
 1. Go to Administration > Site Development > Import & Export
 2. Click on the Upload button
-3. Choose the file option and select `beam.xml`
+3. Choose the file option and select `beam_configuration.xml`
 4. Click Upload
 5. Return to the Import & Export page
 6. Select Import under Meta Data
-7. Choose `beam.xml`
+7. Choose `beam_configuration.xml`
 8. Click Next
 9. Once the file is validated, select Import
 
