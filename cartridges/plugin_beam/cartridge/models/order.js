@@ -184,7 +184,7 @@ function OrderModel(lineItemContainer, options) {
         );
         var totalsModel = new TotalsModel(lineItemContainer);
 
-        this.currencyCode = lineItemContainer.currencyCode; // currencyCode addition for beam post-purchase widget
+        this.currencyCode = lineItemContainer.currencyCode; // currencyCode addition for Beam Post-Purchase Widget
         this.shippable = safeOptions.shippable || false;
         this.usingMultiShipping = usingMultiShipping;
         this.orderNumber = Object.hasOwnProperty.call(
