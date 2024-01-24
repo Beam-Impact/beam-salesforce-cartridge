@@ -130,7 +130,7 @@ See: [Page Designer Components](./page-designer-components.md)
     ```json
     "uploadCartridge": "... && sgmf-scripts --uploadCartridge plugin_beam",
     ```
-5. Navigate to Administration > Sites > Manage Sites > RefArch - Settings
+5. Navigate to Administration → Sites → Manage Sites → RefArch - Settings
 6. Under cartridges, add **`plugin_beam`** before the override cartridge
    ![RefArch - Settings](documentation/assets/beam_refArch_settings.png)
 
@@ -147,7 +147,7 @@ Metadata files contain information about the structure, formatting, and characte
 
 ### Step 2: Uploading `beam_configuration.xml`
 
-1. Go to Administration > Site Development > Import & Export
+1. Go to Administration → Site Development → Import & Export
 2. Click on the Upload button
 3. Choose the file option and select **`beam_configuration.xml`**
 4. Click Upload
@@ -159,7 +159,7 @@ Metadata files contain information about the structure, formatting, and characte
 
 ### Step 3: Configuring Beam Credentials
 
-1. Navigate to Merchant Tools > Site Preferences > Custom Preferences
+1. Navigate to Merchant Tools → Site Preferences → Custom Preferences
 2. Select Beam Credentials
 3. Paste the credentials provided by Beam into the respective fields:
     - Store ID
@@ -207,7 +207,7 @@ Page Designer allows Merchandising and Marketing teams to take charge of updates
 #### How to Use Page Designer for Static Widgets:
 
 1. **Navigate to Page Designer:**
-    - Go to [Merchant Tools > Content > Page Designer]
+    - Go to [Merchant Tools → Content → Page Designer]
 2. **Select Your Page:**
     - Choose the static page where you want to add the widgets
 3. **Select Components, Under Beam, Select A Widget:**
@@ -229,7 +229,7 @@ Page Designer allows Merchandising and Marketing teams to take charge of updates
 
 ### - Method 2: Content Assets
 
-1. **How to find assets list → Merchant Tools →  Content →  Content**
+1. **How to find assets list: Merchant Tools →  Content →  Content**
 2. **Find the page you’d like to add the widgets to**
 3. **Click ‘Lock’ under the page header**
 4. **Navigate to body and add the following:**
