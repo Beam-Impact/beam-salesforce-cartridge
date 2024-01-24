@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata xmlns="http://www.demandware.com/xml/impex/metadata/2006-10-31">
+
+    <type-extension type-id="Order">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="beamNonprofitId">
+                <display-name xml:lang="x-default">Beam Nonprofit Id</display-name>
+                <description xml:lang="x-default">Selected Nonprofit Id</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>true</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="beamNonprofitName">
+                <display-name xml:lang="x-default">Beam Nonprofit Name</display-name>
+                <description xml:lang="x-default">Selected Nonprofit Name</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>true</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+        </custom-attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="Beam">
+                <display-name xml:lang="x-default">Beam</display-name>
+                <attribute attribute-id="beamNonprofitId"/>
+                <attribute attribute-id="beamNonprofitName"/>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+    <type-extension type-id="SitePreferences">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="beamApiKey">
+                <display-name xml:lang="x-default">Beam API Key</display-name>
+                <type>string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="beamVersion">
+                <display-name xml:lang="x-default">Beam Version</display-name>
+                <type>string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="beamChainId">
+                <display-name xml:lang="x-default">Beam Chain Id</display-name>
+                <type>string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="beamLang">
+                <display-name xml:lang="x-default">Beam Language</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="beamStoreId">
+                <display-name xml:lang="x-default">Beam Store Id</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="beamStatsigApiKey">
+                <display-name xml:lang="x-default">Beam StatSig API Key</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="beamDomain">
+                <display-name xml:lang="x-default">Top Level Domain (optional unless store has subdomains)</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+        </custom-attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="Beam Credentials">
+                <display-name xml:lang="x-default">Beam Impact Widget Credentials</display-name>
+                <attribute attribute-id="beamStoreId"/>
+                <attribute attribute-id="beamLang"/>
+                <attribute attribute-id="beamVersion"/>
+                <attribute attribute-id="beamApiKey"/>
+                <attribute attribute-id="beamChainId"/>
+                <attribute attribute-id="beamStatsigApiKey"/>
+                <attribute attribute-id="beamDomain"/>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+
+</metadata>

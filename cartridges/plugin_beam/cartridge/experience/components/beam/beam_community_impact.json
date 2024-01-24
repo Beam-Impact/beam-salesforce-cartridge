@@ -1,0 +1,7 @@
+{
+    "name": "Beam Community Impact Widget",
+    "description": "Shows progress towards nonprofit funding goals for all nonprofits supported by the store",
+    "group": "Beam",
+    "attribute_definition_groups": [],
+    "region_definitions": []
+}
