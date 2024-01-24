@@ -207,19 +207,15 @@ Page Designer allows Merchandising and Marketing teams to take charge of updates
 #### How to Use Page Designer for Static Widgets:
 
 1. **Navigate to Page Designer:**
-
--   Go to [Merchant Tools > Content > Page Designer]
-
+    - Go to [Merchant Tools > Content > Page Designer]
 2. **Select Your Page:**
     - Choose the static page where you want to add the widgets
 3. **Select Components, Under Beam, Select A Widget:**
     - Look for the 'Beam' section and select 'Community Impact' or/and 'Cumulative Impact'
 4. **Drag and Drop:**
-
     - Simply drag your selected widget onto the page
       </br>
       <img src="documentation/assets/beam_page_designer.png" width="450">
-
 5. **Add a Textbox Component Above the Community Impact Widget That States:**
 
     ```jsx
@@ -242,7 +238,7 @@ Page Designer allows Merchandising and Marketing teams to take charge of updates
     <script type="module" src="https://production-beam-widgets.beamimpact.com/web-sdk/v1.30.0/dist/components/community-impact.esm.js"></script>
     <script type="module" src="https://production-beam-widgets.beamimpact.com/web-sdk/v1.30.0/dist/components/cumulative-impact.esm.js"></script>
 
-    /** Cumulative Impact Widget **/
+    <!-- Cumulative Impact Widget -->
     <beam-cumulative-impact
         apikey="API KEY"
         chainid="CHAIN ID"
@@ -250,7 +246,7 @@ Page Designer allows Merchandising and Marketing teams to take charge of updates
         lang="en">
     </beam-cumulative-impact>
 
-    /** Community Impact Widget **/
+    <!-- Community Impact Widget -->
     <h3 style="text-align: center;font-family: inherit; font-weight: 500;">
         The [INSERT NAME HERE]'s Impact
     </h3>
@@ -269,15 +265,16 @@ Page Designer allows Merchandising and Marketing teams to take charge of updates
 
 ### - Method 3: Inline
 
-1. Access the template in the desired location for widget placement and include the following lines:
+1. **Access the template in the desired location for widget placement and include the following lines:**
 
     ```jsx
-    /** Cumulative Impact Widget **/
+    <!-- Cumulative Impact Widget -->
     <isinclude template="beam/beam_cumulative_impact"/>
 
-    /** Community Impact Widget **/
-    <h3>The [INSERT NAME HERE]'s Impact</h3>
+    <!-- Community Impact Widget -->
+    <h3>The [INSERT NAME HERE]s Impact</h3>
     <p>1% of every [INSERT NAME HERE] purchase is donated to a nonprofit of your choice.
     Check out the impact the [INSERT NAME HERE] community is making below.</p>
+
     <isinclude template="beam/beam_community_impact"/>
     ```
