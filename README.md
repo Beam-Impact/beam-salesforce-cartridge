@@ -133,12 +133,6 @@ See: [Page Designer Components](./page-designer-components.md)
 5. Navigate to Administration > Sites > Manage Sites > RefArch - Settings
 6. Under cartridges, add `plugin_beam` before the override cartridge.
 
-### Download `plugin_beam` Cartridge
-
-1. Navigate to the specified GitHub Repo [hyperlink]
-2. Download the `plugin_beam` folder from the repository
-3. Add the downloaded `plugin_beam` folder to your `/cartridges`
-
 ### Installation and Build
 
 1. Open a terminal and navigate to the `plugin_beam` directory
