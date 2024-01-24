@@ -132,28 +132,6 @@ See: [Page Designer Components](./page-designer-components.md)
     ```
 5. Navigate to Administration > Sites > Manage Sites > RefArch - Settings
 6. Under cartridges, add `plugin_beam` before the override cartridge.
-
-### Installation and Build
-
-1. Open a terminal and navigate to the `plugin_beam` directory
-2. Run the following commands:
-    ```bash
-    npm install
-    npm run build
-    ```
-
-### Update `package.json` Scripts
-
-1. Open your `package.json` file
-2. Find the `uploadCartridge` script and update it to include the new Cartridge. Add the following command:
-    ```json
-    "uploadCartridge": "... && sgmf-scripts --uploadCartridge plugin_beam && sgmf-scripts --uploadCartridge app_storefront_overrides",
-    ```
-
-### Configure Cartridge Order
-
-1. Navigate to Administration > Sites > Manage Sites > RefArch - Settings
-2. Under cartridges, add `plugin_beam` before the override cartridge in the specified configuration.
    ![RefArch - Settings](documentation/assets/beam_refArch_settings.png)
 
 ## Configure
