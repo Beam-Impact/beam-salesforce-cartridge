@@ -154,8 +154,8 @@ Page Designer allows Merchandising and Marketing teams to take charge of updates
 4. **Navigate to body and add the following:**
 
     ```jsx
-    <script type="module" src="https://production-beam-widgets.beamimpact.com/web-sdk/v1.30.0/dist/components/community-impact.esm.js"></script>
-    <script type="module" src="https://production-beam-widgets.beamimpact.com/web-sdk/v1.30.0/dist/components/cumulative-impact.esm.js"></script>
+    <script type="module" src="https://sdk.beamimpact.com/web-sdk/v1.36.6/dist/components/community-impact.js"></script>
+    <script type="module" src="https://sdk.beamimpact.com/web-sdk/v1.36.6/dist/components/cumulative-impact.js"></script>
 
     <!-- Cumulative Impact Widget -->
     <beam-cumulative-impact
@@ -166,12 +166,14 @@ Page Designer allows Merchandising and Marketing teams to take charge of updates
     </beam-cumulative-impact>
 
     <!-- Community Impact Widget -->
-    <h3 style="text-align: center;font-family: inherit; font-weight: 500;">
+    <h3>
         The [YOUR BRAND NAME HERE]'s Impact
     </h3>
-    <p style="font-weight: 300;font-size: 16px;max-width: 640px; margin:5px auto 15px;text-align: center;">
+    <p>
         1% of every [YOUR BRAND NAME HERE] purchase is donated to a nonprofit of your choice.
-        <br/> Check out the impact the [YOUR BRAND NAME HERE] community is making below.
+    </p>
+    <p>
+        Check out the impact the [YOUR BRAND NAME HERE] community is making below.
     </p>
     <beam-community-impact
         apikey="API KEY"
