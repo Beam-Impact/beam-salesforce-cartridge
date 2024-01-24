@@ -85,7 +85,7 @@ Add Beam's global initialization code to the `head` of your storefront so it app
 
 ### Select Nonprofit Widget
 
-1. Open your cart template file, e.g., **`cartridge/templates/default/cart/cart.isml`**
+1. Open your cart template file, e.g., [`cartridge/templates/default/cart/cart.isml`](./cartridges/app_storefront_overrides/cartridge/templates/default/cart/cart.isml)
 2. To include this template, add the following line:
 
     ```jsx
@@ -148,7 +148,7 @@ Page Designer allows Merchandising and Marketing teams to take charge of updates
 
 #### Method 3: Content Assets
 
-1. **How to find assets list: Merchant Tools →  Content →  Content**
+1. **How to find assets list: _Merchant Tools → Content → Content_**
 2. **Find the page you’d like to add the widgets to**
 3. **Click ‘Lock’ under the page header**
 4. **Navigate to body and add the following:**
@@ -179,8 +179,7 @@ Page Designer allows Merchandising and Marketing teams to take charge of updates
         apikey="API KEY"
         chainid="CHAIN ID"
         storeid="STORE ID"
-        lang="en"
-        >
+        lang="en">
     </beam-community-impact>
     ```
 
