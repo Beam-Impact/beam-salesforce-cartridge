@@ -2,52 +2,63 @@
 
 Beam provides a cartridge to integrate with Salesforce Commerce Cloud (SFCC). This cartridge enables a SFCC storefront to use the Beam Impact widgets.
 
-## Set Up
+**Table of Contents**
+
+- [Beam Salesforce Commerce Cloud (Demandware) Cartridge](#beam-salesforce-commerce-cloud-demandware-cartridge)
+    - [Beam Setup](#beam-setup)
+        - [1. Install `plugin_beam` Cartridge](#1-install-plugin_beam-cartridge)
+        - [2. Import Beam Configuration File](#2-import-beam-configuration-file)
+        - [3. Configure Beam Credentials](#3-configure-beam-credentials)
+    - [Adding Beam to a Storefront](#adding-beam-to-a-storefront)
+        - [Beam Global Configuration](#beam-global-configuration)
+        - [Select Nonprofit Widget](#select-nonprofit-widget)
+        - [Post-Purchase Widget](#post-purchase-widget)
+        - [Community & Cumulative Impact Widgets](#community--cumulative-impact-widgets)
+            - [Method 1: Page Designer](#method-1-page-designer)
+                - [How to Use Page Designer for Static Widgets:](#how-to-use-page-designer-for-static-widgets)
+            - [Method 2: Content Assets](#method-2-content-assets)
+            - [Method 3: Include ISML template](#method-3-include-isml-template)
+
+## Beam Setup
 
 Cartridge structure:
 
--   `app_storefront_base` The Salesforce Reference Architecture base cartridge. Your app should have a copy of this already.
--   `app_storefront_overrides` Example cartridge for a customized storefront.
--   `plugin_beam` Contains template files for including in customized storefronts.
-    Other:
--   `metadata` Includes XML files defining configuration variables for Beam.
+- `app_storefront_base` The Salesforce Reference Architecture base cartridge. Your app should have a copy of this already.
+- `app_storefront_overrides` Example cartridge for a customized storefront.
+- `plugin_beam` Contains template files for including in customized storefronts.
 
-### Download `plugin_beam` Cartridge
+Other:
 
-1. Navigate to the following [Github Repo](https://github.com/Beam-Impact/beam-b2c-sfra)
-2. Download the **`plugin_beam`** folder and add it to your **`/cartridges`** folder
-3. Update the **`uploadCartridge`** script in **`package.json`**:
+- `metadata` Includes XML files defining configuration variables for Beam.
+
+### 1. Install `plugin_beam` Cartridge
+
+1. Download the [**`cartridges/plugin_beam`**](./cartridges/plugin_beam) folder and add it to the **`/cartridges`** folder in your storefront codebase
+2. Add the Beam cartridge to the **`uploadCartridge`** script in your storefront's **`package.json`**:
     ```json
     "uploadCartridge": "... && sgmf-scripts --uploadCartridge plugin_beam",
     ```
-4. Navigate to Administration → Sites → Manage Sites → RefArch - Settings
-5. Under cartridges, add **`plugin_beam`** before the override cartridge
+3. Run the `uploadCartridge` script
+4. Open your storefront's settings by navigating to _Administration → Sites → Manage Sites → RefArch → Settings_ (where _RefArch_ is your site name).
+5. Under _Cartridges_, add **`plugin_beam`** to the right of your storefront's existing cartridge
    ![RefArch - Settings](documentation/assets/beam_refArch_settings.png)
 
-## Configure
+### 2. Import Beam Configuration File
 
-### Metadata
+The **`beam_configuration.xml`** defines configuration settings for the Beam widgets which can be imported into your storefront.
 
-Metadata files contain information about the structure, formatting, and characteristics of the associated data. The **`beam_configuration.xml`** holds credentials for the Beam widgets.
+1. Download [`metadata/beam_configuration.xml`](./metadata/beam_configuration.xml)
+2. Go to Administration → Site Development → Import & Export
+3. Click on the Upload button
+4. Choose the file option and select **`beam_configuration.xml`**
+5. Click Upload
+6. Return to the Import & Export page
+7. Select Import under Meta Data
+8. Choose **`beam_configuration.xml`**
+9. Click Next
+10. Once the file is validated, select Import
 
-### Step 1: Downloading `beam_configuration.xml`
-
-1. After downloading the **`plugin_beam`** cartridge source, navigate to the **`metadata`** > **`meta`** folder in the following [Github Repo](https://github.com/Beam-Impact/beam-b2c-sfra)
-2. Download **`beam_configuration.xml`**
-
-### Step 2: Uploading `beam_configuration.xml`
-
-1. Go to Administration → Site Development → Import & Export
-2. Click on the Upload button
-3. Choose the file option and select **`beam_configuration.xml`**
-4. Click Upload
-5. Return to the Import & Export page
-6. Select Import under Meta Data
-7. Choose **`beam_configuration.xml`**
-8. Click Next
-9. Once the file is validated, select Import
-
-### Step 3: Configuring Beam Credentials
+### 3. Configure Beam Credentials
 
 1. Navigate to Merchant Tools → Site Preferences → Custom Preferences
 2. Select Beam Credentials
@@ -60,11 +71,13 @@ Metadata files contain information about the structure, formatting, and characte
     - Statsig API Key (optional)
     - Domain URL (optional)
 
-## 3. Integration
+## Adding Beam to a Storefront
 
 ### Beam Global Configuration
 
-1. Open the htmlHead template file **`cartridge/templates/default/common/htmlHead.isml`**
+Add Beam's global initialization code to the `head` of your storefront so it appears on every page.
+
+1. Open the htmlHead template file [`cartridge/templates/default/common/htmlHead.isml`](./cartridges/app_storefront_overrides/cartridge/templates/default/common/htmlHead.isml)
 2. To include this template, add the following line before the **`htmlHead`** hook:
     ```jsx
     <isinclude template="beam/beam_init" />
@@ -72,7 +85,7 @@ Metadata files contain information about the structure, formatting, and characte
 
 ### Select Nonprofit Widget
 
-1. Open the cart template file **`cartridge/templates/default/cart/cart.isml`**
+1. Open your cart template file, e.g., **`cartridge/templates/default/cart/cart.isml`**
 2. To include this template, add the following line:
 
     ```jsx
@@ -81,20 +94,20 @@ Metadata files contain information about the structure, formatting, and characte
 
 ### Post-Purchase Widget
 
-1.  Open the confirmationDetails template file **cartridge/templates/default/checkout/confirmation/confirmationDetails.isml**
+1.  Open the confirmationDetails template file. e.g., [`cartridge/templates/default/checkout/confirmation/confirmationDetails.isml`](./cartridges/app_storefront_overrides/cartridge/templates/default/checkout/confirmation/confirmationDetails.isml)
 2.  To include this template, add the following line:
 
     ```jsx
     <isinclude template="beam/beam_post_purchase" />
     ```
 
-### Community & Cumulative Impact Widget
+### Community & Cumulative Impact Widgets
 
-### - Method 1: Page Designer
+#### Method 1: Page Designer
 
 Page Designer allows Merchandising and Marketing teams to take charge of updates independently, eliminating the need for ongoing developer involvement. This autonomy not only minimizes overhead but also accelerates time-to-market for new online experiences, ensuring a high standard of quality. Page Designer in Salesforce B2C is typically used for designing and managing static pages. Hence the available widgets being the 'Community Impact' and 'Cumulative Impact' widgets.
 
-#### How to Use Page Designer for Static Widgets:
+##### How to Use Page Designer for Static Widgets:
 
 1. **Navigate to Page Designer:**
     - Go to [Merchant Tools → Content → Page Designer]
@@ -117,7 +130,8 @@ Page Designer allows Merchandising and Marketing teams to take charge of updates
     </p>
     ```
 
-### - Method 2: Content Assets
+
+#### Method 2: Content Assets
 
 1. **How to find assets list: Merchant Tools →  Content →  Content**
 2. **Find the page you’d like to add the widgets to**
@@ -153,7 +167,7 @@ Page Designer allows Merchandising and Marketing teams to take charge of updates
     </beam-community-impact>
     ```
 
-### - Method 3: Inline
+#### Method 3: Include ISML template
 
 1. **Access the template in the desired location for widget placement and include the following lines:**
 
