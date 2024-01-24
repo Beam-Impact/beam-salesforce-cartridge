@@ -134,7 +134,7 @@ Page Designer allows Merchandising and Marketing teams to take charge of updates
 
 1. Place the widget within your storefront code by including the following lines:
 
-    ```jsx
+    ```html
     <!-- Cumulative Impact Widget -->
     <isinclude template="beam/beam_cumulative_impact"/>
 
@@ -153,7 +153,7 @@ Page Designer allows Merchandising and Marketing teams to take charge of updates
 3. **Click ‘Lock’ under the page header**
 4. **Navigate to body and add the following:**
 
-    ```jsx
+    ```html
     <script type="module" src="https://sdk.beamimpact.com/web-sdk/v1.36.6/dist/components/community-impact.js"></script>
     <script type="module" src="https://sdk.beamimpact.com/web-sdk/v1.36.6/dist/components/cumulative-impact.js"></script>
 
