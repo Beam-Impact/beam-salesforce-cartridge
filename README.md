@@ -16,8 +16,8 @@ Beam provides a cartridge to integrate with Salesforce Commerce Cloud (SFCC). Th
         - [Community & Cumulative Impact Widgets](#community--cumulative-impact-widgets)
             - [Method 1: Page Designer](#method-1-page-designer)
                 - [How to Use Page Designer for Static Widgets:](#how-to-use-page-designer-for-static-widgets)
-            - [Method 2: Content Assets](#method-2-content-assets)
-            - [Method 3: Include ISML template](#method-3-include-isml-template)
+            - [Method 2: Include ISML template](#method-2-include-isml-template)
+            - [Method 3: Content Assets](#method-3-content-assets)
 
 ## Beam Setup
 
@@ -130,8 +130,23 @@ Page Designer allows Merchandising and Marketing teams to take charge of updates
     </p>
     ```
 
+#### Method 2: Include ISML template
 
-#### Method 2: Content Assets
+1. Place the widget within your storefront code by including the following lines:
+
+    ```jsx
+    <!-- Cumulative Impact Widget -->
+    <isinclude template="beam/beam_cumulative_impact"/>
+
+    <!-- Community Impact Widget -->
+    <h3>The [YOUR BRAND NAME HERE]'s Impact</h3>
+    <p>1% of every [YOUR BRAND NAME HERE] purchase is donated to a nonprofit of your choice.
+    Check out the impact the [YOUR BRAND NAME HERE] community is making below.</p>
+
+    <isinclude template="beam/beam_community_impact"/>
+    ```
+
+#### Method 3: Content Assets
 
 1. **How to find assets list: Merchant Tools →  Content →  Content**
 2. **Find the page you’d like to add the widgets to**
@@ -167,18 +182,3 @@ Page Designer allows Merchandising and Marketing teams to take charge of updates
     </beam-community-impact>
     ```
 
-#### Method 3: Include ISML template
-
-1. **Access the template in the desired location for widget placement and include the following lines:**
-
-    ```jsx
-    <!-- Cumulative Impact Widget -->
-    <isinclude template="beam/beam_cumulative_impact"/>
-
-    <!-- Community Impact Widget -->
-    <h3>The [YOUR BRAND NAME HERE]'s Impact</h3>
-    <p>1% of every [YOUR BRAND NAME HERE] purchase is donated to a nonprofit of your choice.
-    Check out the impact the [YOUR BRAND NAME HERE] community is making below.</p>
-
-    <isinclude template="beam/beam_community_impact"/>
-    ```
