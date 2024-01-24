@@ -245,9 +245,13 @@ Page Designer allows Merchandising and Marketing teams to take charge of updates
       ![Page Designer](documentation/assets/beam_pageDesigner.png)
 5. **Add a Textbox Component Above the Community Impact Widget That States:**
 
-    ```markup
+    ```jsx
     <h3>The [INSERT NAME HERE]'s Impact</h3>
-    <p>1% of every [INSERT NAME HERE] purchase is donated to a nonprofit of your choice. Check out the impact the [INSERT NAME HERE] community is making below.</p>
+    <p>
+        1% of every [INSERT NAME HERE] purchase is donated to a nonprofit of
+        your choice. Check out the impact the [INSERT NAME HERE] community is
+        making below.
+    </p>
     ```
 
 ### - Method 2: Content Assets
@@ -258,7 +262,7 @@ Page Designer allows Merchandising and Marketing teams to take charge of updates
 3. **Click ‘Lock’ under the page header**
 4. **Navigate to body and add the following:**
 
-    ```markup
+    ```jsx
     <script type="module" src="https://production-beam-widgets.beamimpact.com/web-sdk/v1.30.0/dist/components/community-impact.esm.js"></script>
     <script type="module" src="https://production-beam-widgets.beamimpact.com/web-sdk/v1.30.0/dist/components/cumulative-impact.esm.js"></script>
 
@@ -290,7 +294,7 @@ Page Designer allows Merchandising and Marketing teams to take charge of updates
 
 1. Access the template in the desired location for widget placement and include the following lines:
 
-    ```markup
+    ```jsx
     /** Cumulative Impact Widget **/
     <isinclude template="beam/beam_cumulative_impact"/>
 
