@@ -281,7 +281,8 @@ Page Designer allows Merchandising and Marketing teams to take charge of updates
         The [INSERT NAME HERE]'s Impact
     </h3>
     <p style="font-weight: 300;font-size: 16px;max-width: 640px; margin:5px auto 15px;text-align: center;">
-        1% of every [INSERT NAME HERE] purchase is donated to a nonprofit of your choice. <br/> Check out the impact the [INSERT NAME HERE] community is making below.
+        1% of every [INSERT NAME HERE] purchase is donated to a nonprofit of your choice.
+        <br/> Check out the impact the [INSERT NAME HERE] community is making below.
     </p>
     <beam-community-impact
         apikey="API KEY"
