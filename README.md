@@ -120,40 +120,40 @@ See: [Page Designer Components](./page-designer-components.md)
 ### Download `plugin_beam` Cartridge
 
 1. Navigate to the following [Github Repo](https://github.com/Beam-Impact/beam-b2c-sfra)
-2. Download the `plugin_beam` folder and add it to your `/cartridges` folder
-3. Run the following commands in the `plugin_beam` directory:
+2. Download the **`plugin_beam`** folder and add it to your **`/cartridges`** folder
+3. Run the following commands in the **`plugin_beam`** directory:
     ```bash
     npm install
     npm run build
     ```
-4. Update the `uploadCartridge` script in `package.json`:
+4. Update the **`uploadCartridge`** script in **`package.json`**:
     ```json
     "uploadCartridge": "... && sgmf-scripts --uploadCartridge plugin_beam && sgmf-scripts --uploadCartridge app_storefront_overrides",
     ```
 5. Navigate to Administration > Sites > Manage Sites > RefArch - Settings
-6. Under cartridges, add `plugin_beam` before the override cartridge.
+6. Under cartridges, add **`plugin_beam`** before the override cartridge
    ![RefArch - Settings](documentation/assets/beam_refArch_settings.png)
 
 ## Configure
 
 ### Metadata
 
-Metadata files contain information about the structure, formatting, and characteristics of the associated data. The `beam_configuration.xml` holds credentials for the Beam widgets.
+Metadata files contain information about the structure, formatting, and characteristics of the associated data. The **`beam_configuration.xml`** holds credentials for the Beam widgets.
 
 ### Step 1: Downloading `beam_configuration.xml`
 
-1. After downloading the `plugin_beam` cartridge source, navigate to the `metadata` > `meta` folder in the following [Github Repo](https://github.com/Beam-Impact/beam-b2c-sfra)
-2. Download `beam_configuration.xml`
+1. After downloading the **`plugin_beam`** cartridge source, navigate to the **`metadata`** > **`meta`** folder in the following [Github Repo](https://github.com/Beam-Impact/beam-b2c-sfra)
+2. Download **`beam_configuration.xml`**
 
 ### Step 2: Uploading `beam_configuration.xml`
 
 1. Go to Administration > Site Development > Import & Export
 2. Click on the Upload button
-3. Choose the file option and select `beam_configuration.xml`
+3. Choose the file option and select **`beam_configuration.xml`**
 4. Click Upload
 5. Return to the Import & Export page
 6. Select Import under Meta Data
-7. Choose `beam_configuration.xml`
+7. Choose **`beam_configuration.xml`**
 8. Click Next
 9. Once the file is validated, select Import
 
@@ -174,8 +174,8 @@ Metadata files contain information about the structure, formatting, and characte
 
 ### Beam Global Configuration
 
-1. Open the htmlHead template file `cartridge/templates/default/common/htmlHead.isml`
-2. Include the `beam/beam_init` before the `htmlHead` hook in the file. Add the following line:
+1. Open the htmlHead template file **`cartridge/templates/default/common/htmlHead.isml`**
+2. Include the **`beam/beam_init`** before the **`htmlHead`** hook in the file. Add the following line:
     ```jsx
     <isinclude template="beam/beam_init" />
     ```
@@ -207,7 +207,9 @@ Page Designer allows Merchandising and Marketing teams to take charge of updates
 #### How to Use Page Designer for Static Widgets:
 
 1. **Navigate to Page Designer:**
-    - Go to [Merchant Tools > Content > Page Designer]
+
+-   Go to [Merchant Tools > Content > Page Designer]
+
 2. **Select Your Page:**
     - Choose the static page where you want to add the widgets
 3. **Select Components, Under Beam, Select A Widget:**
