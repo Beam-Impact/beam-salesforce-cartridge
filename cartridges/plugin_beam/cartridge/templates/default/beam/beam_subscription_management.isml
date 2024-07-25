@@ -6,8 +6,8 @@
     apikey="${sitePref.beamApiKey}"
     chainid="${sitePref.beamChainId}"
     storeid="${sitePref.beamStoreId}"
-    email="${email}"
-    subscriptionid="${subscriptionId}"
+    email="${pdict.order.orderEmail}"
+    subscriptionid="${pdict.order.orderNumber}"
 >
 </beam-subscription-management>
 
