@@ -48,7 +48,7 @@
         const responseBody = event.detail.type === 'xhr'
             ? JSON.parse(event.detail?.xhr?.response ||  '{}')
             : await event.detail?.response?.json();
-        const beamCart = responseBody?.beamCart;
+        const beamCart = responseBody?.beamCart || responseBody?.basket?.beamCart;
         if (beamCart) {
             window.dispatchEvent(new events.BeamCartChangeEvent({
                 schema: {
