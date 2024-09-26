@@ -86,6 +86,7 @@ function getCartActionUrls() {
         removeProductLineItemUrl: URLUtils.url(
             'Cart-RemoveProductLineItem'
         ).toString(),
+        addProductUrl: URLUtils.url('Cart-AddProduct').toString(),
         updateQuantityUrl: URLUtils.url('Cart-UpdateQuantity').toString(),
         selectShippingUrl: URLUtils.url('Cart-SelectShippingMethod').toString(),
         submitCouponCodeUrl: URLUtils.url('Cart-AddCoupon').toString(),
@@ -124,6 +125,7 @@ function CartModel(basket) {
         this.totals = totalsModel;
         // Formatted data for Beam Select Nonprofit Widget in cart
         this.beamCart = {
+            cartId: basket.getUUID(),
             currencyCode: basket.getCurrencyCode(),
             subtotal:
                 basket.getAdjustedMerchandizeTotalPrice(false).valueOrNull,
