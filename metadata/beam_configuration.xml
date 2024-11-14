@@ -5,35 +5,35 @@
         <custom-attribute-definitions>
             <attribute-definition attribute-id="beamNonprofitId">
                 <display-name xml:lang="x-default">Beam Nonprofit ID</display-name>
-                <description xml:lang="x-default">The ID of the nonprofit associated with the beam.</description>
+                <description xml:lang="x-default">ID of the nonprofit</description>
                 <type>int</type>
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
             </attribute-definition>
             <attribute-definition attribute-id="beamSelectionId">
                 <display-name xml:lang="x-default">Beam Selection ID</display-name>
-                <description xml:lang="x-default">ID of the selection in the beam.</description>
+                <description xml:lang="x-default">ID created after selection</description>
                 <type>string</type>
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
             </attribute-definition>
             <attribute-definition attribute-id="beamCartId">
                 <display-name xml:lang="x-default">Beam Cart ID</display-name>
-                <description xml:lang="x-default">ID of the cart in the beam.</description>
+                <description xml:lang="x-default">ID of the cart created by Beam</description>
                 <type>string</type>
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
             </attribute-definition>
             <attribute-definition attribute-id="beamSFCartId">
                 <display-name xml:lang="x-default">Beam SF Cart ID</display-name>
-                <description xml:lang="x-default">The Salesforce Cart ID for the beam.</description>
+                <description xml:lang="x-default">The Salesforce Cart ID</description>
                 <type>string</type>
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
             </attribute-definition>
             <attribute-definition attribute-id="beamStoreId">
                 <display-name xml:lang="x-default">Beam Store ID</display-name>
-                <description xml:lang="x-default">ID of the store associated with the beam.</description>
+                <description xml:lang="x-default">ID of the store</description>
                 <type>int</type>
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
@@ -54,35 +54,35 @@
         <custom-attribute-definitions>
             <attribute-definition attribute-id="beamNonprofitId">
                 <display-name xml:lang="x-default">Beam Nonprofit ID</display-name>
-                <description xml:lang="x-default">The ID of the nonprofit associated with the beam.</description>
+                <description xml:lang="x-default">ID of the nonprofit</description>
                 <type>int</type>
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
             </attribute-definition>
             <attribute-definition attribute-id="beamSelectionId">
                 <display-name xml:lang="x-default">Beam Selection ID</display-name>
-                <description xml:lang="x-default">ID of the selection in the beam.</description>
+                <description xml:lang="x-default">ID created after selection</description>
                 <type>string</type>
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
             </attribute-definition>
             <attribute-definition attribute-id="beamCartId">
                 <display-name xml:lang="x-default">Beam Cart ID</display-name>
-                <description xml:lang="x-default">ID of the cart in the beam.</description>
+                <description xml:lang="x-default">ID of the cart created by Beam</description>
                 <type>string</type>
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
             </attribute-definition>
             <attribute-definition attribute-id="beamSFCartId">
                 <display-name xml:lang="x-default">Beam SF Cart ID</display-name>
-                <description xml:lang="x-default">The Salesforce Cart ID for the beam.</description>
+                <description xml:lang="x-default">The Salesforce Cart ID</description>
                 <type>string</type>
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
             </attribute-definition>
             <attribute-definition attribute-id="beamStoreId">
                 <display-name xml:lang="x-default">Beam Store ID</display-name>
-                <description xml:lang="x-default">ID of the store associated with the beam.</description>
+                <description xml:lang="x-default">ID of the store</description>
                 <type>int</type>
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
