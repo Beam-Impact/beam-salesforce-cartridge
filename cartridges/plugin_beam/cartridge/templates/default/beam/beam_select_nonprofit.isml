@@ -1,6 +1,6 @@
-<isset value="${dw.system.Site.current.ID}" name="currentSiteID" scope="page" />
 <isset value="${dw.system.Site.current.preferences.custom}" name="sitePref" scope="page"/>
-<isset value="${request.locale}" name="currLocale"  scope="page" />
+<isset value="${dw.web.URLUtils.url('Cart-UpdateBeamCustomAttributes')}" name="updateBeamCustomAttributesEndpoint" scope="page" />
+
 
 <script type="module" src="https://sdk.beamimpact.com/web-sdk/${sitePref.beamVersion}/dist/components/select-nonprofit.js"></script>
 
@@ -39,8 +39,7 @@
 
     async function updateCustomAttributes(payload) {
         try {
-
-            const url = `/on/demandware.store/Sites-${currentSiteID}-Site/${currLocale}/Cart-UpdateBeamCustomAttributes`
+            const url = `${updateBeamCustomAttributesEndpoint}`
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {
@@ -137,9 +136,9 @@ function getBeamCartId() {
         const beamCartId = getBeamCartId();
 
         const payload = {
-        nonprofitId,
-        selectionId,
-        cartId: beamCartId
+            nonprofitId,
+            selectionId,
+            cartId: beamCartId
         };
 
         await updateCustomAttributes(payload);
