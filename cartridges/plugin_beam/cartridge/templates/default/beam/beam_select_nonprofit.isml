@@ -1,4 +1,6 @@
 <isset value="${dw.system.Site.current.preferences.custom}" name="sitePref" scope="page"/>
+<isset value="${dw.web.URLUtils.url('Cart-UpdateBeamCustomAttributes')}" name="updateBeamCustomAttributesEndpoint" scope="page" />
+
 
 <script type="module" src="https://sdk.beamimpact.com/web-sdk/${sitePref.beamVersion}/dist/components/select-nonprofit.js"></script>
 
@@ -9,13 +11,15 @@
     } from 'https://sdk.beamimpact.com/web-sdk/${sitePref.beamVersion}/dist/integrations/beam.js';
     import {
         /** @type {typeof import('@beamimpact/web-sdk/dist/integrations/cart').updateCart} */
-            updateCart
+            updateCart,
     } from 'https://sdk.beamimpact.com/web-sdk/${sitePref.beamVersion}/dist/integrations/cart.js';
     import {
         /** @type {typeof import('@beamimpact/web-sdk/dist/utils').initNetworkListeners} */
             initNetworkListeners,
         /** @type {typeof import('@beamimpact/web-sdk/dist/utils').events} */
             events,
+        /** @type {typeof import('@beamimpact/web-sdk/dist/utils').getCookieValue} */
+            getCookieValue,
     } from 'https://sdk.beamimpact.com/web-sdk/${sitePref.beamVersion}/dist/utils/index.js';
 
     var beamConfig = getConfig();
@@ -33,6 +37,59 @@
 
     initNetworkListeners(); // Will emit Beam network call events whenever the site makes an AJAX call
 
+    async function updateCustomAttributes(payload) {
+        try {
+            const url = `${updateBeamCustomAttributesEndpoint}`
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+            // Check for HTTP errors
+            if (!response.ok) {
+                console.error('Network response was not ok:', response.statusText);
+                return;
+            }
+
+            const result = await response.json();
+
+            if (!result.success) {
+                console.error('Error updating basket custom attributes:', result.error);
+            }
+        } catch (error) {
+            console.error('Fetch error:', error);
+        }
+    }
+
+function getBeamCartId() {
+    // check the cookie for the beam cart ID
+    const beamCartCookie = getCookieValue("beam_cart");
+
+    if (beamCartCookie) {
+        return beamCartCookie;
+    }
+
+    // fallback to localStorage
+    // Get the beamCartId from localStorage
+    const beamCartIdKey = `beam_cart_key_${sitePref.beamApiKey}`;
+    const beamCartObj = window.localStorage.getItem(beamCartIdKey);
+
+    if (!beamCartObj) {
+        return null;
+    }
+
+    try {
+        const parsedObj = JSON.parse(beamCartObj);
+        const beamCartId = parsedObj?.beamCartId;
+
+        return beamCartId || null;
+    } catch (error) {
+        return null;
+    }
+}
+
     window.addEventListener(events.BeamNetworkCallEvent.eventName, async (event) => {
         const cartActionPaths =
             Object.values(
@@ -49,16 +106,43 @@
             ? JSON.parse(event.detail?.xhr?.response ||  '{}')
             : await event.detail?.response?.json();
         const beamCart = responseBody?.beamCart || responseBody?.basket?.beamCart;
+        const beamCartId = getBeamCartId();
         if (beamCart) {
+            await updateCart(beamConfig, beamCart); // Send data to Beam to update expiration time, etc.
+
             window.dispatchEvent(new events.BeamCartChangeEvent({
                 schema: {
                     source: "generic"
                 },
-                ...beamCart
+                ...beamCart,
+                beamCartId
             })); // Notify widgets to reload
-            await updateCart(beamConfig, beamCart); // Send data to Beam to update expiration time, etc.
         }
     });
+
+    window.addEventListener(events.BeamCartChangeEvent.eventName, async (event) => {
+        const beamCartId = getBeamCartId();
+
+        const payload = {
+            cartId: beamCartId
+        }
+
+        await updateCustomAttributes(payload);
+     })
+
+     window.addEventListener(events.BeamNonprofitSelectEvent.eventName, async (event) => {
+        const nonprofitId = event.detail.selectedNonprofitId
+        const selectionId = event.detail.selectionId
+        const beamCartId = getBeamCartId();
+
+        const payload = {
+            nonprofitId,
+            selectionId,
+            cartId: beamCartId
+        };
+
+        await updateCustomAttributes(payload);
+     })
 </script>
 
 <beam-select-nonprofit

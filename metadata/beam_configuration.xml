@@ -4,27 +4,98 @@
     <type-extension type-id="Order">
         <custom-attribute-definitions>
             <attribute-definition attribute-id="beamNonprofitId">
-                <display-name xml:lang="x-default">Beam Nonprofit Id</display-name>
-                <description xml:lang="x-default">Selected Nonprofit Id</description>
-                <type>string</type>
+                <display-name xml:lang="x-default">Beam Nonprofit ID</display-name>
+                <description xml:lang="x-default">ID of the nonprofit</description>
+                <type>int</type>
                 <mandatory-flag>false</mandatory-flag>
-                <externally-managed-flag>true</externally-managed-flag>
-                <min-length>0</min-length>
+                <externally-managed-flag>false</externally-managed-flag>
             </attribute-definition>
-            <attribute-definition attribute-id="beamNonprofitName">
-                <display-name xml:lang="x-default">Beam Nonprofit Name</display-name>
-                <description xml:lang="x-default">Selected Nonprofit Name</description>
+            <attribute-definition attribute-id="beamSelectionId">
+                <display-name xml:lang="x-default">Beam Selection ID</display-name>
+                <description xml:lang="x-default">ID created after selection</description>
                 <type>string</type>
                 <mandatory-flag>false</mandatory-flag>
-                <externally-managed-flag>true</externally-managed-flag>
-                <min-length>0</min-length>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="beamCartId">
+                <display-name xml:lang="x-default">Beam Cart ID</display-name>
+                <description xml:lang="x-default">ID of the cart created by Beam</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="beamSFCartId">
+                <display-name xml:lang="x-default">Beam SF Cart ID</display-name>
+                <description xml:lang="x-default">The Salesforce Cart ID</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="beamStoreId">
+                <display-name xml:lang="x-default">Beam Store ID</display-name>
+                <description xml:lang="x-default">ID of the store</description>
+                <type>int</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
             </attribute-definition>
         </custom-attribute-definitions>
         <group-definitions>
             <attribute-group group-id="Beam">
                 <display-name xml:lang="x-default">Beam</display-name>
                 <attribute attribute-id="beamNonprofitId"/>
-                <attribute attribute-id="beamNonprofitName"/>
+                <attribute attribute-id="beamSelectionId"/>
+                <attribute attribute-id="beamCartId"/>
+                <attribute attribute-id="beamSFCartId"/>
+                <attribute attribute-id="beamStoreId"/>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+    <type-extension type-id="Basket">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="beamNonprofitId">
+                <display-name xml:lang="x-default">Beam Nonprofit ID</display-name>
+                <description xml:lang="x-default">ID of the nonprofit</description>
+                <type>int</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="beamSelectionId">
+                <display-name xml:lang="x-default">Beam Selection ID</display-name>
+                <description xml:lang="x-default">ID created after selection</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="beamCartId">
+                <display-name xml:lang="x-default">Beam Cart ID</display-name>
+                <description xml:lang="x-default">ID of the cart created by Beam</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="beamSFCartId">
+                <display-name xml:lang="x-default">Beam SF Cart ID</display-name>
+                <description xml:lang="x-default">The Salesforce Cart ID</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="beamStoreId">
+                <display-name xml:lang="x-default">Beam Store ID</display-name>
+                <description xml:lang="x-default">ID of the store</description>
+                <type>int</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+        </custom-attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="Beam">
+                <display-name xml:lang="x-default">Beam</display-name>
+                <attribute attribute-id="beamNonprofitId"/>
+                <attribute attribute-id="beamSelectionId"/>
+                <attribute attribute-id="beamCartId"/>
+                <attribute attribute-id="beamSFCartId"/>
+                <attribute attribute-id="beamStoreId"/>
             </attribute-group>
         </group-definitions>
     </type-extension>
@@ -47,7 +118,7 @@
             <attribute-definition attribute-id="beamChainId">
                 <display-name xml:lang="x-default">Beam Chain Id</display-name>
                 <type>string</type>
-                <mandatory-flag>true</mandatory-flag>
+                <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
                 <min-length>0</min-length>
             </attribute-definition>
