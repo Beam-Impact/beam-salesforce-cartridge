@@ -1,12 +1,16 @@
 <isset value="${dw.system.Site.current.preferences.custom}" name="sitePref" scope="page"/>
+<isset value="${request.getHttpLocale()}" name="currentLocale" scope="page"/>
+<isset value="${currentLocale.split('_')[0]}" name="languageCode" scope="page"/>
 
-<script type="module" src="https://sdk.beamimpact.com/web-sdk/${sitePref.version}/dist/components/post-purchase.js"></script>
+
+<script type="module" src="https://sdk.beamimpact.com/web-sdk/${sitePref.beamVersion}/dist/components/post-purchase.js"></script>
 
 <beam-post-purchase
     apikey="${sitePref.beamApiKey}"
     chainid="${sitePref.beamChainId}"
     storeid="${sitePref.beamStoreId}"
-    lang="${sitePref.beamLang}"
+    baseurl="${sitePref.beamBaseUrl}"
+    lang="${languageCode}"
     email="${pdict.order.orderEmail}"
     carttotal="${parseFloat(pdict.order.totals.subTotal.replace(/[^0-9.]/g, ''))}"
     countrycode="${pdict.order.billing.billingAddress.address.countryCode.value}"

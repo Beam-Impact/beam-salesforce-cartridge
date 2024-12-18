@@ -5,5 +5,6 @@
 <beam-product-details-page
     apikey="${sitePref.beamApiKey}"
     storeid="${sitePref.beamStoreId}"
+    baseurl="${sitePref.beamBaseUrl}"
 >
 </beam-product-details-page>
