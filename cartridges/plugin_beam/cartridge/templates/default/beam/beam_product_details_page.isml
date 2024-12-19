@@ -1,9 +1,14 @@
 <isset value="${dw.system.Site.current.preferences.custom}" name="sitePref" scope="page"/>
+<isset value="${request.getHttpLocale()}" name="currentLocale" scope="page"/>
+<isset value="${currentLocale.split('_')[0]}" name="languageCode" scope="page"/>
+<isset value="${sitePref.beamSupportedLang}" name="supportedLang" scope="page" />
+<isset value="${supportedLang && supportedLang.split(',').indexOf(languageCode) !== -1 ? languageCode : sitePref.beamDefaultLang}" name="finalLanguageCode" scope="page"/>
 
 <script type="module" src="https://sdk.beamimpact.com/web-sdk/${sitePref.beamVersion}/dist/components/product-details-page.js"></script>
-
 <beam-product-details-page
     apikey="${sitePref.beamApiKey}"
     storeid="${sitePref.beamStoreId}"
+    baseurl="${sitePref.beamBaseUrl}"
+    lang="${finalLanguageCode}"
 >
 </beam-product-details-page>
