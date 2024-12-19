@@ -129,6 +129,20 @@
                 <externally-managed-flag>false</externally-managed-flag>
                 <default-value>https://api.beamimpact.com</default-value>
             </attribute-definition>
+            <attribute-definition attribute-id="beamDefaultLang">
+                <display-name xml:lang="x-default">Beam Default Language</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="beamSupportedLang">
+                <display-name xml:lang="x-default">Beam Supported Language</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>["en", "fr", "de", "es", "it", "pl"]</default-value>
+            </attribute-definition>
             <attribute-definition attribute-id="beamStoreId">
                 <display-name xml:lang="x-default">Beam Store Id</display-name>
                 <type>string</type>
@@ -156,6 +170,8 @@
                 <display-name xml:lang="x-default">Beam Impact Widget Credentials</display-name>
                 <attribute attribute-id="beamStoreId"/>
                 <attribute attribute-id="beamBaseUrl"/>
+                <attribute attribute-id="beamDefaultLang"/>
+                <attribute attribute-id="beamSupportedLang"/>
                 <attribute attribute-id="beamVersion"/>
                 <attribute attribute-id="beamApiKey"/>
                 <attribute attribute-id="beamChainId"/>
