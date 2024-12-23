@@ -5,7 +5,7 @@
 <isscript>
     var Site = require('dw/system/Site');
     var Locale = require('dw/util/Locale');
-    var languageHelper = require('*/cartridge/scripts/utils/getFinalLanguageCode'); // Import the helper function
+    var languageHelper = require('*/cartridge/scripts/utils/getFinalLanguageCode');
 
     var currentLanguageCode = Locale.getLocale(request.locale).getLanguage();
     var finalLanguageCode = languageHelper.getFinalLanguageCode(Site.getCurrent(), currentLanguageCode);
