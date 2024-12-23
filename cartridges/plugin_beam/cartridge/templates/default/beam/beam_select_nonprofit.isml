@@ -146,19 +146,14 @@ function getBeamCartId() {
 <isscript>
     var Site = require('dw/system/Site');
     var Locale = require('dw/util/Locale');
-    var languageHelper = require('*/cartridge/scripts/utils/getFinalLanguageCode'); // Import the helper function
+    var languageHelper = require('*/cartridge/scripts/utils/getFinalLanguageCode');
 
     var currentLanguageCode = Locale.getLocale(request.locale).getLanguage();
 
     var finalLanguageCode = languageHelper.getFinalLanguageCode(Site.getCurrent(), currentLanguageCode);
-
-    session.privacy.finalLanguageCode = finalLanguageCode;
-
-    require('dw/system/Logger').debug("Current Language Code: {0}", currentLanguageCode);
-    require('dw/system/Logger').debug("Final Language Code: {0}", finalLanguageCode);
 </isscript>
 </script>
-<isset value="${session.privacy.finalLanguageCode}" name="finalLanguageCode" scope="page" />
+<isset value="${finalLanguageCode}" name="finalLanguageCode" scope="page" />
 
 <beam-select-nonprofit
     apikey="${sitePref.beamApiKey}"

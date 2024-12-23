@@ -8,14 +8,9 @@
     var currentLanguageCode = Locale.getLocale(request.locale).getLanguage();
 
     var finalLanguageCode = languageHelper.getFinalLanguageCode(Site.getCurrent(), currentLanguageCode);
-
-    session.privacy.finalLanguageCode = finalLanguageCode;
-
-    require('dw/system/Logger').debug("Current Language Code: {0}", currentLanguageCode);
-    require('dw/system/Logger').debug("Final Language Code: {0}", finalLanguageCode);
 </isscript>
 
-<isset value="${session.privacy.finalLanguageCode}" name="finalLanguageCode" scope="page" />
+<isset value="${finalLanguageCode}" name="finalLanguageCode" scope="page" />
 
 <script type="module" src="https://sdk.beamimpact.com/web-sdk/${sitePref.beamVersion}/dist/components/product-details-page.js"></script>
 <beam-product-details-page

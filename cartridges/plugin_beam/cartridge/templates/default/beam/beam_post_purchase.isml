@@ -8,16 +8,10 @@
     var languageHelper = require('*/cartridge/scripts/utils/getFinalLanguageCode'); // Import the helper function
 
     var currentLanguageCode = Locale.getLocale(request.locale).getLanguage();
-
     var finalLanguageCode = languageHelper.getFinalLanguageCode(Site.getCurrent(), currentLanguageCode);
-
-    session.privacy.finalLanguageCode = finalLanguageCode;
-
-    require('dw/system/Logger').debug("Current Language Code: {0}", currentLanguageCode);
-    require('dw/system/Logger').debug("Final Language Code: {0}", finalLanguageCode);
 </isscript>
 
-<isset value="${session.privacy.finalLanguageCode}" name="finalLanguageCode" scope="page" />
+<isset value="${finalLanguageCode}" name="finalLanguageCode" scope="page" />
 
 <beam-post-purchase
     apikey="${sitePref.beamApiKey}"
