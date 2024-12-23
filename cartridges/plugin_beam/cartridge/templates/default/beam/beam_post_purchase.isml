@@ -1,11 +1,17 @@
 <isset value="${dw.system.Site.current.preferences.custom}" name="sitePref" scope="page"/>
-<isset value="${request.getHttpLocale()}" name="currentLocale" scope="page"/>
-<isset value="${currentLocale.split('_')[0]}" name="languageCode" scope="page"/>
-<isset value="${sitePref.beamSupportedLang}" name="supportedLang" scope="page" />
-<isset value="${supportedLang && supportedLang.split(',').indexOf(languageCode) !== -1 ? languageCode : sitePref.beamDefaultLang}" name="finalLanguageCode" scope="page"/>
-
 
 <script type="module" src="https://sdk.beamimpact.com/web-sdk/${sitePref.beamVersion}/dist/components/post-purchase.js"></script>
+
+<isscript>
+    var Site = require('dw/system/Site');
+    var Locale = require('dw/util/Locale');
+    var languageHelper = require('*/cartridge/scripts/utils/getFinalLanguageCode');
+
+    var currentLanguageCode = Locale.getLocale(request.locale).getLanguage();
+    var finalLanguageCode = languageHelper.getFinalLanguageCode(Site.getCurrent(), currentLanguageCode);
+</isscript>
+
+<isset value="${finalLanguageCode}" name="finalLanguageCode" scope="page" />
 
 <beam-post-purchase
     apikey="${sitePref.beamApiKey}"
