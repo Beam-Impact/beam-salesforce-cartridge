@@ -13,8 +13,7 @@ function getFinalLanguageCode(site, currentLanguageCode) {
     try {
         supportedLang = JSON.parse(supportedLangString);
     } catch (e) {
-        var Logger = require("dw/system/Logger");
-        Logger.error("Error parsing beamSupportedLang: {0}", e.message);
+        supportedLang = [];
     }
 
     var defaultLang = site.getCustomPreferenceValue("beamDefaultLang");
