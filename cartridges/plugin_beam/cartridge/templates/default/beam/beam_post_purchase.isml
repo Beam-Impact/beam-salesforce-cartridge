@@ -5,13 +5,17 @@
 <isscript>
     var Site = require('dw/system/Site');
     var Locale = require('dw/util/Locale');
-    var languageHelper = require('*/cartridge/scripts/utils/getFinalLanguageCode');
+    var { getFinalLanguageCode } = require('*/cartridge/scripts/utils/getFinalLanguageCode');
 
     var currentLanguageCode = Locale.getLocale(request.locale).getLanguage();
-    var finalLanguageCode = languageHelper.getFinalLanguageCode(Site.getCurrent(), currentLanguageCode);
+    var finalLanguageCode = getFinalLanguageCode(Site.getCurrent(), currentLanguageCode);
+
+    var { getSanitizedSubtotal } = require('*/cartridge/scripts/utils/getSanitizedSubtotal');
+    var sanitizedSubtotal = getSanitizedSubtotal(pdict.order.totals.subTotal, pdict.order.currencyCode);
 </isscript>
 
 <isset value="${finalLanguageCode}" name="finalLanguageCode" scope="page" />
+<isset value="${sanitizedSubtotal}" name="sanitizedSubtotal" scope="page" />
 
 <beam-post-purchase
     apikey="${sitePref.beamApiKey}"
@@ -20,7 +24,7 @@
     baseurl="${sitePref.beamBaseUrl}"
     lang="${finalLanguageCode}"
     email="${pdict.order.orderEmail}"
-    carttotal="${parseFloat(pdict.order.totals.subTotal.replace(/[^0-9.]/g, ''))}"
+    carttotal="${sanitizedSubtotal}"
     countrycode="${pdict.order.billing.billingAddress.address.countryCode.value}"
     currencycode="${pdict.order.currencyCode || 'USD'}"
     orderid="${pdict.order.orderNumber}"
