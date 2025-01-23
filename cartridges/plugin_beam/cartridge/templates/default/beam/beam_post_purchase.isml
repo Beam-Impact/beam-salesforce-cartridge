@@ -5,13 +5,19 @@
 <isscript>
     var Site = require('dw/system/Site');
     var Locale = require('dw/util/Locale');
-    var languageHelper = require('*/cartridge/scripts/utils/getFinalLanguageCode');
-
+    var { getFinalLanguageCode } = require('*/cartridge/scripts/utils/getFinalLanguageCode');
+    var OrderMgr = require('dw/order/OrderMgr');
+    var orderID = pdict.order.orderNumber;
+    var currentOrder = OrderMgr.getOrder(orderID);
+    var subTotal = currentOrder ? currentOrder.getAdjustedMerchandizeTotalNetPrice().value : 0;
+    var currencyCode = currentOrder ? currentOrder.getAdjustedMerchandizeTotalNetPrice().currencyCode : (pdict.order.currencyCode || 'USD');
     var currentLanguageCode = Locale.getLocale(request.locale).getLanguage();
-    var finalLanguageCode = languageHelper.getFinalLanguageCode(Site.getCurrent(), currentLanguageCode);
+    var finalLanguageCode = getFinalLanguageCode(Site.getCurrent(), currentLanguageCode);
 </isscript>
 
 <isset value="${finalLanguageCode}" name="finalLanguageCode" scope="page" />
+<isset value="${subTotal}" name="subTotal" scope="page" />
+<isset value="${currencyCode}" name="currencyCode" scope="page" />
 
 <beam-post-purchase
     apikey="${sitePref.beamApiKey}"
@@ -20,9 +26,9 @@
     baseurl="${sitePref.beamBaseUrl}"
     lang="${finalLanguageCode}"
     email="${pdict.order.orderEmail}"
-    carttotal="${parseFloat(pdict.order.totals.subTotal.replace(/[^0-9.]/g, ''))}"
+    carttotal="${subTotal}"
     countrycode="${pdict.order.billing.billingAddress.address.countryCode.value}"
-    currencycode="${pdict.order.currencyCode || 'USD'}"
+    currencycode="${currencyCode}"
     orderid="${pdict.order.orderNumber}"
     postalcode="${pdict.order.billing.billingAddress.address.postalCode}"
     cart='
